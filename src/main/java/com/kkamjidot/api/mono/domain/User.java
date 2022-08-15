@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 @Entity(name = "User")
 @Table(name = "user")
 public class User extends BaseTimeEntity {
