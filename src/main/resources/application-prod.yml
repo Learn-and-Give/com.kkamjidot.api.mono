@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://${db.url}?serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver   # MySQL 연결 설정
+    username: ${db.username}
+    password: ${db.password}
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8082
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
