@@ -13,18 +13,17 @@ import java.time.LocalDateTime;
 public class QuizResponse implements Serializable {
     private final Long quizId;
     private final String quizTitle;
+    private final Integer quizWeek;
+    private final String quizCategory;
     private final String quizContent;
     private final String quizAnswer;
     private final String quizExplanation;
     private final String quizRubric;
     private final String quizSource;
-    private final String quizCategory;
     private final LocalDateTime quizCreatedDate;
     private final LocalDateTime quizModifiedDate;
-    private final LocalDateTime quizDeletedDate;
     private final Boolean isMine;
     private final Boolean isSolved;
     private final String writerName;
-    private final Integer week;
     private final Long challengeId;
 }

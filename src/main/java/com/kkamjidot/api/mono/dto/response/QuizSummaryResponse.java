@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 @Schema(name = "퀴즈 개요 응답")
 public class QuizSummaryResponse implements Serializable {
     private final Long quizId;
-    private final String title;
-    private final String category;
-    private final LocalDateTime createdDate;
-    private final LocalDateTime modifiedDate;
+    private final String quizTitle;
+    private final Integer quizWeek;
+    private final String quizCategory;
+    private final LocalDateTime quizCreatedDate;
+    private final LocalDateTime quizModifiedDate;
     private final Boolean isMine;
     private final Boolean isSolved;
     private final String writerName;
-    private final Integer week;
     private final Long challengeId;
 }

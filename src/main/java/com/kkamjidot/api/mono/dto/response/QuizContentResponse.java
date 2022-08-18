@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class QuizContentResponse implements Serializable {
     private final Long quizId;
     private final String quizTitle;
+    private final Integer quizWeek;
     private final String quizCategory;
     private final String quizContent;
     private final LocalDateTime quizCreatedDate;

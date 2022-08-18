@@ -9,6 +9,6 @@ import java.io.Serializable;
 @Getter
 @Builder
 @Schema(name = "퀴즈 제출 응답")
-public class CreateQuizResponse implements Serializable {
+public class QuizIdResponse implements Serializable {
     private final Long quizId;
 }

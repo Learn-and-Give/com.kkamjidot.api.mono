@@ -18,8 +18,11 @@ public class Quiz {
     @Column(name = "quiz_id", nullable = false)
     private Long id;
 
-    @Column(name = "quiz_title", length = 50)
+    @Column(name = "quiz_title", nullable = false, length = 50)
     private String quizTitle;
+
+    @Column(name = "quiz_week", nullable = false)
+    private Integer quizWeek;
 
     @Column(name = "quiz_content", nullable = false, length = 3500)
     private String quizContent;
@@ -55,9 +58,4 @@ public class Quiz {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "chall_id", nullable = false)
     private Challenge challenge;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "week_id", nullable = false)
-    private Week week;
-
 }
