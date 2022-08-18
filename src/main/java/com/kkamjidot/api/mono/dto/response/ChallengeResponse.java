@@ -1,14 +1,10 @@
 package com.kkamjidot.api.mono.dto.response;
 
-import com.kkamjidot.api.mono.domain.BaseTimeEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Lob;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,52 +12,52 @@ import java.time.LocalDateTime;
 @Schema(name = "챌린지 응답")
 public class ChallengeResponse implements Serializable {
     @Schema(description = "챌린지 ID")
-    private final Long id;
+    private final Long challengeId;
 
     @Schema(description = "챌린지 제목")
-    private final String challengeInfoTitle;
+    private final String title;
 
     @Schema(description = "첼린지 설명(마크다운)")
-    private final String challengeInfoDescription;
+    private final String description;
 
     @Schema(description = "챌린지가 진행되는 주차 수")
-    private final Integer challengeInfoTotalWeeks;
+    private final Integer totalWeeks;
 
     @Schema(description = "챌린지 참가비(없으면 0)")
-    private final Integer challengeInfoCost;
+    private final Integer cost;
 
     @Schema(description = "대상 대학")
-    private final String challengeInfoUniversity;
+    private final String university;
 
     @Schema(description = "대상 학과")
-    private final String challengeInfoDepartment;
+    private final String department;
 
     @Schema(description = "교수명")
-    private final String challengeInfoProfessorName;
+    private final String professorName;
 
     @Schema(description = "챌린지 기수")
-    private final Integer challengeChapter;
+    private final Integer chapter;
 
     @Schema(description = "챌린지 대상")
-    private final String challengeTarget;
+    private final String target;
 
     @Schema(description = "챌린지 시작일시")
-    private final LocalDateTime challengeStartDate;
+    private final LocalDateTime startDate;
 
     @Schema(description = "챌린지 종료일시")
-    private final LocalDateTime challengeEndDate;
+    private final LocalDateTime endDate;
 
     @Schema(description = "신청시작일시")
-    private final LocalDateTime challengeApplicationStartDate;
+    private final LocalDateTime applicationStartDate;
 
     @Schema(description = "신청종료일시")
-    private final LocalDateTime challengeApplicationEndDate;
+    private final LocalDateTime applicationEndDate;
 
     @Schema(description = "기수 별 상세 설명")
-    private final String challengeDetail;
+    private final String detail;
 
     @Schema(description = "챌린지 이미지 경로")
-    private final String challengeInfoImageUrl;
+    private final String imageUrl;
 
     @Schema(description = "챌린지 생성일시")
     private LocalDateTime createdDate;
@@ -70,5 +66,5 @@ public class ChallengeResponse implements Serializable {
     private LocalDateTime modifiedDate;
 
     @Schema(description = "내가 참여한 챌린지 여부")
-    private boolean isApplied;
+    private Boolean isParticipated;
 }

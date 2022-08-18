@@ -3,7 +3,7 @@ package com.kkamjidot.api.mono.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Entity(name = "User")
 @Table(name = "user")
-public class User extends BaseTimeEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
@@ -40,5 +40,14 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "user_image_url")
     private String userImageUrl;
+
+    @Column(name = "user_created_date")
+    private LocalDateTime userCreatedDate;
+
+    @Column(name = "user_modified_date")
+    private LocalDateTime userModifiedDate;
+
+    @Column(name = "user_deleted_date")
+    private LocalDateTime userDeletedDate;
 
 }

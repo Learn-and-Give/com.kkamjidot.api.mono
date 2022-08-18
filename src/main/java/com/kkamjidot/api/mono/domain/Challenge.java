@@ -3,6 +3,7 @@ package com.kkamjidot.api.mono.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Builder
@@ -14,33 +15,40 @@ import java.time.LocalDateTime;
 public class Challenge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "challenge_id", nullable = false)
+    @Column(name = "chall_id", nullable = false)
     private Long id;
 
-    @Column(name = "challenge_chapter", nullable = false)
-    private Integer challengeChapter;
+    @Column(name = "chall_chapter", nullable = false)
+    private Integer challChapter;
 
-    @Column(name = "challenge_target")
-    private String challengeTarget;
+    @Column(name = "chall_target", nullable = false)
+    private String challTarget;
 
-    @Column(name = "challenge_start_date")
-    private LocalDateTime challengeStartDate;
+    @Column(name = "chall_start_date", nullable = false)
+    private LocalDateTime challStartDate;
 
-    @Column(name = "challenge_end_date")
-    private LocalDateTime challengeEndDate;
+    @Column(name = "chall_end_date", nullable = false)
+    private LocalDateTime challEndDate;
 
-    @Column(name = "challenge_application_start_date")
-    private LocalDateTime challengeApplicationStartDate;
+    @Column(name = "chall_application_start_date")
+    private LocalDateTime challApplicationStartDate;
 
-    @Column(name = "challenge_application_end_date")
-    private LocalDateTime challengeApplicationEndDate;
+    @Column(name = "chall_application_end_date")
+    private LocalDateTime challApplicationEndDate;
 
-    @Lob
-    @Column(name = "challenge_detail")
-    private String challengeDetail;
+    @Column(name = "chall_detail", length = 4000)
+    private String challDetail;
+
+    @Column(name = "chall_created_date")
+    private LocalDateTime challCreatedDate;
+
+    @Column(name = "chall_modified_date")
+    private LocalDateTime challModifiedDate;
+
+    @Column(name = "chall_deleted_date")
+    private LocalDateTime challDeletedDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "challenge_info_id", nullable = false)
+    @JoinColumn(name = "cinfo_id", nullable = false)
     private ChallengeInfo challengeInfo;
-
 }

@@ -3,6 +3,8 @@ package com.kkamjidot.api.mono.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -10,35 +12,42 @@ import javax.persistence.*;
 @Getter
 @Entity(name = "ChallengeInfo")
 @Table(name = "challenge_info")
-public class ChallengeInfo extends BaseTimeEntity {
+public class ChallengeInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "challenge_info_id", nullable = false)
+    @Column(name = "cinfo_id", nullable = false)
     private Long id;
 
-    @Column(name = "challenge_info_title", nullable = false)
-    private String challengeInfoTitle;
+    @Column(name = "cinfo_title", nullable = false)
+    private String cinfoTitle;
 
-    @Lob
-    @Column(name = "challenge_info_description")
-    private String challengeInfoDescription;
+    @Column(name = "cinfo_description", length = 4000)
+    private String cinfoDescription;
 
-    @Column(name = "challenge_info_total_weeks", nullable = false)
-    private Integer challengeInfoTotalWeeks;
+    @Column(name = "cinfo_total_weeks", nullable = false)
+    private Integer cinfoTotalWeeks;
 
-    @Column(name = "challenge_info_cost")
-    private Integer challengeInfoCost;
+    @Column(name = "cinfo_cost")
+    private Integer cinfoCost;
 
-    @Column(name = "challenge_info_university")
-    private String challengeInfoUniversity;
+    @Column(name = "cinfo_university", nullable = false)
+    private String cinfoUniversity;
 
-    @Column(name = "challenge_info_department")
-    private String challengeInfoDepartment;
+    @Column(name = "cinfo_department", nullable = false)
+    private String cinfoDepartment;
 
-    @Column(name = "challenge_info_professor_name")
-    private String challengeInfoProfessorName;
+    @Column(name = "cinfo_professor_name", nullable = false)
+    private String cinfoProfessorName;
 
-    @Column(name = "challenge_info_image_url")
-    private String challengeInfoImageUrl;
+    @Column(name = "cinfo_image_url")
+    private String cinfoImageUrl;
 
+    @Column(name = "cinfo_created_date")
+    private LocalDateTime cinfoCreatedDate;
+
+    @Column(name = "cinfo_modified_date")
+    private LocalDateTime cinfoModifiedDate;
+
+    @Column(name = "cinfo_deleted_date")
+    private LocalDateTime cinfoDeletedDate;
 }
