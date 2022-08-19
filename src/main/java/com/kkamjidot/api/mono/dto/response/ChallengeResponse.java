@@ -23,6 +23,9 @@ public class ChallengeResponse implements Serializable {
     @Schema(description = "챌린지가 진행되는 주차 수")
     private final Integer totalWeeks;
 
+    @Schema(description = "주차별 최소 제출 문제 수")
+    private final Integer minNumOfQuizzesByWeek;
+
     @Schema(description = "챌린지 참가비(없으면 0)")
     private final Integer cost;
 

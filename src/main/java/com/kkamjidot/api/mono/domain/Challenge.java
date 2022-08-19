@@ -39,8 +39,8 @@ public class Challenge {
     @Column(name = "chall_total_weeks", nullable = false)
     private Integer challTotalWeeks;
 
-    @Column(name = "chall_week_num_quizzes", nullable = false)
-    private Integer challWeekNumQuizzes;
+    @Column(name = "chall_min_num_of_quizzes_by_week", nullable = false)
+    private Integer challMinNumOfQuizzesByWeek;
 
     @Column(name = "chall_detail", length = 4000)
     private String challDetail;
