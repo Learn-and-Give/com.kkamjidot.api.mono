@@ -38,7 +38,4 @@ public class CreateQuizRequest implements Serializable {
     @Schema(description = "출처(출처는 1000자 이하여야 합니다.)", example = "출처", required = false)
     @Size(max = 3500, message = "출처는 1000자 이하여야 합니다.")
     private String quizSource;
-
-    @Schema(required = false)
-    private MultipartFile[] quizFiles;
 }

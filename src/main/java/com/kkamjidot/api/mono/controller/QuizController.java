@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 @Tag(name = "퀴즈", description = "퀴즈 관련 작업들")
 @RestController
 public class QuizController {
-    @Operation(summary = "?week={week} 퀴즈 개요 목록 조회 API", description = "한 챌린지에 한 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다.")
+    @Operation(summary = "퀴즈 개요 목록 조회 API(쿼리 week)", description = "한 챌린지에 한 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readQuizSummaries(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                        @PathVariable Long challengeId,
@@ -40,28 +41,29 @@ public class QuizController {
         return null;
     }
 
-    @Operation(summary = "내가 작성한 퀴즈 개요 조회 API", description = "내가 참여한 챌린지에 해당하는 퀴즈의 개요 목록을 조회한다.")
-    @GetMapping("v1/challenges/my/quizzes")
+    @Operation(summary = "내가 작성한 퀴즈 개요 조회 API", description = "내가 참여한 챌린지에 해당하는 내가 작성한 퀴즈의 개요 목록을 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다.")
+    @GetMapping("v1/challenges/{challengeId}/my/quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
-                                                                   @PathVariable String quizId) {
+                                                                   @PathVariable String challengeId) {
         return null;
     }
 
     @Operation(summary = "퀴즈 제출 API", description = "퀴즈를 제출한다. 내가 수강한 챌린지가 아니라면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 제출 성공")
-    @PostMapping(path = "v1/challenges/{challengeId}/quizzes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "v1/challenges/{challengeId}/quizzes", consumes ={MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})  // {MediaType.APPLICATION_JSON_VALUE, }
     public ResponseEntity<QuizIdResponse> createQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                      @PathVariable String challengeId,
-                                                     @Valid CreateQuizRequest request) {
+                                                     @Valid @RequestPart CreateQuizRequest createQuizRequest,
+                                                     @RequestPart(required = false) MultipartFile[] quizFiles) {
         return null;
     }
 
-    @Operation(summary = "퀴즈 수정 API", description = "퀴즈를 수정한다. 내가 작성한 퀴즈가 아니라면 403 에러를 반환한다.")
+    @Operation(summary = "퀴즈 정답 수정 API", description = "퀴즈의 정답/해설/출처/루브릭을 수정한다. 내가 작성한 퀴즈가 아니라면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 수정 성공")
     @PatchMapping("v1/quizzes/{quizId}")
     public ResponseEntity<QuizIdResponse> updateQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                      @PathVariable String quizId,
-                                                     @Valid UpdateQuizRequest request) {
+                                                     @RequestBody @Valid UpdateQuizRequest request) {
         return null;
     }
 
