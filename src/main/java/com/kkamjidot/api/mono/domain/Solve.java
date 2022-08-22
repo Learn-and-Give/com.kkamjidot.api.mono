@@ -20,8 +20,8 @@ public class Solve {
     @Column(name = "solve_answer", nullable = false, length = 4000)
     private String solveAnswer;
 
-    @Column(name = "solve_is_correct")
-    private Boolean solveIsCorrect;
+    @Column(name = "solve_score")
+    private Integer solveScore;
 
     @Column(name = "solve_created_date", nullable = false)
     private LocalDateTime solveCreatedDate;
@@ -39,5 +39,4 @@ public class Solve {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
 }

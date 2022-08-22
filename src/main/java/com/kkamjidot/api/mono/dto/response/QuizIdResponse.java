@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Getter
 @Builder
-@Schema(name = "퀴즈 제출 응답")
+@Schema(name = "퀴즈 ID 응답")
 public class QuizIdResponse implements Serializable {
     private final Long quizId;
 }

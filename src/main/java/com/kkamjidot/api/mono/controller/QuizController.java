@@ -1,6 +1,7 @@
 package com.kkamjidot.api.mono.controller;
 
 import com.kkamjidot.api.mono.dto.request.CreateQuizRequest;
+import com.kkamjidot.api.mono.dto.request.GradeRequest;
 import com.kkamjidot.api.mono.dto.request.SolveRequest;
 import com.kkamjidot.api.mono.dto.request.UpdateQuizRequest;
 import com.kkamjidot.api.mono.dto.response.*;
@@ -41,10 +42,21 @@ public class QuizController {
         return null;
     }
 
-    @Operation(summary = "내가 작성한 퀴즈 개요 조회 API", description = "내가 참여한 챌린지에 해당하는 내가 작성한 퀴즈의 개요 목록을 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다.")
+    @Operation(summary = "내가 작성한 퀴즈 주차별 개요 조회 API(쿼리 week)", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개요 목록을 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다."
+            + "만약 주차가 0이거나 없으면 모든 퀴즈를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/my/quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
-                                                                   @PathVariable String challengeId) {
+                                                                   @PathVariable String challengeId,
+                                                                   @RequestParam(defaultValue = "0", required = false) Integer week) {
+        return null;
+    }
+
+    @Operation(summary = "주차별 내가 작성한 퀴즈 개수 조회 API(쿼리 week)", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개수를 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다."
+            + "만약 주차가 0이거나 없으면 총 제출 수를 반환한다.")
+    @GetMapping("v1/challenges/{challengeId}/my/quizzes/count")
+    public ResponseEntity<QuizCountResponse> readMyQuizzesCount(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+                                                                @PathVariable String challengeId,
+                                                                @RequestParam(defaultValue = "0", required = false) Integer week) {
         return null;
     }
 
@@ -67,12 +79,21 @@ public class QuizController {
         return null;
     }
 
-    @Operation(summary = "퀴즈 풀기 API", description = "퀴즈를 푼다. 열람 가능한 주차의 문제만 풀 수 있고, 이미 푼 문제는 다시 풀 수 없다.")
+    @Operation(summary = "퀴즈 풀기 정답 제출 API", description = "퀴즈를 푼다. 열람 가능한 주차의 문제만 풀 수 있고, 이미 푼 문제는 다시 풀 수 없다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 풀기 성공")
     @PostMapping(path = "v1/quizzes/{quizId}/solve")
-    public ResponseEntity<SolveResponse> solveQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
-                                      @PathVariable String quizId,
-                                      @RequestBody @Valid SolveRequest request) {
+    public ResponseEntity<QuizIdResponse> solveQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+                                                    @PathVariable String quizId,
+                                                    @RequestBody @Valid SolveRequest request) {
+        return null;
+    }
+
+    @Operation(summary = "퀴즈 풀기 채점 점수 제출 API", description = "퀴즈를 푼다. 열람 가능한 주차의 문제만 풀 수 있고, 이미 푼 문제는 다시 풀 수 없다.")
+    @ApiResponse(responseCode = "201", description = "퀴즈 풀기 성공")
+    @PostMapping(path = "v1/quizzes/{quizId}/grade")
+    public ResponseEntity<QuizIdResponse> gradeQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+                                                    @PathVariable String quizId,
+                                                    @RequestBody @Valid GradeRequest request) {
         return null;
     }
 }

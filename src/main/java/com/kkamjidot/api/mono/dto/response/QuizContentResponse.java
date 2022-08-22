@@ -20,6 +20,7 @@ public class QuizContentResponse implements Serializable {
     private final LocalDateTime quizModifiedDate;
     private final Boolean isMine;
     private final Boolean isSolved;
+    private final Boolean isGraded;
     private final String writerName;
     private final Integer week;
     private final Long challengeId;

@@ -19,6 +19,7 @@ public class QuizSummaryResponse implements Serializable {
     private final LocalDateTime quizModifiedDate;
     private final Boolean isMine;
     private final Boolean isSolved;
+    private final Boolean isGraded;
     private final String writerName;
     private final Long challengeId;
 }
