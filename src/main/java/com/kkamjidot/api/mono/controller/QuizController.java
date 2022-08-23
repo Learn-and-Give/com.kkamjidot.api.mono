@@ -7,8 +7,15 @@ import com.kkamjidot.api.mono.dto.request.UpdateQuizRequest;
 import com.kkamjidot.api.mono.dto.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jdk.jfr.ContentType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +25,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "퀴즈", description = "퀴즈 관련 작업들")
+@RequiredArgsConstructor
 @RestController
 public class QuizController {
     @Operation(summary = "개발 중)퀴즈 개요 목록 조회 API(쿼리 week)", description = "한 챌린지에 한 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다.")
@@ -73,7 +81,7 @@ public class QuizController {
     public ResponseEntity<QuizIdResponse> createQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                      @PathVariable String challengeId,
                                                      @Valid @RequestPart CreateQuizRequest createQuizRequest,
-                                                     @RequestPart(required = false) MultipartFile[] quizFiles) {
+                                                     @RequestPart(required = false) List<MultipartFile> quizFiles) {
         return null;
     }
 

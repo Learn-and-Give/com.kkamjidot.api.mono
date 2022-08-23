@@ -27,9 +27,6 @@ public class ChallengeInfo {
     @Column(name = "cinfo_total_weeks", nullable = false)
     private Integer cinfoTotalWeeks;
 
-    @Column(name = "cinfo_cost")
-    private Integer cinfoCost;
-
     @Column(name = "cinfo_university", nullable = false)
     private String cinfoUniversity;
 
