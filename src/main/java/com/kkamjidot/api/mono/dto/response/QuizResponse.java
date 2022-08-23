@@ -1,11 +1,13 @@
 package com.kkamjidot.api.mono.dto.response;
 
+import com.kkamjidot.api.mono.dto.QuizFileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
@@ -27,4 +29,5 @@ public class QuizResponse implements Serializable {
     private final Boolean isGraded;
     private final String writerName;
     private final Long challengeId;
+    private final List<QuizFileDto> quizFiles;
 }
