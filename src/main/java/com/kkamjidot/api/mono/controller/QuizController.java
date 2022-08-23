@@ -35,6 +35,13 @@ public class QuizController {
         return null;
     }
 
+    @Operation(summary = "개발 중)퀴즈 루브릭 조회 API", description = "퀴즈의 루브릭을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다. 단, 작성자가 본인일 경우 열람 가능하다.")
+    @GetMapping("v1/quizzes/{quizId}/rubric")
+    public ResponseEntity<QuizRublicResponse> readQuizRubric(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+                                                             @PathVariable String quizId) {
+        return null;
+    }
+
     @Operation(summary = "개발 중)퀴즈 상세 내용 조회 API", description = "퀴즈의 정답을 포함한 모든 정보를 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다. 단, 작성자가 본인일 경우 열람 가능하다.")
     @GetMapping("v1/quizzes/{quizId}")
     public ResponseEntity<QuizResponse> readQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,

@@ -31,7 +31,7 @@ logging:
             sql: trace
 
 springdoc:
-  version: 'v1.0.0' # API 문서 버전
+  version: 'v1.0.1' # API 문서 버전
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:

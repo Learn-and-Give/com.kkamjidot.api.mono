@@ -1,7 +1,7 @@
 package com.kkamjidot.api.mono.controller;
 
 import com.kkamjidot.api.mono.dto.response.ChallengeResponse;
-import com.kkamjidot.api.mono.dto.response.NowResponse;
+import com.kkamjidot.api.mono.dto.response.ThisWeekResponse;
 import com.kkamjidot.api.mono.dto.response.WeekResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,8 +38,8 @@ public class ChallengeController {
 
     @Operation(summary = "개발 중)현재 주자 반환 API", description = "현재 일시와 현재 챌린지에서의 주차를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/now")
-    public ResponseEntity<NowResponse> now(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
-                                           @PathVariable Long challengeId) {
+    public ResponseEntity<ThisWeekResponse> now(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+                                                @PathVariable Long challengeId) {
         return null;
     }
 }
