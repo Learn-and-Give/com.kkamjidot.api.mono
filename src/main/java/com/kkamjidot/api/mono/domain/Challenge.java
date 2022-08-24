@@ -5,6 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -41,6 +43,9 @@ public class Challenge {
 
     @Column(name = "chall_min_num_of_quizzes_by_week", nullable = false)
     private Integer challMinNumOfQuizzesByWeek;
+
+    @Column(name = "chall_cost", nullable = false)
+    private Integer challCost;
 
     @Column(name = "chall_detail", length = 4000)
     private String challDetail;

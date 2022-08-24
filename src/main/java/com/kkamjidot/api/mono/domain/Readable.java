@@ -18,7 +18,7 @@ public class Readable {
     @Column(name = "readable_id", nullable = false)
     private Long id;
 
-    @Column(name = "isReadable", nullable = false)
+    @Column(name = "is_readable", nullable = false)
     private Boolean isReadable = false;
 
     @Column(name = "week", nullable = false)

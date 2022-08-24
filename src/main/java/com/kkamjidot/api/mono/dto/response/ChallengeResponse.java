@@ -1,13 +1,19 @@
 package com.kkamjidot.api.mono.dto.response;
 
+import com.kkamjidot.api.mono.domain.Challenge;
+import com.kkamjidot.api.mono.domain.ChallengeInfo;
+import com.kkamjidot.api.mono.domain.User;
+import com.kkamjidot.api.mono.domain.enumerate.ApplicationStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @Builder
 @Schema(name = "챌린지 응답")
 public class ChallengeResponse implements Serializable {
@@ -63,11 +69,36 @@ public class ChallengeResponse implements Serializable {
     private final String imageUrl;
 
     @Schema(description = "챌린지 생성일시")
-    private LocalDateTime createdDate;
+    private final LocalDateTime createdDate;
 
     @Schema(description = "수정일시(수정 안 됐으면 null)")
-    private LocalDateTime modifiedDate;
+    private final  LocalDateTime modifiedDate;
 
-    @Schema(description = "내가 참여한 챌린지 여부")
-    private Boolean isParticipated;
+    @Schema(description = "챌린지 신청 상태")
+    private ApplicationStatus applicationStatus;
+
+    public static ChallengeResponse of(Challenge challenge) {
+        ChallengeInfo challengeInfo = challenge.getChallengeInfo();
+        return ChallengeResponse.builder()
+                .challengeId(challenge.getId())
+                .title(challengeInfo.getCinfoTitle())
+                .description(challengeInfo.getCinfoDescription())
+                .totalWeeks(challenge.getChallTotalWeeks())
+                .minNumOfQuizzesByWeek(challenge.getChallMinNumOfQuizzesByWeek())
+                .cost(challenge.getChallCost())
+                .university(challengeInfo.getCinfoUniversity())
+                .department(challengeInfo.getCinfoDepartment())
+                .professorName(challengeInfo.getCinfoProfessorName())
+                .chapter(challenge.getChallChapter())
+                .target(challenge.getChallTarget())
+                .startDate(challenge.getChallStartDate())
+                .endDate(challenge.getChallEndDate())
+                .applicationStartDate(challenge.getChallApplicationStartDate())
+                .applicationEndDate(challenge.getChallApplicationEndDate())
+                .detail(challenge.getChallDetail())
+                .imageUrl(challengeInfo.getCinfoImageUrl())
+                .createdDate(challenge.getChallCreatedDate())
+                .modifiedDate(challenge.getChallModifiedDate())
+                .build();
+    }
 }

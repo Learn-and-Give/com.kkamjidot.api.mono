@@ -33,6 +33,9 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+
+//	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
+//	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 }
 
 tasks.named('test') {
