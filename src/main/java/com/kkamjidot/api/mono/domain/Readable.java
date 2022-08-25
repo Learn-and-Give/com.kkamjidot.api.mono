@@ -30,9 +30,6 @@ public class Readable {
     @Column(name = "readable_modified_date")
     private LocalDateTime readableModifiedDate;
 
-    @Column(name = "readable_deleted_date")
-    private LocalDateTime readableDeletedDate;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

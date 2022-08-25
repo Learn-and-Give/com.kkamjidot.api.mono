@@ -22,17 +22,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Tag(name = "퀴즈", description = "퀴즈 관련 작업들")
 @RequiredArgsConstructor
 @RestController
 public class QuizController {
-    @Operation(summary = "개발 중)퀴즈 개요 목록 조회 API(쿼리 week)", description = "한 챌린지에 한 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다.")
+    @Operation(summary = "개발 중)퀴즈 개요 목록 조회 API(쿼리 week)", description = "한 챌린지에 여러 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다." +
+            "쿼리 week에는 여러 주차를 구분자 콤마로 구분하여 입력받는다.")
     @GetMapping("v1/challenges/{challengeId}/quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readQuizSummaries(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                        @PathVariable Long challengeId,
-                                                                       @RequestParam Integer week) {
+                                                                       @RequestParam String week) {
+        int[] weeks = Arrays.stream(week.split(",")).mapToInt(Integer::parseInt).toArray();
         return null;
     }
 
@@ -77,7 +81,7 @@ public class QuizController {
 
     @Operation(summary = "개발 중)퀴즈 제출 API", description = "퀴즈를 제출한다. 내가 수강한 챌린지가 아니라면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 제출 성공")
-    @PostMapping(path = "v1/challenges/{challengeId}/quizzes", consumes ={MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})  // {MediaType.APPLICATION_JSON_VALUE, }
+    @PostMapping(path = "v1/challenges/{challengeId}/quizzes", consumes ={/*MediaType.APPLICATION_JSON_VALUE, */MediaType.MULTIPART_FORM_DATA_VALUE})  // {MediaType.APPLICATION_JSON_VALUE, }
     public ResponseEntity<QuizIdResponse> createQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                      @PathVariable String challengeId,
                                                      @Valid @RequestPart CreateQuizRequest createQuizRequest,

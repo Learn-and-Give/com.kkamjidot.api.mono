@@ -1,0 +1,103 @@
+[2022-08-26 08:33:38.688] [INFO ] [restartedMain] com.kkamjidot.api.mono.MonoApplication Starting MonoApplication using Java 17.0.3.1 on kim-seunggyu-MacBookPro.local with PID 2306 (/Users/kim-seunggyu/Desktop/kkamji/com.kkamjidot.api.mono/out/production/classes started by kim-seunggyu in /Users/kim-seunggyu/Desktop/kkamji/com.kkamjidot.api.mono)
+[2022-08-26 08:33:38.688] [INFO ] [background-preinit] org.hibernate.validator.internal.util.Version HV000001: Hibernate Validator 6.2.3.Final
+[2022-08-26 08:33:38.688] [INFO ] [restartedMain] com.kkamjidot.api.mono.MonoApplication The following 1 profile is active: "local"
+[2022-08-26 08:33:38.708] [INFO ] [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2022-08-26 08:33:38.708] [INFO ] [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2022-08-26 08:33:39.035] [INFO ] [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2022-08-26 08:33:39.065] [INFO ] [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate Finished Spring Data repository scanning in 25 ms. Found 9 JPA repository interfaces.
+[2022-08-26 08:33:39.347] [INFO ] [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer Tomcat initialized with port(s): 8080 (http)
+[2022-08-26 08:33:39.352] [INFO ] [restartedMain] org.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+[2022-08-26 08:33:39.353] [INFO ] [restartedMain] org.apache.catalina.core.StandardService Starting service [Tomcat]
+[2022-08-26 08:33:39.353] [INFO ] [restartedMain] org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.65]
+[2022-08-26 08:33:39.385] [INFO ] [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+[2022-08-26 08:33:39.386] [INFO ] [restartedMain] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext Root WebApplicationContext: initialization completed in 677 ms
+[2022-08-26 08:33:39.401] [INFO ] [restartedMain] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Starting...
+[2022-08-26 08:33:39.575] [INFO ] [restartedMain] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Start completed.
+[2022-08-26 08:33:39.579] [INFO ] [restartedMain] org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/kkamjidot_schema?serverTimezone=Asia/Seoul'
+[2022-08-26 08:33:39.636] [INFO ] [restartedMain] org.hibernate.jpa.internal.util.LogHelper HHH000204: Processing PersistenceUnitInfo [name: default]
+[2022-08-26 08:33:39.658] [INFO ] [restartedMain] org.hibernate.Version HHH000412: Hibernate ORM core version 5.6.10.Final
+[2022-08-26 08:33:39.731] [INFO ] [restartedMain] org.hibernate.annotations.common.Version HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+[2022-08-26 08:33:39.778] [INFO ] [restartedMain] org.hibernate.dialect.Dialect HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+[2022-08-26 08:33:40.110] [INFO ] [restartedMain] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[2022-08-26 08:33:40.114] [INFO ] [restartedMain] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2022-08-26 08:33:40.372] [WARN ] [restartedMain] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2022-08-26 08:33:40.768] [INFO ] [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer LiveReload server is running on port 35729
+[2022-08-26 08:33:40.779] [INFO ] [restartedMain] org.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+[2022-08-26 08:33:40.790] [INFO ] [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer Tomcat started on port(s): 8080 (http) with context path ''
+[2022-08-26 08:33:40.797] [INFO ] [restartedMain] com.kkamjidot.api.mono.MonoApplication Started MonoApplication in 2.335 seconds (JVM running for 2.667)
+[2022-08-26 08:33:41.886] [INFO ] [http-nio-8080-exec-1] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2022-08-26 08:33:41.886] [INFO ] [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet Initializing Servlet 'dispatcherServlet'
+[2022-08-26 08:33:41.886] [INFO ] [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet Completed initialization in 0 ms
+[2022-08-26 08:33:42.359] [INFO ] [http-nio-8080-exec-3] org.springdoc.api.AbstractOpenApiResource Init duration for springdoc-openapi is: 201 ms
+[2022-08-26 08:34:15.771] [INFO ] [SpringApplicationShutdownHook] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean Closing JPA EntityManagerFactory for persistence unit 'default'
+[2022-08-26 08:34:15.772] [INFO ] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Shutdown initiated...
+[2022-08-26 08:34:15.776] [INFO ] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Shutdown completed.
+[2022-08-26 08:34:17.832] [INFO ] [background-preinit] org.hibernate.validator.internal.util.Version HV000001: Hibernate Validator 6.2.3.Final
+[2022-08-26 08:34:17.833] [INFO ] [restartedMain] com.kkamjidot.api.mono.MonoApplication Starting MonoApplication using Java 17.0.3.1 on kim-seunggyu-MacBookPro.local with PID 2318 (/Users/kim-seunggyu/Desktop/kkamji/com.kkamjidot.api.mono/out/production/classes started by kim-seunggyu in /Users/kim-seunggyu/Desktop/kkamji/com.kkamjidot.api.mono)
+[2022-08-26 08:34:17.833] [INFO ] [restartedMain] com.kkamjidot.api.mono.MonoApplication The following 1 profile is active: "local"
+[2022-08-26 08:34:17.855] [INFO ] [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2022-08-26 08:34:17.855] [INFO ] [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2022-08-26 08:34:18.170] [INFO ] [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2022-08-26 08:34:18.199] [INFO ] [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate Finished Spring Data repository scanning in 26 ms. Found 9 JPA repository interfaces.
+[2022-08-26 08:34:18.461] [INFO ] [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer Tomcat initialized with port(s): 8080 (http)
+[2022-08-26 08:34:18.466] [INFO ] [restartedMain] org.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+[2022-08-26 08:34:18.466] [INFO ] [restartedMain] org.apache.catalina.core.StandardService Starting service [Tomcat]
+[2022-08-26 08:34:18.466] [INFO ] [restartedMain] org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.65]
+[2022-08-26 08:34:18.495] [INFO ] [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+[2022-08-26 08:34:18.496] [INFO ] [restartedMain] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext Root WebApplicationContext: initialization completed in 641 ms
+[2022-08-26 08:34:18.514] [INFO ] [restartedMain] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Starting...
+[2022-08-26 08:34:18.694] [INFO ] [restartedMain] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Start completed.
+[2022-08-26 08:34:18.699] [INFO ] [restartedMain] org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/kkamjidot_schema?serverTimezone=Asia/Seoul'
+[2022-08-26 08:34:18.754] [INFO ] [restartedMain] org.hibernate.jpa.internal.util.LogHelper HHH000204: Processing PersistenceUnitInfo [name: default]
+[2022-08-26 08:34:18.777] [INFO ] [restartedMain] org.hibernate.Version HHH000412: Hibernate ORM core version 5.6.10.Final
+[2022-08-26 08:34:18.849] [INFO ] [restartedMain] org.hibernate.annotations.common.Version HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+[2022-08-26 08:34:18.898] [INFO ] [restartedMain] org.hibernate.dialect.Dialect HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+[2022-08-26 08:34:19.263] [INFO ] [restartedMain] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[2022-08-26 08:34:19.267] [INFO ] [restartedMain] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2022-08-26 08:34:19.516] [WARN ] [restartedMain] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2022-08-26 08:34:19.931] [INFO ] [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer LiveReload server is running on port 35729
+[2022-08-26 08:34:19.941] [INFO ] [restartedMain] org.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+[2022-08-26 08:34:19.952] [INFO ] [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer Tomcat started on port(s): 8080 (http) with context path ''
+[2022-08-26 08:34:19.960] [INFO ] [restartedMain] com.kkamjidot.api.mono.MonoApplication Started MonoApplication in 2.341 seconds (JVM running for 2.631)
+[2022-08-26 08:34:20.921] [INFO ] [http-nio-8080-exec-1] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2022-08-26 08:34:20.921] [INFO ] [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet Initializing Servlet 'dispatcherServlet'
+[2022-08-26 08:34:20.922] [INFO ] [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet Completed initialization in 1 ms
+[2022-08-26 08:34:21.349] [INFO ] [http-nio-8080-exec-3] org.springdoc.api.AbstractOpenApiResource Init duration for springdoc-openapi is: 207 ms
+[2022-08-26 08:34:39.211] [WARN ] [http-nio-8080-exec-6] org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver Resolved [java.util.NoSuchElementException: 존재하지 않는 챌린지입니다.]
+[2022-08-26 08:35:33.053] [INFO ] [SpringApplicationShutdownHook] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean Closing JPA EntityManagerFactory for persistence unit 'default'
+[2022-08-26 08:35:33.054] [INFO ] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Shutdown initiated...
+[2022-08-26 08:35:33.058] [INFO ] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Shutdown completed.
+[2022-08-26 08:35:35.231] [INFO ] [background-preinit] org.hibernate.validator.internal.util.Version HV000001: Hibernate Validator 6.2.3.Final
+[2022-08-26 08:35:35.231] [INFO ] [restartedMain] com.kkamjidot.api.mono.MonoApplication Starting MonoApplication using Java 17.0.3.1 on kim-seunggyu-MacBookPro.local with PID 2333 (/Users/kim-seunggyu/Desktop/kkamji/com.kkamjidot.api.mono/out/production/classes started by kim-seunggyu in /Users/kim-seunggyu/Desktop/kkamji/com.kkamjidot.api.mono)
+[2022-08-26 08:35:35.231] [INFO ] [restartedMain] com.kkamjidot.api.mono.MonoApplication The following 1 profile is active: "local"
+[2022-08-26 08:35:35.253] [INFO ] [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2022-08-26 08:35:35.253] [INFO ] [restartedMain] org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2022-08-26 08:35:35.571] [INFO ] [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2022-08-26 08:35:35.602] [INFO ] [restartedMain] org.springframework.data.repository.config.RepositoryConfigurationDelegate Finished Spring Data repository scanning in 26 ms. Found 9 JPA repository interfaces.
+[2022-08-26 08:35:35.863] [INFO ] [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer Tomcat initialized with port(s): 8080 (http)
+[2022-08-26 08:35:35.869] [INFO ] [restartedMain] org.apache.coyote.http11.Http11NioProtocol Initializing ProtocolHandler ["http-nio-8080"]
+[2022-08-26 08:35:35.869] [INFO ] [restartedMain] org.apache.catalina.core.StandardService Starting service [Tomcat]
+[2022-08-26 08:35:35.869] [INFO ] [restartedMain] org.apache.catalina.core.StandardEngine Starting Servlet engine: [Apache Tomcat/9.0.65]
+[2022-08-26 08:35:35.897] [INFO ] [restartedMain] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Initializing Spring embedded WebApplicationContext
+[2022-08-26 08:35:35.897] [INFO ] [restartedMain] org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext Root WebApplicationContext: initialization completed in 644 ms
+[2022-08-26 08:35:35.912] [INFO ] [restartedMain] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Starting...
+[2022-08-26 08:35:36.077] [INFO ] [restartedMain] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Start completed.
+[2022-08-26 08:35:36.082] [INFO ] [restartedMain] org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration H2 console available at '/h2-console'. Database available at 'jdbc:mysql://localhost:3306/kkamjidot_schema?serverTimezone=Asia/Seoul'
+[2022-08-26 08:35:36.138] [INFO ] [restartedMain] org.hibernate.jpa.internal.util.LogHelper HHH000204: Processing PersistenceUnitInfo [name: default]
+[2022-08-26 08:35:36.159] [INFO ] [restartedMain] org.hibernate.Version HHH000412: Hibernate ORM core version 5.6.10.Final
+[2022-08-26 08:35:36.229] [INFO ] [restartedMain] org.hibernate.annotations.common.Version HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+[2022-08-26 08:35:36.274] [INFO ] [restartedMain] org.hibernate.dialect.Dialect HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+[2022-08-26 08:35:36.603] [INFO ] [restartedMain] org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+[2022-08-26 08:35:36.608] [INFO ] [restartedMain] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2022-08-26 08:35:36.857] [WARN ] [restartedMain] org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2022-08-26 08:35:37.253] [INFO ] [restartedMain] org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer LiveReload server is running on port 35729
+[2022-08-26 08:35:37.263] [INFO ] [restartedMain] org.apache.coyote.http11.Http11NioProtocol Starting ProtocolHandler ["http-nio-8080"]
+[2022-08-26 08:35:37.273] [INFO ] [restartedMain] org.springframework.boot.web.embedded.tomcat.TomcatWebServer Tomcat started on port(s): 8080 (http) with context path ''
+[2022-08-26 08:35:37.281] [INFO ] [restartedMain] com.kkamjidot.api.mono.MonoApplication Started MonoApplication in 2.261 seconds (JVM running for 2.563)
+[2022-08-26 08:35:40.377] [INFO ] [http-nio-8080-exec-1] org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2022-08-26 08:35:40.377] [INFO ] [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet Initializing Servlet 'dispatcherServlet'
+[2022-08-26 08:35:40.378] [INFO ] [http-nio-8080-exec-1] org.springframework.web.servlet.DispatcherServlet Completed initialization in 1 ms
+[2022-08-26 08:35:49.845] [INFO ] [http-nio-8080-exec-6] org.springdoc.api.AbstractOpenApiResource Init duration for springdoc-openapi is: 187 ms
+[2022-08-26 08:41:43.297] [INFO ] [SpringApplicationShutdownHook] org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean Closing JPA EntityManagerFactory for persistence unit 'default'
+[2022-08-26 08:41:43.299] [INFO ] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Shutdown initiated...
+[2022-08-26 08:41:43.309] [INFO ] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource HikariPool-1 - Shutdown completed.
