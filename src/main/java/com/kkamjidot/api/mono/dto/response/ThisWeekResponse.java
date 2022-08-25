@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 @Schema(name = "현재 주차 반환 응답")
 public class ThisWeekResponse implements Serializable {
-    private final Integer week;
+    private final Long week;
     private final Long challengeId;
+    private final LocalDateTime challStartDate;
     private final LocalDateTime now;
 }
