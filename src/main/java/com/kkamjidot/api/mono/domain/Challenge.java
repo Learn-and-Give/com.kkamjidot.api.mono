@@ -3,15 +3,14 @@ package com.kkamjidot.api.mono.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
+@ToString
 @Entity(name = "Challenge")
 @Table(name = "challenge")
 public class Challenge {

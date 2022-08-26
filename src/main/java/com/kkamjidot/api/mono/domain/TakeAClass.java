@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity(name = "TakeAClass")
 @Table(name = "take_a_class")
 public class TakeAClass {

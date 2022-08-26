@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity(name = "Quiz")
 @Table(name = "quiz")
 public class Quiz {

@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
+@ToString
 @Entity(name = "QuizFile")
 @Table(name = "quiz_file")
 public class QuizFile {
