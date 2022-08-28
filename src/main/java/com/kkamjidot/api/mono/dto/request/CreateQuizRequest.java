@@ -3,6 +3,7 @@ package com.kkamjidot.api.mono.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Max;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@ToString
 @NoArgsConstructor
 @Schema(name = "퀴즈 제출 요청")
 public class CreateQuizRequest implements Serializable {

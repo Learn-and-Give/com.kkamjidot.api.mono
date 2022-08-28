@@ -1,5 +1,6 @@
 package com.kkamjidot.api.mono.dto.response;
 
+import com.kkamjidot.api.mono.domain.enumerate.QuizCategory;
 import com.kkamjidot.api.mono.dto.QuizFileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -16,7 +17,7 @@ public class QuizContentResponse implements Serializable {
     private final Long quizId;
     private final String quizTitle;
     private final Integer quizWeek;
-    private final String quizCategory;
+    private final QuizCategory quizCategory;
     private final String quizContent;
     private final LocalDateTime quizCreatedDate;
     private final LocalDateTime quizModifiedDate;

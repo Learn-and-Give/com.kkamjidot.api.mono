@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
 @ToString
 @Entity(name = "User")
 @Table(name = "user")

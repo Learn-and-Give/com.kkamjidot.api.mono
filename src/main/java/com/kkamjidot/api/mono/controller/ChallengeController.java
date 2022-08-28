@@ -99,13 +99,10 @@ public class ChallengeController {
         Challenge challenge = challengeService.findOne(challengeId);
         List<Integer> readableWeeks = readableService.findReadableWeeksByUser(user, challenge);            // 열람가능 주차 조회
         Integer challTotalWeeks = challenge.getChallTotalWeeks();   // 총 주차 조회
-        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        LocalDateTime challStartDate = challenge.getChallStartDate();
-        long nowWeek = ChronoUnit.DAYS.between(challStartDate, now) / 7 + 1;        // 오늘 주차
 
         // 열람 가능한 주차 true로 변경
         boolean[] weeks = new boolean[challTotalWeeks];
-        for (int i = 1; i < nowWeek; ++i) if (readableWeeks.contains(i)) weeks[i - 1] = true;
+        for (int i = 1; i < challenge.getNowWeek(); ++i) if (readableWeeks.contains(i)) weeks[i - 1] = true;
 
         return ResponseEntity.ok(WeekResponse.builder()
                 .challengeId(challengeId)
@@ -124,9 +121,10 @@ public class ChallengeController {
         LOGGER.info("User: {}", user.getUserName());
 
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        LocalDateTime challStartDate = challengeService.findOne(challengeId).getChallStartDate();
+        Challenge challenge = challengeService.findOne(challengeId);
+        LocalDateTime challStartDate = challenge.getChallStartDate();
         return ResponseEntity.ok(ThisWeekResponse.builder()
-                        .week(ChronoUnit.DAYS.between(challStartDate, now) / 7 + 1)
+                        .week(challenge.getNowWeek())
                         .challengeId(challengeId)
                         .challStartDate(challStartDate)
                         .now(now)

@@ -1,15 +1,20 @@
 package com.kkamjidot.api.mono.domain;
 
+import com.kkamjidot.api.mono.repository.QuizRepository;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
 @ToString
 @Entity(name = "Challenge")
 @Table(name = "challenge")
@@ -61,4 +66,9 @@ public class Challenge {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cinfo_id", nullable = false)
     private ChallengeInfo challengeInfo;
+
+    public Integer getNowWeek() {
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        return Math.toIntExact(ChronoUnit.DAYS.between(this.challStartDate, now) / 7 + 1);        // 오늘 주차
+    }
 }

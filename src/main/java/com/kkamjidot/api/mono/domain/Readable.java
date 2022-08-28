@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
 @ToString
 @Entity(name = "Readable")
 @Table(name = "readable")
@@ -19,6 +19,7 @@ public class Readable {
     @Column(name = "readable_id", nullable = false)
     private Long id;
 
+    @Builder.Default
     @Column(name = "is_readable", nullable = false)
     private Boolean isReadable = false;
 

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
 @ToString
 @Entity(name = "TakeAClass")
 @Table(name = "take_a_class")
