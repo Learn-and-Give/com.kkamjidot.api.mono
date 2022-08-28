@@ -97,7 +97,7 @@ public class QuizController {
         return null;
     }
 
-    @Operation(summary = "개발 중)퀴즈 제출 API", description = "퀴즈를 제출한다. 내가 수강한 챌린지가 아니라면 403 에러를 반환한다.")
+    @Operation(summary = "퀴즈 제출 API", description = "퀴즈를 제출한다. 내가 수강한 챌린지가 아니라면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 제출 성공")
     @PostMapping(path = "v1/challenges/{challengeId}/quizzes", consumes ={/*MediaType.APPLICATION_JSON_VALUE, */MediaType.MULTIPART_FORM_DATA_VALUE})  // {MediaType.APPLICATION_JSON_VALUE, }
     public ResponseEntity<QuizIdResponse> createQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
@@ -110,8 +110,9 @@ public class QuizController {
         LOGGER.info("User: {}", user.getUserName());
 
         Challenge challenge = challengeService.findOne(challengeId);
-        Quiz quiz = quizService.createOne(createQuizRequest, user, challenge);  // 퀴즈 생전
+        Quiz quiz = quizService.createOne(createQuizRequest, user, challenge);  // 퀴즈 생성
 
+        // 파일 업로드
         for(MultipartFile quizFile: quizFiles) {
             FileDto fileDto = fileService.upload(quizFile, "quiz");
             QuizFile one = quizFileService.createOne(fileDto, quiz);
