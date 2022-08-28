@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder

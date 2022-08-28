@@ -1,6 +1,10 @@
 package com.kkamjidot.api.mono.domain;
 
+import com.kkamjidot.api.mono.dto.FileDto;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,8 +13,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @Entity(name = "QuizFile")
 @Table(name = "quiz_file")
 public class QuizFile {
@@ -41,4 +47,12 @@ public class QuizFile {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
+    public static QuizFile of(FileDto fileDto, Quiz quiz) {
+        return QuizFile.builder()
+                .qfName(fileDto.getName())
+                .qfType(fileDto.getType())
+                .qfPath(fileDto.getPath())
+                .quiz(quiz)
+                .build();
+    }
 }

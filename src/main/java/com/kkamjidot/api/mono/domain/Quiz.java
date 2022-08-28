@@ -1,16 +1,26 @@
 package com.kkamjidot.api.mono.domain;
 
+import com.kkamjidot.api.mono.domain.enumerate.QuizCategory;
+import com.kkamjidot.api.mono.dto.request.CreateQuizRequest;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
+@Setter(AccessLevel.PRIVATE)
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @Entity(name = "Quiz")
 @Table(name = "quiz")
 public class Quiz {
@@ -40,10 +50,12 @@ public class Quiz {
     @Column(name = "quiz_source", length = 1000)
     private String quizSource;
 
+    @Builder.Default
     @Column(name = "quiz_category", nullable = false, length = 50)
-    private String quizCategory;
+    @Enumerated(EnumType.STRING)
+    private QuizCategory quizCategory = QuizCategory.BASIC;
 
-    @Column(name = "quiz_created_date")
+    @Column(name = "quiz_created_date", nullable = false)
     private LocalDateTime quizCreatedDate;
 
     @Column(name = "quiz_modified_date")
@@ -59,4 +71,30 @@ public class Quiz {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "chall_id", nullable = false)
     private Challenge challenge;
+
+    @OneToMany(mappedBy = "quiz")
+    private Set<QuizFile> quizFiles = new LinkedHashSet<>();
+
+    public String getWriterName() {
+        return user.getUserName();
+    }
+
+    public Long getChallengeId() {
+        return challenge.getId();
+    }
+
+    public static Quiz of(CreateQuizRequest request, User user, Challenge challenge) {
+        return Quiz.builder()
+                .quizTitle(request.getQuizTitle())
+                .quizWeek(challenge.getNowWeek())
+                .quizContent(request.getQuizContent())
+                .quizAnswer(request.getQuizAnswer())
+                .quizExplanation(request.getQuizExplanation())
+                .quizRubric(request.getQuizRubric())
+                .quizSource(request.getQuizSource())
+//                .quizCategory(QuizCategory.BASIC)
+                .user(user)
+                .challenge(challenge)
+                .build();
+    }
 }

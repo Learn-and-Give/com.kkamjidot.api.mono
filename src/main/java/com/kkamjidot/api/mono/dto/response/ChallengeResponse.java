@@ -2,9 +2,11 @@ package com.kkamjidot.api.mono.dto.response;
 
 import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.ChallengeInfo;
+import com.kkamjidot.api.mono.domain.TakeAClass;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.domain.enumerate.ApplicationStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +15,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @Builder
 @Schema(name = "챌린지 응답")
 public class ChallengeResponse implements Serializable {
@@ -76,6 +77,10 @@ public class ChallengeResponse implements Serializable {
 
     @Schema(description = "챌린지 신청 상태")
     private ApplicationStatus applicationStatus;
+
+    public void setApplicationStatus(ApplicationStatus status) {
+        this.applicationStatus = status;
+    }
 
     public static ChallengeResponse of(Challenge challenge) {
         ChallengeInfo challengeInfo = challenge.getChallengeInfo();
