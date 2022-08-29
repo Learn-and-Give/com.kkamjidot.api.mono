@@ -2,6 +2,8 @@ package com.kkamjidot.api.mono.domain;
 
 import com.kkamjidot.api.mono.domain.enumerate.ApplicationStatus;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @Entity(name = "TakeAClass")
 @Table(name = "take_a_class")
 public class TakeAClass {

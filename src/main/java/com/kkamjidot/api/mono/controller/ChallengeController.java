@@ -102,8 +102,9 @@ public class ChallengeController {
 
         // 열람 가능한 주차 true로 변경
         boolean[] weeks = new boolean[challTotalWeeks];
-        for (int i = 1; i < challenge.getNowWeek(); ++i) if (readableWeeks.contains(i)) weeks[i - 1] = true;
+        for(int i = 1; i < challenge.getNowWeek(); ++i) if(readableWeeks.contains(i)) weeks[i - 1] = true;
 
+        LOGGER.info("챌린지 주차 정보 목록 조회 API: Get v1/challenges/{}/weeks [User: {}]", challengeId, user.getId());
         return ResponseEntity.ok(WeekResponse.builder()
                 .challengeId(challengeId)
                 .totalWeeks(challTotalWeeks)
@@ -115,14 +116,13 @@ public class ChallengeController {
     @GetMapping("v1/challenges/{challengeId}/now")
     public ResponseEntity<ThisWeekResponse> now(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                 @PathVariable Long challengeId) {
-        LOGGER.info("API: v1/challenges/{challengeId}/now [path: challengeId = {}]", challengeId);
-
         User user = userService.authorization(code);  // 회원 인증
-        LOGGER.info("User: {}", user.getUserName());
 
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         Challenge challenge = challengeService.findOne(challengeId);
         LocalDateTime challStartDate = challenge.getChallStartDate();
+
+        LOGGER.info("현재 주자 반환 API: Get v1/challenges/{}/now [User: {}]", challengeId, user.getId());
         return ResponseEntity.ok(ThisWeekResponse.builder()
                         .week(challenge.getNowWeek())
                         .challengeId(challengeId)

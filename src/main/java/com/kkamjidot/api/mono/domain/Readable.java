@@ -1,6 +1,8 @@
 package com.kkamjidot.api.mono.domain;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @Entity(name = "Readable")
 @Table(name = "readable")
 public class Readable {
@@ -18,10 +22,6 @@ public class Readable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "readable_id", nullable = false)
     private Long id;
-
-    @Builder.Default
-    @Column(name = "is_readable", nullable = false)
-    private Boolean isReadable = false;
 
     @Column(name = "week", nullable = false)
     private Integer week;

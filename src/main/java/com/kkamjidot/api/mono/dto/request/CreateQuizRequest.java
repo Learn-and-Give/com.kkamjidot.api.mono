@@ -1,9 +1,7 @@
 package com.kkamjidot.api.mono.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Max;
@@ -13,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Schema(name = "퀴즈 제출 요청")
 public class CreateQuizRequest implements Serializable {
     @Schema(description = "퀴즈 제목(퀴즈 제목은 1자 50자 이하여야 합니다.)", example = "퀴즈 제목", required = true)
@@ -38,6 +38,6 @@ public class CreateQuizRequest implements Serializable {
     private String quizRubric;
 
     @Schema(description = "출처(출처는 1000자 이하여야 합니다.)", example = "출처", required = false)
-    @Size(max = 3500, message = "출처는 1000자 이하여야 합니다.")
+    @Size(max = 1000, message = "출처는 1000자 이하여야 합니다.")
     private String quizSource;
 }

@@ -1,6 +1,8 @@
 package com.kkamjidot.api.mono.domain;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @Entity(name = "Solve")
 @Table(name = "solve")
 public class Solve {
@@ -31,9 +35,6 @@ public class Solve {
     @Column(name = "solve_modified_date")
     private LocalDateTime solveModifiedDate;
 
-    @Column(name = "solve_deleted_date")
-    private LocalDateTime solveDeletedDate;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
@@ -41,4 +42,8 @@ public class Solve {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public static Solve empty() {
+        return Solve.builder().build();
+    }
 }

@@ -32,7 +32,7 @@ logging:
 
 springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
-  default-produces-media-type: application/json;charset=UTF-8
+#  default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
     doc-expansion: list
     operations-sorter: alpha
