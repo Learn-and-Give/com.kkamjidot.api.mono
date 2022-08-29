@@ -1,6 +1,7 @@
 package com.kkamjidot.api.mono.service;
 
 import com.kkamjidot.api.mono.domain.User;
+import com.kkamjidot.api.mono.exception.UnauthorizedException;
 import com.kkamjidot.api.mono.exception.UserNotFoundException;
 import com.kkamjidot.api.mono.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

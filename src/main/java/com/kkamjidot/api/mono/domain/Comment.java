@@ -1,6 +1,8 @@
 package com.kkamjidot.api.mono.domain;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter(AccessLevel.PRIVATE)
 @ToString
+@DynamicInsert
+@DynamicUpdate
 @Entity(name = "Comment")
 @Table(name = "comment")
 public class Comment {

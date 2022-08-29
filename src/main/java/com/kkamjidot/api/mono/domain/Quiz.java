@@ -2,14 +2,13 @@ package com.kkamjidot.api.mono.domain;
 
 import com.kkamjidot.api.mono.domain.enumerate.QuizCategory;
 import com.kkamjidot.api.mono.dto.request.CreateQuizRequest;
+import com.kkamjidot.api.mono.dto.request.UpdateQuizRequest;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -64,14 +63,17 @@ public class Quiz {
     @Column(name = "quiz_deleted_date")
     private LocalDateTime quizDeletedDate;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "chall_id", nullable = false)
     private Challenge challenge;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "quiz")
     private Set<QuizFile> quizFiles = new LinkedHashSet<>();
 
@@ -81,6 +83,25 @@ public class Quiz {
 
     public Long getChallengeId() {
         return challenge.getId();
+    }
+
+    public boolean isMine(User user) {
+        return this.user == user;
+    }
+
+    public void update(UpdateQuizRequest request) {
+        if(request.getQuizAnswer() != null) {
+            setQuizAnswer(request.getQuizAnswer());
+        }
+        if(request.getQuizExplanation() != null) {
+            setQuizExplanation(request.getQuizExplanation());
+        }
+        if(request.getQuizRubric() != null) {
+            setQuizRubric(request.getQuizRubric());
+        }
+        if(request.getQuizSource() != null) {
+            setQuizSource(request.getQuizSource());
+        }
     }
 
     public static Quiz of(CreateQuizRequest request, User user, Challenge challenge) {
@@ -97,4 +118,21 @@ public class Quiz {
                 .challenge(challenge)
                 .build();
     }
+
+//    @Override
+//    public String toString() {
+//        return getClass().getSimpleName() + "(" +
+//                "id = " + id + ", " +
+//                "quizTitle = " + quizTitle + ", " +
+//                "quizWeek = " + quizWeek + ", " +
+//                "quizContent = " + quizContent + ", " +
+//                "quizAnswer = " + quizAnswer + ", " +
+//                "quizExplanation = " + quizExplanation + ", " +
+//                "quizRubric = " + quizRubric + ", " +
+//                "quizSource = " + quizSource + ", " +
+//                "quizCategory = " + quizCategory + ", " +
+//                "quizCreatedDate = " + quizCreatedDate + ", " +
+//                "quizModifiedDate = " + quizModifiedDate + ", " +
+//                "quizDeletedDate = " + quizDeletedDate + ")";
+//    }
 }

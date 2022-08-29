@@ -18,6 +18,6 @@ public class ReadableService {
     private final ReadableRepository readableRepository;
 
     public List<Integer> findReadableWeeksByUser(User user, Challenge challenge) {
-        return readableRepository.findByUserAndChallAndIsReadableTrue(user, challenge).stream().map(Readable::getWeek).collect(Collectors.toList());
+        return readableRepository.findByUserAndChall(user, challenge).stream().map(Readable::getWeek).collect(Collectors.toList());
     }
 }

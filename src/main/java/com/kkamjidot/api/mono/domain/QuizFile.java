@@ -4,6 +4,8 @@ import com.kkamjidot.api.mono.dto.FileDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
@@ -44,6 +46,7 @@ public class QuizFile {
     private LocalDateTime qfDeletedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 

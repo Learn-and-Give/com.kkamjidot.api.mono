@@ -9,6 +9,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -66,6 +68,9 @@ public class Challenge {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cinfo_id", nullable = false)
     private ChallengeInfo challengeInfo;
+
+    @OneToMany(mappedBy = "challenge")
+    private Set<Quiz> quizzes = new LinkedHashSet<>();
 
     public Integer getNowWeek() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
