@@ -8,6 +8,10 @@ spring:
       max-request-size: 30MB
       max-file-size: 10MB
 
+# OSIV setting
+  jpa:
+    open-in-view: false
+
 # aws settings
 # S3 bucket region
 cloud:

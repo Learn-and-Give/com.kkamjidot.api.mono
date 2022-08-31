@@ -16,8 +16,4 @@ import java.util.stream.Collectors;
 @Service
 public class ReadableService {
     private final ReadableRepository readableRepository;
-
-    public List<Integer> findReadableWeeksByUser(User user, Challenge challenge) {
-        return readableRepository.findByUserAndChall(user, challenge).stream().map(Readable::getWeek).collect(Collectors.toList());
-    }
 }

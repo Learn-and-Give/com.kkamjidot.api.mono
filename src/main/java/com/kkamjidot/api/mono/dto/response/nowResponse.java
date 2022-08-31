@@ -11,8 +11,10 @@ import java.time.LocalDateTime;
 @ToString
 @Getter
 @Builder
-@Schema(name = "로그인 응답")
-public class LoginResponse implements Serializable {
-    @Schema(description = "회원 ID")
-    private final Long userId;
+@Schema(name = "현재 주차 반환 응답")
+public class nowResponse implements Serializable {
+    private final Integer week;
+    private final Long challengeId;
+    private final LocalDateTime challStartDate;
+    private final LocalDateTime now;
 }

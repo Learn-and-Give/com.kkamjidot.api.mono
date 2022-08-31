@@ -5,10 +5,7 @@ import com.kkamjidot.api.mono.domain.QuizFile;
 import com.kkamjidot.api.mono.domain.enumerate.QuizCategory;
 import com.kkamjidot.api.mono.dto.QuizFileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@ToString
 @Getter
 @Builder
 @Schema(name = "퀴즈 전체 내용 응답")

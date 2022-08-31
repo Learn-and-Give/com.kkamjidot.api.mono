@@ -19,12 +19,4 @@ import java.util.Optional;
 @Service
 public class ChallengeService {
     private final ChallengeRepository challengeRepository;
-
-    public List<Challenge> findAll() {
-        return challengeRepository.findByChallDeletedDateNull();
-    }
-
-    public Challenge findOne(Long challengeId) throws NoSuchElementException {
-        return challengeRepository.findByIdAndChallDeletedDateNull(challengeId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 챌린지입니다."));
-    }
 }

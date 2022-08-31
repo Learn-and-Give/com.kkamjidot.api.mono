@@ -76,4 +76,8 @@ public class Challenge {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         return Math.toIntExact(ChronoUnit.DAYS.between(this.challStartDate, now) / 7 + 1);        // 오늘 주차
     }
+
+    public boolean isInProgress() {
+        return this.getChallEndDate().isAfter(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+    }
 }
