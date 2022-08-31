@@ -9,19 +9,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class SolveService {
     private final SolveRepository solveRepository;
 
-    public Solve findOne(Quiz quiz, User user) throws NoSuchElementException {
-        return solveRepository.findByQuizAndUser(quiz, user).orElse(Solve.empty());
+    public void checkNotSolved(Quiz quiz, User user) throws UnauthorizedException{
+        if (solveRepository.existsByQuizAndUser(quiz, user)) throw new UnauthorizedException("이미 풀었습니다.");
     }
 
-    public void checkSubmitAnswer(Quiz quiz, User user) {
-        if (!solveRepository.existsByQuizAndUserAndSolveAnswerNotNull(quiz, user)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+    @Transactional
+    public void createOne(Solve solve) {
+        solveRepository.save(solve);
     }
 }

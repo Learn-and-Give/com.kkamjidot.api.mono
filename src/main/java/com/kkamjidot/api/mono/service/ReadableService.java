@@ -1,8 +1,10 @@
 package com.kkamjidot.api.mono.service;
 
 import com.kkamjidot.api.mono.domain.Challenge;
+import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.Readable;
 import com.kkamjidot.api.mono.domain.User;
+import com.kkamjidot.api.mono.exception.UnauthorizedException;
 import com.kkamjidot.api.mono.repository.ReadableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,14 @@ import java.util.stream.Collectors;
 public class ReadableService {
     private final ReadableRepository readableRepository;
 
-    public List<Integer> findReadableWeeksByUser(User user, Challenge challenge) {
-        return readableRepository.findByUserAndChall(user, challenge).stream().map(Readable::getWeek).collect(Collectors.toList());
+    private final QuizService quizService;
+
+    public Quiz authenticate(Long quizId, User user) throws UnauthorizedException {
+        Quiz quiz = quizService.findOne(quizId);
+
+        if (quiz.getChallenge().getNowWeek() <= quiz.getQuizWeek() || !readableRepository.existsByWeekAndUserAndChall(quiz.getQuizWeek(), user, quiz.getChallenge()))
+            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+
+        return quiz;
     }
 }

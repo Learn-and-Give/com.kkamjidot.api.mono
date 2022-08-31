@@ -1,6 +1,7 @@
 package com.kkamjidot.api.mono.repository;
 
 import com.kkamjidot.api.mono.domain.Quiz;
+import com.kkamjidot.api.mono.domain.Solve;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,6 @@ class RepositoryTest {
         //given
         //when
         //then
+        System.out.println(Solve.builder().solveAnswer("안녕").build());
     }
 }

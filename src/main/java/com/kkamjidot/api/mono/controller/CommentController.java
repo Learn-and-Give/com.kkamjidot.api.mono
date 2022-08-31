@@ -1,8 +1,8 @@
 package com.kkamjidot.api.mono.controller;
 
 import com.kkamjidot.api.mono.dto.request.CreateCommentRequest;
-import com.kkamjidot.api.mono.dto.response.CommentResponse;
 import com.kkamjidot.api.mono.dto.response.CommentIdResponse;
+import com.kkamjidot.api.mono.dto.response.CommentResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

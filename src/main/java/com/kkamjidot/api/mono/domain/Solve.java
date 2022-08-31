@@ -1,5 +1,6 @@
 package com.kkamjidot.api.mono.domain;
 
+import com.kkamjidot.api.mono.dto.request.SolveRequest;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -45,5 +46,13 @@ public class Solve {
 
     public static Solve empty() {
         return Solve.builder().build();
+    }
+
+    public static Solve of(SolveRequest request, Quiz quiz, User user) {
+        return Solve.builder()
+                .solveAnswer(request.getAnswer())
+                .quiz(quiz)
+                .user(user)
+                .build();
     }
 }
