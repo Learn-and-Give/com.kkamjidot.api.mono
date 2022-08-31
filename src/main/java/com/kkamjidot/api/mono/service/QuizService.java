@@ -1,18 +1,13 @@
 package com.kkamjidot.api.mono.service;
 
-import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.QuizFile;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.dto.FileDto;
-import com.kkamjidot.api.mono.dto.request.CreateQuizRequest;
 import com.kkamjidot.api.mono.dto.request.UpdateQuizRequest;
-import com.kkamjidot.api.mono.dto.response.QuizResponse;
 import com.kkamjidot.api.mono.exception.UnauthorizedException;
 import com.kkamjidot.api.mono.repository.QuizFileRepository;
 import com.kkamjidot.api.mono.repository.QuizRepository;
-import com.kkamjidot.api.mono.repository.ReadableRepository;
-import com.kkamjidot.api.mono.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -36,6 +30,10 @@ public class QuizService {
 
     @Value("${spring.profiles.active}")
     String active;
+
+    public Quiz findOne(Long quizId) {
+        return quizRepository.findByIdAndQuizDeletedDateNull(quizId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 퀴즈입니다."));
+    }
 
     @Transactional
     public void createOne(Quiz quiz, List<MultipartFile> quizFiles) {
@@ -53,7 +51,11 @@ public class QuizService {
 
     @Transactional
     public void updateOne(Long quizId, User user, UpdateQuizRequest request) {
-        Quiz quiz = quizRepository.findByIdAndUserAndQuizDeletedDateNull(quizId, user).orElseThrow(() -> new UnauthorizedException("내 퀴즈가 아닙니다."));
+        Quiz quiz = findOneMine(quizId, user);
         quiz.update(request);
+    }
+
+    public Quiz findOneMine(Long quizId, User user) {
+        return quizRepository.findByIdAndUserAndQuizDeletedDateNull(quizId, user).orElseThrow(() -> new UnauthorizedException("내 퀴즈가 아니거나 존재하지 않는 퀴즈입니다."));
     }
 }

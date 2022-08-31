@@ -14,4 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SolveService {
     private final SolveRepository solveRepository;
+
+    public void checkNotSolved(Quiz quiz, User user) throws UnauthorizedException{
+        if (solveRepository.existsByQuizAndUser(quiz, user)) throw new UnauthorizedException("이미 풀었습니다.");
+    }
+
+    @Transactional
+    public void createOne(Solve solve) {
+        solveRepository.save(solve);
+    }
 }

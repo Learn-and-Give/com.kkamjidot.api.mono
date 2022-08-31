@@ -8,6 +8,7 @@ import com.kkamjidot.api.mono.exception.UnauthorizedException;
 import com.kkamjidot.api.mono.repository.QuizRepository;
 import com.kkamjidot.api.mono.repository.ReadableRepository;
 import com.kkamjidot.api.mono.repository.SolveRepository;
+import com.kkamjidot.api.mono.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +23,11 @@ import java.util.NoSuchElementException;
 public class QuizQueryService {
     private final QuizRepository quizRepository;
     private final SolveRepository solveRepository;
-
     private final ReadableRepository readableRepository;
+    private final QuizService quizService;
 
     public QuizContentResponse findContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
-        // 퀴즈와 풀이 내용 조회
-        Quiz quiz = quizRepository.findByIdAndQuizDeletedDateNull(quizId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 퀴즈입니다."));
+        Quiz quiz = quizService.findOne(quizId);
 
         // 열람 가능 여부 확인
         if (!quiz.isMine(user)
@@ -42,7 +42,7 @@ public class QuizQueryService {
     }
 
     public QuizRublicResponse findRublic(Long quizId, User user) throws UnauthorizedException {
-        Solve solve = solveRepository.findByQuiz_IdAndUserAndSolveAnswerNotNull(quizId, user).orElseThrow(() -> new UnauthorizedException("열람 가능한 권한이 없습니다."));
+        Solve solve = findSolveAnswer(quizId, user);
 
         // 응답 객체 생성
         return QuizRublicResponse.builder()
@@ -52,7 +52,7 @@ public class QuizQueryService {
     }
 
     public QuizResponse findMine(Long quizId, User user) throws UnauthorizedException {
-        Quiz quiz = quizRepository.findByIdAndUserAndQuizDeletedDateNull(quizId, user).orElseThrow(() -> new UnauthorizedException("내 퀴즈가 아닙니다."));
+        Quiz quiz = quizService.findOneMine(quizId, user);
         return QuizResponse.of(quiz);
     }
 
@@ -84,5 +84,13 @@ public class QuizQueryService {
 
     private Solve findSolveOrElseEmpty(Quiz quiz, User user) {
         return solveRepository.findByQuizAndUser(quiz, user).orElse(Solve.empty());
+    }
+
+    public Solve findSolveAnswer(Long quizId, User user) {
+        return solveRepository.findByQuiz_IdAndUserAndSolveAnswerNotNull(quizId, user).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
+    }
+
+    private Solve findSolveAnswerAndScore(Long quizId, User user) {
+        return solveRepository.findByQuiz_IdAndUserAndSolveAnswerNotNullAndSolveScoreNotNull(quizId, user).orElseThrow(() -> new UnauthorizedException("아직 채점하지 않았습니다."));
     }
 }
