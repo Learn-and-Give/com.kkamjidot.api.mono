@@ -19,7 +19,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("잘못된 이름 혹은 코드입니다."));
     }
 
-    public User authorization(String code) throws UserNotFoundException {
+    public User authenticate(String code) throws UserNotFoundException {
         return userRepository.findByUserPassword(code)
                 .orElseThrow(() -> new UserNotFoundException("잘못된 코드입니다."));
     }

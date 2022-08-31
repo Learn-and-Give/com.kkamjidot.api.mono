@@ -10,6 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Builder
@@ -86,7 +87,7 @@ public class Quiz {
     }
 
     public boolean isMine(User user) {
-        return this.user == user;
+        return Objects.equals(this.user.getId(), user.getId());
     }
 
     public void update(UpdateQuizRequest request) {

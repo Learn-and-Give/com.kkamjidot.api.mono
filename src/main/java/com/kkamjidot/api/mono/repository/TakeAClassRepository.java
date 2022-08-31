@@ -17,5 +17,7 @@ import java.util.Optional;
 public interface TakeAClassRepository extends JpaRepository<TakeAClass, Long> {
     Optional<TakeAClass> findByChallAndUser(Challenge chall, User user);
 
+    Optional<TakeAClass> findByTcApplicationstatusAndChall_IdAndUser(ApplicationStatus status, Long challengeId, User user);
+
     List<TakeAClass> findByUser(User user);
 }

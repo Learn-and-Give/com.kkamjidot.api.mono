@@ -7,10 +7,7 @@ import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.domain.enumerate.QuizCategory;
 import com.kkamjidot.api.mono.dto.QuizFileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -19,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@ToString
 @Getter
 @Setter
 @Builder
