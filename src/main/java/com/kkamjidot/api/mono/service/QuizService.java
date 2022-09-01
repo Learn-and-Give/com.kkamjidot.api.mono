@@ -1,5 +1,6 @@
 package com.kkamjidot.api.mono.service;
 
+import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.QuizFile;
 import com.kkamjidot.api.mono.domain.User;
@@ -57,5 +58,9 @@ public class QuizService {
 
     public Quiz findOneMine(Long quizId, User user) {
         return quizRepository.findByIdAndUserAndQuizDeletedDateNull(quizId, user).orElseThrow(() -> new UnauthorizedException("내 퀴즈가 아니거나 존재하지 않는 퀴즈입니다."));
+    }
+
+    public int countQuizzesByWeek(Challenge challenge, User user, int week) {
+        return quizRepository.countByChallengeAndUserAndQuizWeekAndQuizDeletedDateNull(challenge, user, week);
     }
 }

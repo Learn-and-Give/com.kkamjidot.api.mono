@@ -13,14 +13,12 @@ import com.kkamjidot.api.mono.repository.ChallengeRepository;
 import com.kkamjidot.api.mono.repository.ReadableRepository;
 import com.kkamjidot.api.mono.repository.TakeAClassRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,7 +28,7 @@ public class ChallengeQueryService {
     private final TakeAClassRepository takeAClassRepository;
     private final ReadableRepository readableRepository;
 
-    public List<ChallengeResponse> findAll(User user) {
+    public List<ChallengeResponse> readChallenges(User user) {
         // 챌린지 목록 조회
         List<Challenge> challenges = challengeRepository.findByChallDeletedDateNull();
 
@@ -45,7 +43,7 @@ public class ChallengeQueryService {
         return challengeResponses;
     }
 
-    public ChallengeResponse findOne(Long challengeId, User user) {
+    public ChallengeResponse readChallenge(Long challengeId, User user) {
         // 챌린지 조회
         Challenge challenge = findChallenge(challengeId);
         ChallengeResponse challengeResponse = ChallengeResponse.of(challenge);
@@ -57,7 +55,7 @@ public class ChallengeQueryService {
         return takeAClassRepository.findByChallAndUser(challenge, user).map(TakeAClass::getTcApplicationstatus);
     }
 
-    public List<ChallengeResponse> findAllMine(User user) {
+    public List<ChallengeResponse> readMyChallenges(User user) {
         // 수강 목록 조회
         List<TakeAClass> takes = takeAClassRepository.findByUser(user);
 
@@ -72,7 +70,7 @@ public class ChallengeQueryService {
         return challengeResponses;
     }
 
-    public WeekResponse findWeeks(Long challengeId, User user) {
+    public WeekResponse readWeeks(Long challengeId, User user) {
         Challenge challenge = findChallenge(challengeId);
         List<Integer> readableWeeks = readableRepository.findByUserAndChall(user, challenge).stream().map(Readable::getWeek).toList();  // 열람 가능 주차 조회
         int challTotalWeeks = challenge.getChallTotalWeeks();   // 총 주차 조회
@@ -93,7 +91,7 @@ public class ChallengeQueryService {
                 .build();
     }
 
-    public nowResponse findNow(Long challengeId) {
+    public nowResponse readThisWeek(Long challengeId) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         Challenge challenge = findChallenge(challengeId);
 

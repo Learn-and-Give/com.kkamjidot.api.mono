@@ -49,9 +49,9 @@ public class QuizController {
     @GetMapping("v1/quizzes/{quizId}/content")
     public ResponseEntity<QuizContentResponse> readQuizContent(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                @PathVariable Long quizId) {
-        User user = userService.authenticate(code);     // 회원 인증
+        User user = userService.authenticate(code);
 
-        QuizContentResponse response = quizQueryService.findContent(quizId, user);  // 퀴즈 문제 조회
+        QuizContentResponse response = quizQueryService.readQuizContent(quizId, user);
 
         LOGGER.info("퀴즈 문제 조회 API: Get v1/quizzes/{}/content [User: {}, response: {}]", quizId, user.getId(), response);
         return ResponseEntity.ok(response);
@@ -61,9 +61,9 @@ public class QuizController {
     @GetMapping("v1/quizzes/{quizId}/rubric")
     public ResponseEntity<QuizRublicResponse> readQuizRubric(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                              @PathVariable Long quizId) {
-        User user = userService.authenticate(code);     // 회원 인증
+        User user = userService.authenticate(code);
 
-        QuizRublicResponse response = quizQueryService.findRublic(quizId, user);    // 루브릭 조회
+        QuizRublicResponse response = quizQueryService.readQuizRubric(quizId, user);
 
         LOGGER.info("퀴즈 루브릭 조회 API: Get v1/quizzes/{}/rubric [User: {}, response: {}]", quizId, user.getId(), response);
         return ResponseEntity.ok(response);
@@ -73,9 +73,9 @@ public class QuizController {
     @GetMapping("v1/quizzes/{quizId}")
     public ResponseEntity<QuizResponse> readMyQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                    @PathVariable Long quizId) {
-        User user = userService.authenticate(code);     // 회원 인증
+        User user = userService.authenticate(code);
 
-        QuizResponse response = quizQueryService.findMine(quizId, user);  // 내 퀴즈 조회
+        QuizResponse response = quizQueryService.readMyQuiz(quizId, user);
 
         LOGGER.info("내 퀴즈 전체 내용 조회 API: Get v1/quizzes/{} [User: {}, response: {}]", quizId, user.getId(), response);
         return ResponseEntity.ok(response);
@@ -87,9 +87,9 @@ public class QuizController {
     public ResponseEntity<List<QuizSummaryResponse>> readMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                    @PathVariable Long challengeId,
                                                                    @RequestParam(defaultValue = "0", required = false) Integer week) {
-        User user = userService.authenticate(code);  // 회원 인증
+        User user = userService.authenticate(code);
 
-        List<QuizSummaryResponse> responses = quizQueryService.findAllMine(week, user, challengeId);  // 내 퀴즈 리스트 조회
+        List<QuizSummaryResponse> responses = quizQueryService.readMyQuizzes(week, user, challengeId);
 
         LOGGER.info("내가 작성한 퀴즈 주차별 개요 조회 API: Get v1/challenges/{}/my/quizzes?week={} [User: {}, responses: {}]", challengeId, week, user.getId(), responses);
         return ResponseEntity.ok(responses);
@@ -98,12 +98,12 @@ public class QuizController {
     @Operation(summary = "주차별 내가 작성한 퀴즈 개수 조회 API(쿼리 week)", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개수를 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다. "
             + "만약 주차가 0이거나 없으면 총 제출 수를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/my/quizzes/count")
-    public ResponseEntity<QuizCountResponse> readMyQuizzesCount(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+    public ResponseEntity<QuizCountResponse> countMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                 @PathVariable Long challengeId,
                                                                 @RequestParam(defaultValue = "0", required = false) Integer week) {
-        User user = userService.authenticate(code);  // 회원 인증
+        User user = userService.authenticate(code);
 
-        QuizCountResponse response = quizQueryService.countAllMine(week, user, challengeId);  // 퀴즈 제출 개수 조회
+        QuizCountResponse response = quizQueryService.countMyQuizzes(week, user, challengeId);
 
         LOGGER.info("주차별 내가 작성한 퀴즈 개수 조회 API: Get v1/challenges/{}/my/quizzes/count?week={} [User: {}, count: {}]", challengeId, week, user.getId(), response.getCount());
         return ResponseEntity.ok(response);
@@ -120,11 +120,14 @@ public class QuizController {
                                                      @PathVariable Long challengeId,
                                                      @Valid @RequestPart CreateQuizRequest createQuizRequest,
                                                      @RequestPart(required = false) List<MultipartFile> quizFiles) {
-        User user = userService.authenticate(code);  // 회원 인증
+        User user = userService.authenticate(code);
         Challenge challenge = takeAClassService.authenticateProgress(challengeId, user);  // 수강 신청 상태 확인
 
         Quiz quiz = Quiz.of(createQuizRequest, user, challenge);
-        quizService.createOne(quiz, quizFiles);  // 퀴즈 제출
+        quizService.createOne(quiz, quizFiles);
+
+        // 챌린지 퀴즈 제출 조건 이상의 퀴즈를 제출했으면 열람 가능한 권한 생성
+        readableService.createOneIfRight(challenge, user, quiz.getQuizWeek());
 
         LOGGER.info("퀴즈 제출 API: Post v1/challenges/{}/quizzes [User: {}, Quiz: {}]", challengeId, user.getId(), quiz.getId());
         return ResponseEntity.ok(QuizIdResponse.builder().quizId(quiz.getId()).build());
@@ -136,7 +139,7 @@ public class QuizController {
     public ResponseEntity<QuizIdResponse> updateQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                      @PathVariable Long quizId,
                                                      @RequestBody @Valid UpdateQuizRequest request) {
-        User user = userService.authenticate(code);  // 회원 인증
+        User user = userService.authenticate(code);
 
         quizService.updateOne(quizId, user, request);
 
