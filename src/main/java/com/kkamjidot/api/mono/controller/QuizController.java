@@ -2,7 +2,7 @@ package com.kkamjidot.api.mono.controller;
 
 import com.kkamjidot.api.mono.domain.*;
 import com.kkamjidot.api.mono.dto.request.CreateQuizRequest;
-import com.kkamjidot.api.mono.dto.request.GradeRequest;
+import com.kkamjidot.api.mono.dto.request.ScoreRequest;
 import com.kkamjidot.api.mono.dto.request.SolveRequest;
 import com.kkamjidot.api.mono.dto.request.UpdateQuizRequest;
 import com.kkamjidot.api.mono.dto.response.*;
@@ -121,7 +121,7 @@ public class QuizController {
                                                      @Valid @RequestPart CreateQuizRequest createQuizRequest,
                                                      @RequestPart(required = false) List<MultipartFile> quizFiles) {
         User user = userService.authenticate(code);
-        Challenge challenge = takeAClassService.authenticateProgress(challengeId, user);  // 수강 신청 상태 확인
+        Challenge challenge = takeAClassService.findOneTakedAndInProgress(challengeId, user);
 
         Quiz quiz = Quiz.of(createQuizRequest, user, challenge);
         quizService.createOne(quiz, quizFiles);
@@ -141,7 +141,7 @@ public class QuizController {
                                                      @RequestBody @Valid UpdateQuizRequest request) {
         User user = userService.authenticate(code);
 
-        quizService.updateOne(quizId, user, request);
+        quizService.updateAnswer(quizId, user, request);
 
         LOGGER.info("퀴즈 정답 수정 API: Patch v1/quizzes/{} [User: {}, quiz: {}]", quizId, user.getId(), quizId);
         return ResponseEntity.ok(QuizIdResponse.builder().quizId(quizId).build());
@@ -153,8 +153,8 @@ public class QuizController {
     public ResponseEntity<QuizIdResponse> solveQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                     @PathVariable Long quizId,
                                                     @RequestBody @Valid SolveRequest request) {
-        User user = userService.authenticate(code);                 // 회원 인증
-        Quiz quiz = readableService.authenticate(quizId, user);     // 열람 가능한 주차인지 확인
+        User user = userService.authenticate(code);
+        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);     // 열람 가능한 주차의 문제인지 확인
         solveService.checkNotSolved(quiz, user);                    // 이미 푼 문제인지 확인
 
         Solve solve = Solve.of(request, quiz, user);
@@ -181,13 +181,17 @@ public class QuizController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "개발 중)퀴즈 풀기 채점 점수 제출 API", description = "퀴즈를 채점한다. 퀴즈 정답을 제출한 문제가 아니거나, 이미 푼 문제면 403 에러를 반환한다.")
+    @Operation(summary = "퀴즈 풀기 채점 점수 제출 API", description = "퀴즈를 채점한다. 퀴즈 정답을 제출한 문제가 아니거나, 이미 푼 문제면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 풀기 성공")
-    @PostMapping(path = "v1/quizzes/{quizId}/grade")
+    @PatchMapping(path = "v1/quizzes/{quizId}/grade")
     public ResponseEntity<QuizIdResponse> gradeQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                     @PathVariable Long quizId,
-                                                    @RequestBody @Valid GradeRequest request) {
-        // findByQuiz_IdAndUserAndSolveAnswerNotNull
-        return null;
+                                                    @RequestBody @Valid ScoreRequest request) {
+        User user = userService.authenticate(code);
+        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);     // 열람 가능한 주차의 문제인지 확인
+        solveService.updateSolveScore(quiz, user, request.getScore());// 이미 푼 문제인지 확인
+
+        LOGGER.info("퀴즈 풀기 채점 점수 제출 API: Patch v1/quizzes/{}/grade [User: {}, quiz: {}]", quizId, user.getId(), quizId);
+        return ResponseEntity.ok(QuizIdResponse.builder().quizId(quizId).build());
     }
 }

@@ -13,9 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -29,7 +26,7 @@ public class ReadableService {
     /**
      * 퀴즈를 열람 가능한지 권한을 확인한다. 특히, 퀴즈의 주차가 현재 주차보다 이전이고, 열람 가능한 권한이 있는지 검사한다.
      * */
-    public Quiz authenticate(Long quizId, User user) throws UnauthorizedException {
+    public Quiz findOneInReadableWeek(Long quizId, User user) throws UnauthorizedException {
         Quiz quiz = quizService.findOne(quizId);
 
         // 퀴즈의 주차가 현재 주차보다 이전이고, 열람 가능한 권한이 있는지 검사
@@ -47,7 +44,7 @@ public class ReadableService {
      */
     @Transactional
     public void createOneIfRight(Challenge challenge, User user, int week) {
-        int count = quizService.countQuizzesByWeek(challenge, user, week);
+        int count = quizService.countByWeek(challenge, user, week);
         if(challenge.isCountOfQuizzesIsEnough(count)) return;
 
         if(readableRepository.existsByWeekAndUserAndChall(week, user, challenge)) return;

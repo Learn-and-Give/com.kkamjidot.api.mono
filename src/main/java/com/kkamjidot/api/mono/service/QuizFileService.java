@@ -14,10 +14,4 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class QuizFileService {
     private final QuizFileRepository quizFileRepository;
-
-    @Transactional
-    public QuizFile createOne(FileDto fileDto, Quiz quiz) {
-        QuizFile quizFile = QuizFile.of(fileDto, quiz);
-        return quizFileRepository.save(quizFile);
-    }
 }
