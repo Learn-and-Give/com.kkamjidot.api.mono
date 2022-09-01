@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Schema(name = "퀴즈 채점 요청")
-public class GradeRequest {
+public class ScoreRequest {
     @Schema(description = "점수", example = "0", required = true)
     private Integer score;
 }

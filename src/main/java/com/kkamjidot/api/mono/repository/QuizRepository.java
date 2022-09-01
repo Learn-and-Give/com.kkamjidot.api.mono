@@ -1,5 +1,6 @@
 package com.kkamjidot.api.mono.repository;
 
+import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +20,6 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     List<Quiz> findByQuizWeekAndUserAndChallenge_Id(Integer quizWeek, User user, Long id);
 
     List<Quiz> findByUserAndChallenge_IdOrderByQuizWeekAsc(User user, Long id);
+
+    int countByChallengeAndUserAndQuizWeekAndQuizDeletedDateNull(Challenge challenge, User user, Integer quizWeek);
 }

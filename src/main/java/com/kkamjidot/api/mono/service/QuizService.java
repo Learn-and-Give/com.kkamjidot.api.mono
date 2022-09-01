@@ -1,5 +1,6 @@
 package com.kkamjidot.api.mono.service;
 
+import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.QuizFile;
 import com.kkamjidot.api.mono.domain.User;
@@ -28,9 +29,6 @@ public class QuizService {
     private final QuizFileRepository quizFileRepository;
     private final AwsS3Service awsS3Service;
 
-    @Value("${spring.profiles.active}")
-    String active;
-
     public Quiz findOne(Long quizId) {
         return quizRepository.findByIdAndQuizDeletedDateNull(quizId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 퀴즈입니다."));
     }
@@ -42,7 +40,7 @@ public class QuizService {
         // 파일 업로드
         if(quizFiles != null) {
             for (MultipartFile quizFile : quizFiles) {
-                FileDto fileDto = awsS3Service.upload(quizFile, active + "/quiz");
+                FileDto fileDto = awsS3Service.upload(quizFile, "quiz");
                 QuizFile quizFileSave = quizFileRepository.save(QuizFile.of(fileDto, quiz));
                 LOGGER.info("file upload: {}", quizFileSave);
             }
@@ -50,12 +48,16 @@ public class QuizService {
     }
 
     @Transactional
-    public void updateOne(Long quizId, User user, UpdateQuizRequest request) {
+    public void updateAnswer(Long quizId, User user, UpdateQuizRequest request) {
         Quiz quiz = findOneMine(quizId, user);
         quiz.update(request);
     }
 
     public Quiz findOneMine(Long quizId, User user) {
         return quizRepository.findByIdAndUserAndQuizDeletedDateNull(quizId, user).orElseThrow(() -> new UnauthorizedException("내 퀴즈가 아니거나 존재하지 않는 퀴즈입니다."));
+    }
+
+    public int countByWeek(Challenge challenge, User user, int week) {
+        return quizRepository.countByChallengeAndUserAndQuizWeekAndQuizDeletedDateNull(challenge, user, week);
     }
 }

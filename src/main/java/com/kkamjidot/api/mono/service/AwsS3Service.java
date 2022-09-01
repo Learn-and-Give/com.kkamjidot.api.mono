@@ -26,7 +26,11 @@ public class AwsS3Service {
     @Value("${aws.bucket}")
     private String S3Bucket;
 
-    public FileDto upload(MultipartFile multipartFile, String filePath) {
+    @Value("${spring.profiles.active}")
+    String active;
+
+    public FileDto upload(MultipartFile multipartFile, String category) {
+        String filePath = active + "/" + category;
         ObjectMetadata objectMetaData = new ObjectMetadata();
         objectMetaData.setContentType(multipartFile.getContentType());
         objectMetaData.setContentLength(multipartFile.getSize());

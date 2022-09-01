@@ -1,6 +1,5 @@
 package com.kkamjidot.api.mono.controller;
 
-import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.dto.response.ChallengeResponse;
 import com.kkamjidot.api.mono.dto.response.nowResponse;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 @Tag(name = "챌린지", description = "챌린지 관련 작업들")
@@ -38,9 +35,9 @@ public class ChallengeController {
     @Operation(summary = "챌린지 목록 조회 API", description = "모든 챌린지를 조회한다.")
     @GetMapping("v1/challenges")
     public ResponseEntity<List<ChallengeResponse>> readChallenges(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
-        User user = userService.authenticate(code);  // 회원 인증
+        User user = userService.authenticate(code);
 
-        List<ChallengeResponse> responses = challengeQueryService.findAll(user);    // 챌린지 목록 조회
+        List<ChallengeResponse> responses = challengeQueryService.readChallenges(user);
 
         LOGGER.info("챌린지 목록 조회 API: Get v1/challenges [User: {}, responses: {}]", user.getId(), responses);
         return ResponseEntity.ok(responses);
@@ -50,9 +47,9 @@ public class ChallengeController {
     @GetMapping("v1/challenges/{challengeId}")
     public ResponseEntity<ChallengeResponse> readChallenge(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                            @PathVariable Long challengeId) {
-        User user = userService.authenticate(code);  // 회원 인증
+        User user = userService.authenticate(code);
 
-        ChallengeResponse response = challengeQueryService.findOne(challengeId, user);    // 챌린지 조회
+        ChallengeResponse response = challengeQueryService.readChallenge(challengeId, user);
 
         LOGGER.info("챌린지 조회 API: Get v1/challenges/{} [User: {}, response: {}]", challengeId, user.getId(), response);
         return ResponseEntity.ok(response);
@@ -61,9 +58,9 @@ public class ChallengeController {
     @Operation(summary = "내가 참여한 챌린지 목록 조회 API", description = "내가 참여한 챌린지 목록을 조회한다.")
     @GetMapping("v1/my/challenges")
     public ResponseEntity<List<ChallengeResponse>> readMyChallenges(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
-        User user = userService.authenticate(code);  // 회원 인증
+        User user = userService.authenticate(code);
 
-        List<ChallengeResponse> responses = challengeQueryService.findAllMine(user);    // 내가 참여한 챌린지 목록 조회
+        List<ChallengeResponse> responses = challengeQueryService.readMyChallenges(user);
 
         LOGGER.info("내가 참여한 챌린지 목록 조회 API: Get v1/my/challenges [User: {}, responses: {}]", user.getId(), responses);
         return ResponseEntity.ok(responses);
@@ -73,9 +70,9 @@ public class ChallengeController {
     @GetMapping("v1/challenges/{challengeId}/weeks")
     public ResponseEntity<WeekResponse> readWeeks(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                   @PathVariable Long challengeId) {
-        User user = userService.authenticate(code);  // 회원 인증
+        User user = userService.authenticate(code);
 
-        WeekResponse response = challengeQueryService.findWeeks(challengeId, user);    // 챌린지 주차 정보 목록 조회
+        WeekResponse response = challengeQueryService.readWeeks(challengeId, user);
 
         LOGGER.info("챌린지 주차 정보 목록 조회 API: Get v1/challenges/{}/weeks [User: {}, response: {}]", challengeId, user.getId(), response);
         return ResponseEntity.ok(response);
@@ -85,9 +82,9 @@ public class ChallengeController {
     @GetMapping("v1/challenges/{challengeId}/now")
     public ResponseEntity<nowResponse> readThisWeek(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                     @PathVariable Long challengeId) {
-        User user = userService.authenticate(code);  // 회원 인증
+        User user = userService.authenticate(code);
 
-        nowResponse response = challengeQueryService.findNow(challengeId);
+        nowResponse response = challengeQueryService.readThisWeek(challengeId);
 
         LOGGER.info("현재 주자 반환 API: Get v1/challenges/{}/now [User: {}, response: {}]", challengeId, user.getId(), response);
         return ResponseEntity.ok(response);

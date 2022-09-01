@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter(AccessLevel.PRIVATE)
 @ToString
 @DynamicInsert
 @DynamicUpdate
@@ -36,10 +35,12 @@ public class Solve {
     @Column(name = "solve_modified_date")
     private LocalDateTime solveModifiedDate;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -54,5 +55,9 @@ public class Solve {
                 .quiz(quiz)
                 .user(user)
                 .build();
+    }
+
+    public void setSolveScore(Integer solveScore) {
+        this.solveScore = solveScore;
     }
 }
