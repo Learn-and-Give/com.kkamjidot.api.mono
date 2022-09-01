@@ -26,7 +26,7 @@ public class QuizQueryService {
     private final ReadableRepository readableRepository;
     private final QuizService quizService;
 
-    public QuizContentResponse findContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
+    public QuizContentResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
         Quiz quiz = quizService.findOne(quizId);
 
         // 열람 가능 여부 확인
@@ -41,7 +41,7 @@ public class QuizQueryService {
         return QuizContentResponse.of(quiz, user, solve);
     }
 
-    public QuizRublicResponse findRublic(Long quizId, User user) throws UnauthorizedException {
+    public QuizRublicResponse readQuizRubric(Long quizId, User user) throws UnauthorizedException {
         Solve solve = findSolveAnswer(quizId, user);
 
         // 응답 객체 생성
@@ -51,12 +51,12 @@ public class QuizQueryService {
                 .build();
     }
 
-    public QuizResponse findMine(Long quizId, User user) throws UnauthorizedException {
+    public QuizResponse readMyQuiz(Long quizId, User user) throws UnauthorizedException {
         Quiz quiz = quizService.findOneMine(quizId, user);
         return QuizResponse.of(quiz);
     }
 
-    public List<QuizSummaryResponse> findAllMine(Integer week, User user, Long challengeId) {
+    public List<QuizSummaryResponse> readMyQuizzes(Integer week, User user, Long challengeId) {
         // 퀴즈 조회
         List<Quiz> quizzes;
         if(week == 0) quizzes = quizRepository.findByUserAndChallenge_IdOrderByQuizWeekAsc(user, challengeId);
@@ -70,7 +70,7 @@ public class QuizQueryService {
         return responses;
     }
 
-    public QuizCountResponse countAllMine(Integer week, User user, Long challengeId) {
+    public QuizCountResponse countMyQuizzes(Integer week, User user, Long challengeId) {
         int count;
         if(week == 0) count = quizRepository.countByUserAndChallenge_Id(user, challengeId);           // 제출한 모든 퀴즈 개수
         else count = quizRepository.countByQuizWeekAndUserAndChallenge_Id(week, user, challengeId);   // 주차별 제출한 퀴즈 개수

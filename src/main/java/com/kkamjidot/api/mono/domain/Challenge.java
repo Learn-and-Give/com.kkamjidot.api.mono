@@ -80,4 +80,8 @@ public class Challenge {
     public boolean isInProgress() {
         return this.getChallEndDate().isAfter(LocalDateTime.now(ZoneId.of("Asia/Seoul")));
     }
+
+    public boolean isCountOfQuizzesIsEnough(int count) {
+        return getChallMinNumOfQuizzesByWeek() > count;
+    }
 }
