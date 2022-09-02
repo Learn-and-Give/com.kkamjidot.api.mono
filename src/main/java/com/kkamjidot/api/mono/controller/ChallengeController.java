@@ -28,8 +28,6 @@ import java.util.List;
 public class ChallengeController {
     private final Logger LOGGER = LoggerFactory.getLogger(ChallengeController.class);
     private final UserService userService;
-    private final ChallengeService challengeService;
-    private final ReadableService readableService;
     private final ChallengeQueryService challengeQueryService;
 
     @Operation(summary = "챌린지 목록 조회 API", description = "모든 챌린지를 조회한다.")

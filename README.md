@@ -1,4 +1,13 @@
 # com.kkamjidot.api.mono
+### v1.1.4 - 2022-09-02
+- 내 퀴즈 전체 내용 조회 API URI 수정
+  - GET v1/quizzes/{quizId} -> v1/my/quizzes/{quizId}로 변경
+- GET v1/quizzes/{quizId}/content 퀴즈 문제 조회 API 예외처리 수정
+  - 내 퀴즈일 경우 문제를 볼 수 있던 처리를 제거
+    - 설명 중 "내가 작성한 퀴즈가 아니라면 403 에러를 반환한다." 제거
+    - 작성자가 본인이어도 자신의 문제를 풀 수 있으니 작성자에 따른 예외 처리 제외
+
+
 ### v1.1.3 - 2022-09-02
 - GET v1/quizzes/{quizId}/comments 댓글 조회 API 응답 수정
   - 작성자 이름, 퀴즈 ID 추가

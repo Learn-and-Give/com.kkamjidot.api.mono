@@ -68,7 +68,7 @@ public class CommentController {
     public ResponseEntity<List<CommentResponse>> readComments(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                              @PathVariable Long quizId) {
         User user = userService.authenticate(code);
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);// 열람 가능한 주차의 문제인지 확인
+        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
         List<CommentResponse> responses = commentQueryService.readComments(user, quiz);
 
         LOGGER.info("댓글 목록 조회 API: Get v1/quizzes/{}/comments [User: {}, responses: {}]", quizId, user.getId(), responses);

@@ -49,7 +49,7 @@ public class QuizController {
         return null;
     }
 
-    @Operation(summary = "퀴즈 문제 조회 API", description = "퀴즈의 문제 내용을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다. 단, 작성자가 본인일 경우 열람 가능하다.")
+    @Operation(summary = "퀴즈 문제 조회 API", description = "퀴즈의 문제 내용을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다.")
     @GetMapping("v1/quizzes/{quizId}/content")
     public ResponseEntity<QuizContentResponse> readQuizContent(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                @PathVariable Long quizId) {
@@ -74,7 +74,7 @@ public class QuizController {
     }
 
     @Operation(summary = "내 퀴즈 전체 내용 조회 API", description = "작성자가 본인인 퀴즈의 모든 정보를 조회한다.")
-    @GetMapping("v1/quizzes/{quizId}")
+    @GetMapping("v1/my/quizzes/{quizId}")
     public ResponseEntity<QuizResponse> readMyQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                    @PathVariable Long quizId) {
         User user = userService.authenticate(code);
@@ -163,7 +163,7 @@ public class QuizController {
                                                     @RequestBody @Valid SolveRequest request,
                                                     UriComponentsBuilder uriBuilder) {
         User user = userService.authenticate(code);
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);     // 열람 가능한 주차의 문제인지 확인
+        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
         solveService.checkNotSolved(quiz, user);                    // 이미 푼 문제인지 확인
 
         Solve solve = Solve.of(request, quiz, user);
@@ -199,7 +199,7 @@ public class QuizController {
                                                     @RequestBody @Valid ScoreRequest request,
                                                     UriComponentsBuilder uriBuilder) {
         User user = userService.authenticate(code);
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);     // 열람 가능한 주차의 문제인지 확인
+        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
         solveService.updateSolveScore(quiz, user, request.getScore());// 이미 푼 문제인지 확인
         URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
 

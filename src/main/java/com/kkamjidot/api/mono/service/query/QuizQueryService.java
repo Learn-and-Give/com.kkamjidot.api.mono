@@ -9,6 +9,7 @@ import com.kkamjidot.api.mono.repository.QuizRepository;
 import com.kkamjidot.api.mono.repository.ReadableRepository;
 import com.kkamjidot.api.mono.repository.SolveRepository;
 import com.kkamjidot.api.mono.service.QuizService;
+import com.kkamjidot.api.mono.service.ReadableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,15 +26,15 @@ public class QuizQueryService {
     private final SolveRepository solveRepository;
     private final ReadableRepository readableRepository;
     private final QuizService quizService;
+    private final ReadableService readableService;
 
     public QuizContentResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
-        Quiz quiz = quizService.findOne(quizId);
+        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
 
-        // 열람 가능 여부 확인
-        if (!quiz.isMine(user)
-                && (quiz.getChallenge().getNowWeek() <= quiz.getQuizWeek()
-                || !readableRepository.existsByWeekAndUserAndChall(quiz.getQuizWeek(), user, quiz.getChallenge())))
-            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+//        if (!quiz.isMine(user)
+//                && (quiz.getChallenge().getNowWeek() <= quiz.getQuizWeek()
+//                || !readableRepository.existsByWeekAndUserAndChall(quiz.getQuizWeek(), user, quiz.getChallenge())))
+//            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
 
         Solve solve = findSolveOrElseEmpty(quiz, user);
 
