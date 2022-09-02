@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -56,5 +58,9 @@ public class ReadableService {
                 .build();
         readableRepository.save(readable);
         LOGGER.info("Readable created: {}", readable);
+    }
+
+    public List<Integer> findReadableWeeks(User user, Challenge challenge) {
+        return readableRepository.findByUserAndChall(user, challenge).stream().map(Readable::getWeek).toList();  // 열람 가능 주차 조회
     }
 }

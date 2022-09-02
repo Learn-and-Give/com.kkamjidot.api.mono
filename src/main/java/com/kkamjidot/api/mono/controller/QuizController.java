@@ -15,12 +15,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -39,14 +37,17 @@ public class QuizController {
     private final SolveService solveService;
     private final ReadableService readableService;
 
-    @Operation(summary = "개발 중)퀴즈 개요 목록 조회 API(쿼리 week)", description = "한 챌린지에 여러 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다." +
-            "쿼리 week에는 여러 주차를 구분자 콤마로 구분하여 입력받는다.")
+    @Operation(summary = "퀴즈 개요 목록 조회 API", description = "한 챌린지에 여러 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다. 쿼리 week에는 여러 주차를 입력받는다.")
     @GetMapping("v1/challenges/{challengeId}/quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readQuizSummaries(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                        @PathVariable Long challengeId,
                                                                        @RequestParam int[] week) {
-        LOGGER.info(">>>>>>>>>>>>>>>>>>>>{}", week);
-        return null;
+        User user = userService.authenticate(code);
+
+        List<QuizSummaryResponse> responses = quizQueryService.readQuizSummaries(user, challengeId, week);
+
+        LOGGER.info("퀴즈 개요 목록 조회 API: Get v1/challenges/{challengeId}/quizzes?week={} [User: {}, responses: {}]", week, user.getId(), responses);
+        return ResponseEntity.ok(responses);
     }
 
     @Operation(summary = "퀴즈 문제 조회 API", description = "퀴즈의 문제 내용을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다.")
@@ -85,7 +86,7 @@ public class QuizController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "내가 작성한 퀴즈 주차별 개요 조회 API(쿼리 week)", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개요 목록을 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다."
+    @Operation(summary = "내가 작성한 퀴즈 주차별 개요 조회 API", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개요 목록을 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다."
             + "만약 주차가 0이거나 없으면 모든 퀴즈를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/my/quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
@@ -99,7 +100,7 @@ public class QuizController {
         return ResponseEntity.ok(responses);
     }
 
-    @Operation(summary = "주차별 내가 작성한 퀴즈 개수 조회 API(쿼리 week)", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개수를 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다. "
+    @Operation(summary = "주차별 내가 작성한 퀴즈 개수 조회 API", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개수를 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다. "
             + "만약 주차가 0이거나 없으면 총 제출 수를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/my/quizzes/count")
     public ResponseEntity<QuizCountResponse> countMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
@@ -179,7 +180,7 @@ public class QuizController {
     public ResponseEntity<QuizSolvedAnswerResponse> readQuizSolvedAnswer(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                          @PathVariable Long quizId) {
         User user = userService.authenticate(code);                     // 회원 인증
-        Solve solve = quizQueryService.findSolveAnswer(quizId, user);   // 제출한 정답 조회
+        Solve solve = quizQueryService.findSolve(quizId, user);   // 제출한 정답 조회
 
         // 응답 객체 생성
         QuizSolvedAnswerResponse response = QuizSolvedAnswerResponse.builder()
