@@ -49,7 +49,7 @@ public class QuizService {
 
     @Transactional
     public void updateAnswer(Long quizId, User user, UpdateQuizRequest request) {
-        Quiz quiz = findOneMine(quizId, user);
+        Quiz quiz = this.findOneMine(quizId, user);
         quiz.update(request);
     }
 

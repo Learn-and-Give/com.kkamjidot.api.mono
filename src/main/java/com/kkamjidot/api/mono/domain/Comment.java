@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Builder
 @AllArgsConstructor
@@ -43,4 +44,7 @@ public class Comment {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    public boolean isMine(User user) {
+        return Objects.equals(this.user.getId(), user.getId());
+    }
 }

@@ -15,12 +15,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @Tag(name = "퀴즈", description = "퀴즈 관련 작업들")
@@ -119,7 +123,8 @@ public class QuizController {
     public ResponseEntity<QuizIdResponse> createQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                      @PathVariable Long challengeId,
                                                      @Valid @RequestPart CreateQuizRequest createQuizRequest,
-                                                     @RequestPart(required = false) List<MultipartFile> quizFiles) {
+                                                     @RequestPart(required = false) List<MultipartFile> quizFiles,
+                                                     UriComponentsBuilder uriBuilder) {
         User user = userService.authenticate(code);
         Challenge challenge = takeAClassService.findOneTakedAndInProgress(challengeId, user);
 
@@ -128,9 +133,10 @@ public class QuizController {
 
         // 챌린지 퀴즈 제출 조건 이상의 퀴즈를 제출했으면 열람 가능한 권한 생성
         readableService.createOneIfRight(challenge, user, quiz.getQuizWeek());
+        URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
 
         LOGGER.info("퀴즈 제출 API: Post v1/challenges/{}/quizzes [User: {}, Quiz: {}]", challengeId, user.getId(), quiz.getId());
-        return ResponseEntity.ok(QuizIdResponse.builder().quizId(quiz.getId()).build());
+        return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quiz.getId()).build());
     }
 
     @Operation(summary = "퀴즈 정답 수정 API", description = "퀴즈의 정답/해설/출처/루브릭을 수정한다. 내가 작성한 퀴즈가 아니라면 403 에러를 반환한다.")
@@ -138,13 +144,15 @@ public class QuizController {
     @PatchMapping("v1/quizzes/{quizId}")
     public ResponseEntity<QuizIdResponse> updateQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                      @PathVariable Long quizId,
-                                                     @RequestBody @Valid UpdateQuizRequest request) {
+                                                     @RequestBody @Valid UpdateQuizRequest request,
+                                                     UriComponentsBuilder uriBuilder) {
         User user = userService.authenticate(code);
 
         quizService.updateAnswer(quizId, user, request);
+        URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quizId).toUri();
 
         LOGGER.info("퀴즈 정답 수정 API: Patch v1/quizzes/{} [User: {}, quiz: {}]", quizId, user.getId(), quizId);
-        return ResponseEntity.ok(QuizIdResponse.builder().quizId(quizId).build());
+        return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
     }
 
     @Operation(summary = "퀴즈 풀기 정답 제출 API", description = "퀴즈를 푼다. 열람 가능한 주차의 문제가 아니거나, 이미 푼 문제면 403 에러를 반환한다.")
@@ -152,16 +160,18 @@ public class QuizController {
     @PostMapping(path = "v1/quizzes/{quizId}/solve")
     public ResponseEntity<QuizIdResponse> solveQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                     @PathVariable Long quizId,
-                                                    @RequestBody @Valid SolveRequest request) {
+                                                    @RequestBody @Valid SolveRequest request,
+                                                    UriComponentsBuilder uriBuilder) {
         User user = userService.authenticate(code);
         Quiz quiz = readableService.findOneInReadableWeek(quizId, user);     // 열람 가능한 주차의 문제인지 확인
         solveService.checkNotSolved(quiz, user);                    // 이미 푼 문제인지 확인
 
         Solve solve = Solve.of(request, quiz, user);
         solveService.createOne(solve);                              // 정답 제출
+        URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
 
-        LOGGER.info("퀴즈 풀기 정답 제출 API: Post v1/quizzes/{}/solve [User: {}, quiz: {}]", quizId, user.getId(), quizId);
-        return ResponseEntity.ok(QuizIdResponse.builder().quizId(quizId).build());
+        LOGGER.info("퀴즈 풀기 정답 제출 API: Post v1/quizzes/{}/solve [User: {}, quiz: {}]", quizId, user.getId(), quiz.getId());
+        return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
     }
 
     @Operation(summary = "퀴즈 풀었던 정답 조회 API", description = "한 문제에 내가 제출한 정답을 조회한다.")
@@ -186,12 +196,14 @@ public class QuizController {
     @PatchMapping(path = "v1/quizzes/{quizId}/grade")
     public ResponseEntity<QuizIdResponse> gradeQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                     @PathVariable Long quizId,
-                                                    @RequestBody @Valid ScoreRequest request) {
+                                                    @RequestBody @Valid ScoreRequest request,
+                                                    UriComponentsBuilder uriBuilder) {
         User user = userService.authenticate(code);
         Quiz quiz = readableService.findOneInReadableWeek(quizId, user);     // 열람 가능한 주차의 문제인지 확인
         solveService.updateSolveScore(quiz, user, request.getScore());// 이미 푼 문제인지 확인
+        URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
 
-        LOGGER.info("퀴즈 풀기 채점 점수 제출 API: Patch v1/quizzes/{}/grade [User: {}, quiz: {}]", quizId, user.getId(), quizId);
-        return ResponseEntity.ok(QuizIdResponse.builder().quizId(quizId).build());
+        LOGGER.info("퀴즈 풀기 채점 점수 제출 API: Patch v1/quizzes/{}/grade [User: {}, quiz: {}]", quizId, user.getId(), quiz.getId());
+        return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
     }
 }

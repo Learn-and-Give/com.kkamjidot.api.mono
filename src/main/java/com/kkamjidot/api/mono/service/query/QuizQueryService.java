@@ -83,9 +83,8 @@ public class QuizQueryService {
     }
 
     private Solve findSolveOrElseEmpty(Quiz quiz, User user) {
-        return solveRepository.findByQuizAndUser(quiz, user).orElse(Solve.empty());
+        return solveRepository.findByQuizAndUser(quiz, user).orElseGet(Solve::empty);
     }
-
     public Solve findSolveAnswer(Long quizId, User user) {
         return solveRepository.findByQuiz_IdAndUserAndSolveAnswerNotNull(quizId, user).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
     }
