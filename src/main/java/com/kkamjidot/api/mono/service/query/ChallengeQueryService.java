@@ -12,6 +12,8 @@ import com.kkamjidot.api.mono.dto.response.nowResponse;
 import com.kkamjidot.api.mono.repository.ChallengeRepository;
 import com.kkamjidot.api.mono.repository.ReadableRepository;
 import com.kkamjidot.api.mono.repository.TakeAClassRepository;
+import com.kkamjidot.api.mono.service.ChallengeService;
+import com.kkamjidot.api.mono.service.ReadableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +28,8 @@ import java.util.*;
 public class ChallengeQueryService {
     private final ChallengeRepository challengeRepository;
     private final TakeAClassRepository takeAClassRepository;
-    private final ReadableRepository readableRepository;
+    private final ReadableService readableService;
+    private final ChallengeService challengeService;
 
     public List<ChallengeResponse> readChallenges(User user) {
         // 챌린지 목록 조회
@@ -45,7 +48,7 @@ public class ChallengeQueryService {
 
     public ChallengeResponse readChallenge(Long challengeId, User user) {
         // 챌린지 조회
-        Challenge challenge = findChallenge(challengeId);
+        Challenge challenge = challengeService.findOne(challengeId);
         ChallengeResponse challengeResponse = ChallengeResponse.of(challenge);
         findApplicationStatus(challenge, user).ifPresent(challengeResponse::setApplicationStatus);     // 신청상태
         return challengeResponse;
@@ -61,7 +64,7 @@ public class ChallengeQueryService {
 
         // 응답 객체 생성
         List<ChallengeResponse> challengeResponses = new ArrayList<>(takes.size());
-        for (TakeAClass take: takes) {
+        for (TakeAClass take : takes) {
             ChallengeResponse challengeResponse = ChallengeResponse.of(take.getChall());
             challengeResponse.setApplicationStatus(take.getTcApplicationstatus());
             challengeResponses.add(challengeResponse);
@@ -71,14 +74,14 @@ public class ChallengeQueryService {
     }
 
     public WeekResponse readWeeks(Long challengeId, User user) {
-        Challenge challenge = findChallenge(challengeId);
-        List<Integer> readableWeeks = readableRepository.findByUserAndChall(user, challenge).stream().map(Readable::getWeek).toList();  // 열람 가능 주차 조회
+        Challenge challenge = challengeService.findOne(challengeId);
+        List<Integer> readableWeeks = readableService.findReadableWeeks(user, challenge);
         int challTotalWeeks = challenge.getChallTotalWeeks();   // 총 주차 조회
 
         // 열람 가능한 주차 true로 변경
         Map<Integer, WeekStatus> weeks = new HashMap<>(challTotalWeeks);
-        for(int i = 1; i <= challTotalWeeks; ++i) {
-            if(i < challenge.getNowWeek()) {
+        for (int i = 1; i <= challTotalWeeks; ++i) {
+            if (i < challenge.getNowWeek()) {
                 if (readableWeeks.contains(i)) weeks.put(i, WeekStatus.READABLE);
                 else weeks.put(i, WeekStatus.UNREADABLE);
             } else weeks.put(i, WeekStatus.CLOSED);
@@ -93,7 +96,7 @@ public class ChallengeQueryService {
 
     public nowResponse readThisWeek(Long challengeId) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        Challenge challenge = findChallenge(challengeId);
+        Challenge challenge = challengeService.findOne(challengeId);
 
         return nowResponse.builder()
                 .week(challenge.getNowWeek())
@@ -101,9 +104,5 @@ public class ChallengeQueryService {
                 .challStartDate(challenge.getChallStartDate())
                 .now(now)
                 .build();
-    }
-
-    public Challenge findChallenge(Long challengeId) {
-        return challengeRepository.findByIdAndChallDeletedDateNull(challengeId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 챌린지입니다."));
     }
 }

@@ -21,7 +21,7 @@ public class GlobalControllerExceptionHandler {
 
     @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE))
     @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException e) {
         LOGGER.info("UNAUTHORIZED: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());     // 401 UNAUTHORIZED
@@ -29,7 +29,7 @@ public class GlobalControllerExceptionHandler {
 
     @ApiResponse(responseCode = "403", description = "FORBIDDEN", content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE))
     @ExceptionHandler(UnauthorizedException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<?> handleUnauthorizedException(UnauthorizedException e) {
         LOGGER.info("FORBIDDEN: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());     // 403 FORBIDDEN
@@ -37,7 +37,7 @@ public class GlobalControllerExceptionHandler {
 
     @ApiResponse(responseCode = "404", description = "NOT_FOUND", content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE))
     @ExceptionHandler(NoSuchElementException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<?> handleNoSuchElementException(NoSuchElementException e) {
         LOGGER.info("NOT_FOUND: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());     // 404 DATA NOT FOUND

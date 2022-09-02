@@ -1,7 +1,16 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.7.2'
 	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
 	id 'java'
+
+	//	querydsl
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.kkamjidot.api'
@@ -37,6 +46,15 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+	// https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+
+	// https://mvnrepository.com/artifact/com.querydsl/querydsl-apt
+	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	// https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
 //	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 }
@@ -44,3 +62,28 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+/*
+ * queryDSL 설정 추가
+ */
+// querydsl에서 사용할 경로 설정 'src/main/generated'
+def querydslDir = "$buildDir/generated/querydsl"
+// JPA 사용 여부와 사용할 경로를 설정
+querydsl {
+	library = "com.querydsl:querydsl-apt:${queryDslVersion}"
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+// build 시 사용할 sourceSet 추가
+sourceSets { // IDE의 소스 폴더에 자동으로 넣어준다.
+	main.java.srcDir querydslDir
+}
+// querydsl 이 compileClassPath 를 상속하도록 설정
+configurations {
+	querydsl.extendsFrom compileClasspath // 컴파일이 될때 같이 수행
+}
+// querydsl 컴파일시 사용할 옵션 설정
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl // Q파일을 생성해준다.
+}
+//querydsl 추가 끝
