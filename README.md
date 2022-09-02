@@ -1,4 +1,8 @@
 # com.kkamjidot.api.mono
+### v1.1.3 - 2022-09-02
+- GET v1/quizzes/{quizId}/comments 댓글 조회 API 응답 수정
+  - 작성자 이름, 퀴즈 ID 추가
+
 ### v1.1.2 - 2022-08-31
 - GET v1/challenges/{challengeId}/weeks 챌린지 주차 정보 목록 조회 API 응답 수정
   - 주차 정보를 "int": "status" 형태로 변경

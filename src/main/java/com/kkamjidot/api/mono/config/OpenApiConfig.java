@@ -20,7 +20,7 @@ public class OpenApiConfig {
     public OpenAPI openAPI() {
         Info info = new Info()
                 .title("깜지. API 서버 V1")
-                .version("v1.1.2")
+                .version("v1.1.3")
                 .description("학습자료 공유 기반 챌린지 서비스 플랫폼 깜지.의 API 통합 서버 (아래 README 사이트 참고)")
                 .contact(new Contact().name("README").url("https://github.com/Learn-and-Give/com.kkamjidot.api.mono/tree/develop#readme"));
 
