@@ -80,11 +80,12 @@ public class ChallengeQueryService {
 
         // 열람 가능한 주차 true로 변경
         Map<Integer, WeekStatus> weeks = new HashMap<>(challTotalWeeks);
-        for (int i = 1; i <= challTotalWeeks; ++i) {
-            if (i < challenge.getNowWeek()) {
+        for(int i = 1; i <= challTotalWeeks; ++i) {
+            if(i < challenge.getNowWeek()) {
                 if (readableWeeks.contains(i)) weeks.put(i, WeekStatus.READABLE);
                 else weeks.put(i, WeekStatus.UNREADABLE);
-            } else weeks.put(i, WeekStatus.CLOSED);
+            } else if(i == challenge.getNowWeek() && readableWeeks.contains(i)) weeks.put(i, WeekStatus.READABLE_CLOSED);
+            else weeks.put(i, WeekStatus.CLOSED);
         }
 
         return WeekResponse.builder()

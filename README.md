@@ -1,4 +1,8 @@
 # com.kkamjidot.api.mono
+### v1.1.5 - 2022-09-03
+- GET v1/challenges/{challengeId}/weeks 챌린지 주차 정보 목록 조회 API 응답 추가
+  - WeekStatus에 READABLE_CLOSED 추가
+
 ### v1.1.4 - 2022-09-02
 - 내 퀴즈 전체 내용 조회 API URI 수정
   - GET v1/quizzes/{quizId} -> v1/my/quizzes/{quizId}로 변경
@@ -15,7 +19,7 @@
 ### v1.1.2 - 2022-08-31
 - GET v1/challenges/{challengeId}/weeks 챌린지 주차 정보 목록 조회 API 응답 수정
   - 주차 정보를 "int": "status" 형태로 변경
-  - status: READABLE, UNREADABLE, CLOSED
+  - WeekStatus: READABLE, UNREADABLE, CLOSED
   - <details  markdown="1">
     <summary>예시</summary>
     
