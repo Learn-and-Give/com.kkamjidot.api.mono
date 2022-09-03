@@ -1,4 +1,10 @@
 # com.kkamjidot.api.mono
+### v1.2.0 - 2022-09-04
+- GET v1/quizzes/{quizId} 퀴즈 조회 API 추가
+  - 기존 /content, /rubric 제거하고 통합
+- POST v1/quizzes/{quizId}/grade HTTP Method 변경
+  - 기존 PATCH -> POST
+
 ### v1.1.5 - 2022-09-03
 - GET v1/challenges/{challengeId}/weeks 챌린지 주차 정보 목록 조회 API 응답 추가
   - WeekStatus에 READABLE_CLOSED 추가
