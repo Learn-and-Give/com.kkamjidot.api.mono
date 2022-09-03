@@ -195,7 +195,7 @@ public class QuizController {
 
     @Operation(summary = "퀴즈 풀기 채점 점수 제출 API", description = "퀴즈를 채점한다. 퀴즈 정답을 제출한 문제가 아니거나, 이미 푼 문제면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 풀기 성공")
-    @PatchMapping(path = "v1/quizzes/{quizId}/grade")
+    @PostMapping(path = "v1/quizzes/{quizId}/grade")
     public ResponseEntity<QuizIdResponse> gradeQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                     @PathVariable Long quizId,
                                                     @RequestBody @Valid ScoreRequest request,
