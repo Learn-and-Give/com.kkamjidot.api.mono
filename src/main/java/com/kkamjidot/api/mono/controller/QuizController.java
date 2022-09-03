@@ -50,18 +50,19 @@ public class QuizController {
         return ResponseEntity.ok(responses);
     }
 
-    @Operation(summary = "퀴즈 문제 조회 API", description = "퀴즈의 문제 내용을 조회한다. 열람 가능 주차가 아니면 403 에러를 반환한다.")
-    @GetMapping("v1/quizzes/{quizId}/content")
-    public ResponseEntity<QuizContentResponse> readQuizContent(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
-                                                               @PathVariable Long quizId) {
+    @Operation(summary = "퀴즈 조회 API", description = "퀴즈의 내용을 조회한다. 문제를 풀었으면 모든 정보를 반환해주고 아니면 정답부분은 null을 보내준다. 열람 가능 주차가 아니면 403 에러를 반환한다.")
+    @GetMapping("v1/quizzes/{quizId}")
+    public ResponseEntity<QuizQueryResponse> readQuizContent(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+                                                             @PathVariable Long quizId) {
         User user = userService.authenticate(code);
 
-        QuizContentResponse response = quizQueryService.readQuizContent(quizId, user);
+        QuizQueryResponse response = quizQueryService.readQuizContent(quizId, user);
 
         LOGGER.info("퀴즈 문제 조회 API: Get v1/quizzes/{}/content [User: {}, response: {}]", quizId, user.getId(), response);
         return ResponseEntity.ok(response);
     }
 
+    @Deprecated
     @Operation(summary = "퀴즈 루브릭 조회 API", description = "퀴즈의 루브릭을 조회한다. 퀴즈 정답을 제출한 적이 없으면 403 에러를 반환한다.")
     @GetMapping("v1/quizzes/{quizId}/rubric")
     public ResponseEntity<QuizRublicResponse> readQuizRubric(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
@@ -177,13 +178,13 @@ public class QuizController {
 
     @Operation(summary = "퀴즈 풀었던 정답 조회 API", description = "한 문제에 내가 제출한 정답을 조회한다.")
     @GetMapping(path = "v1/quizzes/{quizId}/solve")
-    public ResponseEntity<QuizSolvedAnswerResponse> readQuizSolvedAnswer(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
-                                                                         @PathVariable Long quizId) {
+    public ResponseEntity<QuizSolveAnswerResponse> readQuizSolvedAnswer(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+                                                                        @PathVariable Long quizId) {
         User user = userService.authenticate(code);                     // 회원 인증
         Solve solve = quizQueryService.findSolve(quizId, user);   // 제출한 정답 조회
 
         // 응답 객체 생성
-        QuizSolvedAnswerResponse response = QuizSolvedAnswerResponse.builder()
+        QuizSolveAnswerResponse response = QuizSolveAnswerResponse.builder()
                 .quizId(solve.getQuiz().getId())
                 .solveAnswer(solve.getSolveAnswer())
                 .build();

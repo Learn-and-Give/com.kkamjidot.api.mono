@@ -13,7 +13,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @ToString
@@ -21,12 +20,16 @@ import java.util.Set;
 @Setter
 @Builder
 @Schema(name = "퀴즈 내용 응답")
-public class QuizContentResponse implements Serializable {
+public class QuizQueryResponse implements Serializable {
     private final Long quizId;
     private final String quizTitle;
     private final Integer quizWeek;
     private final QuizCategory quizCategory;
     private final String quizContent;
+    private final String quizAnswer;
+    private final String quizExplanation;
+    private final String quizRubric;
+    private final String quizSource;
     private final LocalDateTime quizCreatedDate;
     private final LocalDateTime quizModifiedDate;
     private final Boolean isMine;
@@ -40,13 +43,17 @@ public class QuizContentResponse implements Serializable {
         this.quizFiles.add(quizFile);
     }
 
-    public static QuizContentResponse of(Quiz quiz, User user, Solve solve) {
-        QuizContentResponse quizResponse = QuizContentResponse.builder()
+    public static QuizQueryResponse of(Quiz quiz, User user, Solve solve) {
+        QuizQueryResponse quizResponse = QuizQueryResponse.builder()
                 .quizId(quiz.getId())
                 .quizTitle(quiz.getQuizTitle())
                 .quizWeek(quiz.getQuizWeek())
                 .quizCategory(quiz.getQuizCategory())
                 .quizContent(quiz.getQuizContent())
+                .quizAnswer(solve.getSolveAnswer() != null ? quiz.getQuizAnswer() : null)
+                .quizExplanation(solve.getSolveAnswer() != null ? quiz.getQuizExplanation() : null)
+                .quizRubric(solve.getSolveAnswer() != null ? quiz.getQuizRubric() : null)
+                .quizSource(solve.getSolveAnswer() != null ? quiz.getQuizSource() : null)
                 .quizCreatedDate(quiz.getQuizCreatedDate())
                 .quizModifiedDate(quiz.getQuizModifiedDate())
                 .isMine(quiz.isMine(user))

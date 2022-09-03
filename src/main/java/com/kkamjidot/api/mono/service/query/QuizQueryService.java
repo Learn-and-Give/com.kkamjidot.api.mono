@@ -1,7 +1,6 @@
 package com.kkamjidot.api.mono.service.query;
 
 import com.kkamjidot.api.mono.domain.*;
-import com.kkamjidot.api.mono.domain.Readable;
 import com.kkamjidot.api.mono.dto.response.*;
 import com.kkamjidot.api.mono.exception.UnauthorizedException;
 import com.kkamjidot.api.mono.repository.QuizRepository;
@@ -29,7 +28,7 @@ public class QuizQueryService {
     private final ChallengeService challengeService;
     private final QuizQueryRepository quizQueryRepository;
 
-    public QuizContentResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
+    public QuizQueryResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
         Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
 
 //        if (!quiz.isMine(user)
@@ -40,7 +39,7 @@ public class QuizQueryService {
         Solve solve = findSolveOrElseEmpty(quiz, user);
 
         // 응답 객체 생성
-        return QuizContentResponse.of(quiz, user, solve);
+        return QuizQueryResponse.of(quiz, user, solve);
     }
 
     public QuizRublicResponse readQuizRubric(Long quizId, User user) throws UnauthorizedException {
