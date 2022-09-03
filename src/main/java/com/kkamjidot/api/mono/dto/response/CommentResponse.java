@@ -1,6 +1,7 @@
 package com.kkamjidot.api.mono.dto.response;
 
 import com.kkamjidot.api.mono.domain.Comment;
+import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -21,22 +22,24 @@ public class CommentResponse implements Serializable {
     private final String commentContent;
     private final LocalDateTime commentCreatedDate;
     private final LocalDateTime commentModifiedDate;
+    private final Boolean isQuizWriter;
     private final Boolean isMine;
     private final String writerName;
     private final Long quizId;
 
-    public static List<CommentResponse> listOf(List<Comment> commentList, User user) {
+    public static List<CommentResponse> listOf(List<Comment> commentList, User user, Quiz quiz) {
         return commentList.stream()
-                .map(comment -> CommentResponse.of(comment, user))
+                .map(comment -> CommentResponse.of(comment, user, quiz))
                 .toList();
     }
 
-    private static CommentResponse of(Comment comment, User user) {
+    private static CommentResponse of(Comment comment, User user, Quiz quiz) {
         return CommentResponse.builder()
                 .commentId(comment.getId())
                 .commentContent(comment.getCommentContent())
                 .commentCreatedDate(comment.getCommentCreatedDate())
                 .commentModifiedDate(comment.getCommentModifiedDate())
+                .isQuizWriter(comment.isMine(quiz.getUser()))
                 .isMine(comment.isMine(user))
                 .writerName(comment.getUser().getUserName())
                 .quizId(comment.getQuiz().getId())

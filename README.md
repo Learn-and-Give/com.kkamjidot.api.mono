@@ -4,6 +4,8 @@
   - 기존 /content, /rubric 제거하고 통합
 - POST v1/quizzes/{quizId}/grade HTTP Method 변경
   - 기존 PATCH -> POST
+- GET v1/quizzes/{quizId}/comments 댓글 목록 조회 API 응답 추가
+  - isQuizWriter: boolean 퀴즈 작성자의 댓글인지 여부 포함
 
 ### v1.1.5 - 2022-09-03
 - GET v1/challenges/{challengeId}/weeks 챌린지 주차 정보 목록 조회 API 응답 추가

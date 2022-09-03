@@ -23,6 +23,6 @@ public class CommentQueryService {
 
     public List<CommentResponse> readComments(User user, Quiz quiz) {
         List<Comment> comments = commentRepository.findByQuizAndCommentDeletedDateNullOrderByCommentCreatedDateAsc(quiz);
-        return CommentResponse.listOf(comments, user);
+        return CommentResponse.listOf(comments, user, quiz);
     }
 }
