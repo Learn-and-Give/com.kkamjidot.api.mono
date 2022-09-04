@@ -1,0 +1,36 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  devtools:
+    livereload:
+      enabled: true   # Live Reload
+  datasource:
+    url: jdbc:mysql://${db.url}?serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver   # MySQL 연결 설정
+    username: ${db.username}
+    password: ${db.password}
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        generate_statistics: true # 쿼리 통계 출력
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8081
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+#  default-produces-media-type: application/json;charset=UTF-8

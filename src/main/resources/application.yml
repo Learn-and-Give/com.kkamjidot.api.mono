@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: ${active}
+
+# multipart settings
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 10MB
+
+# OSIV setting
+  jpa:
+    open-in-view: false
+
+# aws settings
+# S3 bucket region
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      access-key: ${aws.access-key}
+      secret-key: ${aws.secret-key}
