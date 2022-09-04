@@ -11,6 +11,8 @@
             </encoder>
         </appender>
 
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+
         <!-- TRACE > DEBUG > INFO > WARN > ERROR > OFF -->
         <!-- Root Logger -->
         <root level="INFO">

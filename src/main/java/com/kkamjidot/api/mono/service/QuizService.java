@@ -38,7 +38,7 @@ public class QuizService {
         quizRepository.save(quiz);
 
         // 파일 업로드
-        if(quizFiles != null) {
+        if (quizFiles != null) {
             for (MultipartFile quizFile : quizFiles) {
                 FileDto fileDto = awsS3Service.upload(quizFile, "quiz");
                 QuizFile quizFileSave = quizFileRepository.save(QuizFile.of(fileDto, quiz));

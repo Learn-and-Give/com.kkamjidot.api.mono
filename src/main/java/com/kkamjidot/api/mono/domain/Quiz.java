@@ -91,16 +91,16 @@ public class Quiz {
     }
 
     public void update(UpdateQuizRequest request) {
-        if(request.getQuizAnswer() != null) {
+        if (request.getQuizAnswer() != null) {
             setQuizAnswer(request.getQuizAnswer());
         }
-        if(request.getQuizExplanation() != null) {
+        if (request.getQuizExplanation() != null) {
             setQuizExplanation(request.getQuizExplanation());
         }
-        if(request.getQuizRubric() != null) {
+        if (request.getQuizRubric() != null) {
             setQuizRubric(request.getQuizRubric());
         }
-        if(request.getQuizSource() != null) {
+        if (request.getQuizSource() != null) {
             setQuizSource(request.getQuizSource());
         }
     }

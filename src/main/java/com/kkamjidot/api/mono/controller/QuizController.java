@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -41,7 +42,9 @@ public class QuizController {
     @GetMapping("v1/challenges/{challengeId}/quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readQuizSummaries(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                        @PathVariable Long challengeId,
-                                                                       @RequestParam int[] week) {
+                                                                       @RequestParam List<Integer> week) throws MissingServletRequestParameterException {
+        if (week.isEmpty()) throw new org.springframework.web.bind.MissingServletRequestParameterException("week", "List");
+
         User user = userService.authenticate(code);
 
         List<QuizSummaryResponse> responses = quizQueryService.readQuizSummaries(user, challengeId, week);

@@ -60,7 +60,7 @@ public class QuizQueryService {
     public List<QuizSummaryResponse> readMyQuizzes(Integer week, User user, Long challengeId) {
         // 퀴즈 조회
         List<Quiz> quizzes;
-        if(week == 0) quizzes = quizRepository.findByUserAndChallenge_IdOrderByQuizWeekAsc(user, challengeId);
+        if (week == 0) quizzes = quizRepository.findByUserAndChallenge_IdOrderByQuizWeekAsc(user, challengeId);
         else quizzes = quizRepository.findByQuizWeekAndUserAndChallenge_Id(week, user, challengeId);
 
         // 응답 개체 생성
@@ -73,7 +73,7 @@ public class QuizQueryService {
 
     public QuizCountResponse countMyQuizzes(Integer week, User user, Long challengeId) {
         int count;
-        if(week == 0) count = quizRepository.countByUserAndChallenge_Id(user, challengeId);           // 제출한 모든 퀴즈 개수
+        if (week == 0) count = quizRepository.countByUserAndChallenge_Id(user, challengeId);           // 제출한 모든 퀴즈 개수
         else count = quizRepository.countByQuizWeekAndUserAndChallenge_Id(week, user, challengeId);   // 주차별 제출한 퀴즈 개수
 
         return QuizCountResponse.builder()
@@ -83,11 +83,11 @@ public class QuizQueryService {
                 .build();
     }
 
-    public List<QuizSummaryResponse> readQuizSummaries(User user, Long challengeId, int[] weeks) throws UnauthorizedException {
+    public List<QuizSummaryResponse> readQuizSummaries(User user, Long challengeId, List<Integer> weeks) throws UnauthorizedException {
         Challenge challenge = challengeService.findOne(challengeId);
         List<Integer> readableWeeks = readableService.findReadableWeeks(user, challenge);
-        for(int week : weeks) {
-            if(week == challenge.getNowWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+        for (int week : weeks) {
+            if (week == challenge.getNowWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
         }
         List<Quiz> quizzes = quizQueryRepository.findByUserAndChallenge_IdAndQuizWeek(challengeId, weeks);
 

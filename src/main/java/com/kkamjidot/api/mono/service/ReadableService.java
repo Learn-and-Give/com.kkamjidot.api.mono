@@ -47,9 +47,9 @@ public class ReadableService {
     @Transactional
     public void createOneIfRight(Challenge challenge, User user, int week) {
         int count = quizService.countByWeek(challenge, user, week);
-        if(challenge.isCountOfQuizzesIsEnough(count)) return;
+        if (challenge.isCountOfQuizzesIsEnough(count)) return;
 
-        if(readableRepository.existsByWeekAndUserAndChall(week, user, challenge)) return;
+        if (readableRepository.existsByWeekAndUserAndChall(week, user, challenge)) return;
 
         Readable readable = Readable.builder()
                 .week(week)

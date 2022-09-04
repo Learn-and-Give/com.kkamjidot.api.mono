@@ -1,5 +1,7 @@
 package com.kkamjidot.api.mono.repository.query;
 
+import com.kkamjidot.api.mono.domain.Challenge;
+import com.kkamjidot.api.mono.domain.QUser;
 import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.User;
 import com.querydsl.core.BooleanBuilder;
@@ -28,19 +30,21 @@ public class QuizQueryRepository {
         this.query = new JPAQueryFactory(em);
     }
 
-    public List<Quiz> findByUserAndChallenge_IdAndQuizWeek(Long challengeId, int[] weeks) {
+    public List<Quiz> findByUserAndChallenge_IdAndQuizWeek(Long challengeId, List<Integer> weeks) {
         return query.select(quiz)
                 .from(quiz)
+                .join(quiz.user, user)
                 .join(quiz.challenge, challenge)
-                .where(challenge.id.eq(challengeId))
+                .on(challenge.id.eq(challengeId))
                 .where(weekEq(weeks))
+                .where(quiz.quizDeletedDate.isNull())
                 .orderBy(quiz.quizWeek.asc())
                 .fetch();
     }
 
-    private BooleanBuilder weekEq(int[] weeks) {
+    private BooleanBuilder weekEq(List<Integer> weeks) {
         BooleanBuilder builder = new BooleanBuilder();
-        for(int week : weeks) {
+        for (int week : weeks) {
             builder.or(quiz.quizWeek.eq(week));
         }
         return builder;
