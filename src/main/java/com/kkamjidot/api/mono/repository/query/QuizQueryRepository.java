@@ -33,12 +33,12 @@ public class QuizQueryRepository {
     public List<Quiz> findByUserAndChallenge_IdAndQuizWeek(Long challengeId, List<Integer> weeks) {
         return query.select(quiz)
                 .from(quiz)
-                .join(quiz.user, user)
+//                .join(quiz.user, user)
                 .join(quiz.challenge, challenge)
-                .on(challenge.id.eq(challengeId))
-                .where(weekEq(weeks))
+                .where(challenge.id.eq(challengeId))
                 .where(quiz.quizDeletedDate.isNull())
-                .orderBy(quiz.quizWeek.asc())
+                .where(weekEq(weeks))
+                .orderBy(quiz.quizCreatedDate.asc())
                 .fetch();
     }
 
