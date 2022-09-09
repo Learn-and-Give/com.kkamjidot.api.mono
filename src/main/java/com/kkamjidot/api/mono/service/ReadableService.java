@@ -28,7 +28,7 @@ public class ReadableService {
     /**
      * 퀴즈를 열람 가능한지 권한을 확인한다. 특히, 퀴즈의 주차가 현재 주차보다 이전이고, 열람 가능한 권한이 있는지 검사한다.
      * */
-    public Quiz findOneInReadableWeek(Long quizId, User user) throws UnauthorizedException {
+    public Quiz findOneInReadableWeek(Long quizId, User user) throws RuntimeException {
         Quiz quiz = quizService.findOne(quizId);
 
         // 퀴즈의 주차가 현재 주차보다 이전이고, 열람 가능한 권한이 있는지 검사

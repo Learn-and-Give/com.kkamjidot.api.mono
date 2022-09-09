@@ -48,6 +48,7 @@ public class QuizFile {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "quiz_id")
+    @ToString.Exclude
     private Quiz quiz;
 
     public static QuizFile of(FileDto fileDto, Quiz quiz) {

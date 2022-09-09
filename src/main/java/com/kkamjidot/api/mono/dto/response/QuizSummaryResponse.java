@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -28,8 +29,9 @@ public class QuizSummaryResponse implements Serializable {
     private final Integer solveScore;
     private final String writerName;
     private final Long challengeId;
+    private final Integer cntOfGood;
 
-    public static QuizSummaryResponse of(Quiz quiz, User user, Solve solve) {
+    public static QuizSummaryResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood) {
         return QuizSummaryResponse.builder()
                 .quizId(quiz.getId())
                 .quizTitle(quiz.getQuizTitle())
@@ -42,6 +44,7 @@ public class QuizSummaryResponse implements Serializable {
                 .solveScore(solve.getSolveScore())
                 .writerName(quiz.getWriterName())
                 .challengeId(quiz.getChallengeId())
+                .cntOfGood(cntOfGood)
                 .build();
     }
 }

@@ -1,4 +1,10 @@
 # com.kkamjidot.api.mono
+### v1.3.0 - 2022-09-09
+- PUT v1/quizzes/{quizId}/rate 퀴즈 평가 API 추가
+  - 퀴즈에 좋아요(GOOD)/싫어요(BAD)/취소(null)로 평가한다. 열람 가능 주차의 문제가 아니면 403 에러를 반환한다.
+- 퀴즈 개요 리스트 조회, 내 퀴즈 조회, 퀴즈 조회에 cntOfGood 추가
+
+
 ### v1.2.0 - 2022-09-04
 - GET v1/quizzes/{quizId} 퀴즈 조회 API 추가
   - 기존 /content, /rubric 제거하고 통합
