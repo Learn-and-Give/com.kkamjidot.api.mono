@@ -1,24 +1,16 @@
 package com.kkamjidot.api.mono.repository.query;
 
-import com.kkamjidot.api.mono.domain.Challenge;
-import com.kkamjidot.api.mono.domain.QUser;
 import com.kkamjidot.api.mono.domain.Quiz;
-import com.kkamjidot.api.mono.domain.User;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Visitor;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.BooleanOperation;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.hibernate.query.criteria.internal.predicate.BooleanExpressionPredicate;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.kkamjidot.api.mono.domain.QQuiz.*;
-import static com.kkamjidot.api.mono.domain.QUser.*;
-import static com.kkamjidot.api.mono.domain.QChallenge.*;
+import static com.kkamjidot.api.mono.domain.QChallenge.challenge;
+import static com.kkamjidot.api.mono.domain.QQuiz.quiz;
+import static com.kkamjidot.api.mono.domain.QUser.user;
 
 @Repository
 public class QuizQueryRepository {
@@ -34,6 +26,7 @@ public class QuizQueryRepository {
         return query.select(quiz)
                 .from(quiz)
 //                .join(quiz.user, user)
+//                .fetchJoin()
                 .join(quiz.challenge, challenge)
                 .where(challenge.id.eq(challengeId))
                 .where(quiz.quizDeletedDate.isNull())

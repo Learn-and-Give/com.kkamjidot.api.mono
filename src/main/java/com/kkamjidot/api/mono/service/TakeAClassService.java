@@ -20,7 +20,7 @@ public class TakeAClassService {
     /**
      * 수강중이고 진행중인 챌린지를 조회한다.
      */
-    public Challenge findOneTakedAndInProgress(Long challengeId, User user) throws NoSuchElementException {
+    public Challenge findOneTakedAndInProgress(Long challengeId, User user) throws UnauthorizedException {
         Challenge challenge = takeAClassRepository.findByTcApplicationstatusAndChall_IdAndUser(ApplicationStatus.ACCEPTED, challengeId, user)
                 .orElseThrow(() -> new UnauthorizedException("수강중인 챌린지가 아닙니다.")).getChall();
         if (!challenge.isInProgress()) throw new UnauthorizedException("이미 종료된 챌린지입니다.");

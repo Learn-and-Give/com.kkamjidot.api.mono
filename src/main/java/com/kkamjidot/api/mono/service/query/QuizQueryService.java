@@ -8,6 +8,7 @@ import com.kkamjidot.api.mono.repository.SolveRepository;
 import com.kkamjidot.api.mono.repository.query.QuizQueryRepository;
 import com.kkamjidot.api.mono.service.ChallengeService;
 import com.kkamjidot.api.mono.service.QuizService;
+import com.kkamjidot.api.mono.service.RateService;
 import com.kkamjidot.api.mono.service.ReadableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,14 @@ import java.util.NoSuchElementException;
 public class QuizQueryService {
     private final QuizRepository quizRepository;
     private final SolveRepository solveRepository;
+    private final QuizQueryRepository quizQueryRepository;
+
     private final QuizService quizService;
     private final ReadableService readableService;
     private final ChallengeService challengeService;
-    private final QuizQueryRepository quizQueryRepository;
+    private final RateService rateService;
 
-    public QuizQueryResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
+    public QuizResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
         Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
 
 //        if (!quiz.isMine(user)
@@ -39,7 +42,7 @@ public class QuizQueryService {
         Solve solve = findSolveOrElseEmpty(quiz, user);
 
         // 응답 객체 생성
-        return QuizQueryResponse.of(quiz, user, solve);
+        return QuizResponse.of(quiz, user, solve, rateService.countOfGood(quiz));
     }
 
     public QuizRublicResponse readQuizRubric(Long quizId, User user) throws UnauthorizedException {
@@ -52,9 +55,9 @@ public class QuizQueryService {
                 .build();
     }
 
-    public QuizResponse readMyQuiz(Long quizId, User user) throws UnauthorizedException {
+    public MyQuizResponse readMyQuiz(Long quizId, User user) throws UnauthorizedException {
         Quiz quiz = quizService.findOneMine(quizId, user);
-        return QuizResponse.of(quiz);
+        return MyQuizResponse.of(quiz, rateService.countOfGood(quiz));
     }
 
     public List<QuizSummaryResponse> readMyQuizzes(Integer week, User user, Long challengeId) {
@@ -66,7 +69,7 @@ public class QuizQueryService {
         // 응답 개체 생성
         List<QuizSummaryResponse> responses = new ArrayList<>(quizzes.size());
         for (Quiz quiz : quizzes) {
-            responses.add(QuizSummaryResponse.of(quiz, user, findSolveOrElseEmpty(quiz, user)));
+            responses.add(QuizSummaryResponse.of(quiz, user, findSolveOrElseEmpty(quiz, user), rateService.countOfGood(quiz)));
         }
         return responses;
     }
@@ -94,7 +97,7 @@ public class QuizQueryService {
         // 응답 개체 생성
         List<QuizSummaryResponse> responses = new ArrayList<>(quizzes.size());
         for (Quiz quiz : quizzes) {
-            responses.add(QuizSummaryResponse.of(quiz, user, findSolveOrElseEmpty(quiz, user)));
+            responses.add(QuizSummaryResponse.of(quiz, user, findSolveOrElseEmpty(quiz, user), rateService.countOfGood(quiz)));
         }
         return responses;
     }
