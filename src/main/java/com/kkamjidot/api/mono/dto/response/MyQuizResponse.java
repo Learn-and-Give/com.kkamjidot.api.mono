@@ -32,7 +32,7 @@ public class MyQuizResponse implements Serializable {
     private final LocalDateTime quizModifiedDate;
     private final String writerName;
     private final Integer cntOfGood;
-    private final RateValue didIrate;
+    private final RateValue didIRate;
     private final Long challengeId;
     private List<QuizFileDto> quizFiles;
 
@@ -40,7 +40,7 @@ public class MyQuizResponse implements Serializable {
         this.quizFiles.add(quizFile);
     }
 
-    public static MyQuizResponse of(Quiz quiz, Integer cntOfGood, RateValue didIrate) {
+    public static MyQuizResponse of(Quiz quiz, Integer cntOfGood, RateValue didIRate) {
         MyQuizResponse response = MyQuizResponse.builder()
                 .quizId(quiz.getId())
                 .quizTitle(quiz.getQuizTitle())
@@ -55,7 +55,7 @@ public class MyQuizResponse implements Serializable {
                 .quizModifiedDate(quiz.getQuizModifiedDate())
                 .writerName(quiz.getWriterName())
                 .cntOfGood(cntOfGood)
-                .didIrate(didIrate)
+                .didIRate(didIRate)
                 .challengeId(quiz.getChallengeId())
                 .quizFiles(new ArrayList<QuizFileDto>())
                 .build();

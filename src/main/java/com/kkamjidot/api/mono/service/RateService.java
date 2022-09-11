@@ -28,7 +28,7 @@ public class RateService {
         return rateRepository.countOfGood(quiz);
     }
 
-    public RateValue didIrate(Quiz quiz, User user) {
+    public RateValue didIRate(Quiz quiz, User user) {
         return rateRepository.findByQuizAndUser(quiz, user).map(Rate::getRate).orElse(null);
     }
 }

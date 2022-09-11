@@ -2,7 +2,7 @@
 ### v1.3.0 - 2022-09-11
 - PUT v1/quizzes/{quizId}/rate 퀴즈 평가 API 추가
   - 퀴즈에 좋아요(GOOD)/싫어요(BAD)/취소(null)로 평가한다. 열람 가능 주차의 문제가 아니면 403 에러를 반환한다.
-- 퀴즈 개요 리스트 조회, 내 퀴즈 조회, 퀴즈 조회에 cntOfGood(그 문제 좋아요 수), didIrate(내 평가 내용 GOOD,BAD,null) 추가
+- 퀴즈 개요 리스트 조회, 내 퀴즈 조회, 퀴즈 조회에 cntOfGood(그 문제 좋아요 수), didIRate(내 평가 내용 GOOD,BAD,null) 추가
 
 
 ### v1.2.0 - 2022-09-04
