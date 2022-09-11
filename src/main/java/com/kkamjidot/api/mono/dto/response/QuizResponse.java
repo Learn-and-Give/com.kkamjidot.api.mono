@@ -5,6 +5,7 @@ import com.kkamjidot.api.mono.domain.QuizFile;
 import com.kkamjidot.api.mono.domain.Solve;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.domain.enumerate.QuizCategory;
+import com.kkamjidot.api.mono.domain.enumerate.RateValue;
 import com.kkamjidot.api.mono.dto.QuizFileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -37,7 +38,7 @@ public class QuizResponse implements Serializable {
     private final Integer solveScore;
     private final String writerName;
     private final Integer cntOfGood;
-    private final Boolean didIrateGood;
+    private final RateValue didIrate;
     private final Long challengeId;
     private final List<QuizFileDto> quizFiles;
 
@@ -45,7 +46,7 @@ public class QuizResponse implements Serializable {
         this.quizFiles.add(quizFile);
     }
 
-    public static QuizResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, Boolean didIrate) {
+    public static QuizResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, RateValue didIrate) {
         QuizResponse quizResponse = QuizResponse.builder()
                 .quizId(quiz.getId())
                 .quizTitle(quiz.getQuizTitle())
@@ -63,7 +64,7 @@ public class QuizResponse implements Serializable {
                 .solveScore(solve.getSolveScore())
                 .writerName(quiz.getWriterName())
                 .cntOfGood(cntOfGood)
-                .didIrateGood(didIrate)
+                .didIrate(didIrate)
                 .challengeId(quiz.getChallengeId())
                 .quizFiles(new ArrayList<QuizFileDto>())
                 .build();

@@ -43,7 +43,7 @@ public class QuizQueryService {
         Solve solve = findSolveOrElseEmpty(quiz, user);
 
         // 응답 객체 생성
-        return QuizResponse.of(quiz, user, solve, rateService.countOfGood(quiz), rateService.didIrateGood(quiz, user));
+        return QuizResponse.of(quiz, user, solve, rateService.countOfGood(quiz), rateService.didIrate(quiz, user));
     }
 
     public QuizRublicResponse readQuizRubric(Long quizId, User user) throws UnauthorizedException {
@@ -58,7 +58,7 @@ public class QuizQueryService {
 
     public MyQuizResponse readMyQuiz(Long quizId, User user) throws UnauthorizedException {
         Quiz quiz = quizService.findOneMine(quizId, user);
-        return MyQuizResponse.of(quiz, rateService.countOfGood(quiz), rateService.didIrateGood(quiz, user));
+        return MyQuizResponse.of(quiz, rateService.countOfGood(quiz), rateService.didIrate(quiz, user));
     }
 
     public List<QuizSummaryResponse> readMyQuizzes(Integer week, User user, Long challengeId) {
@@ -99,7 +99,7 @@ public class QuizQueryService {
     private List<QuizSummaryResponse> getQuizSummaryResponses(User user, List<Quiz> quizzes) {
         List<QuizSummaryResponse> responses = new ArrayList<>(quizzes.size());
         for (Quiz quiz : quizzes) {
-            responses.add(QuizSummaryResponse.of(quiz, user, findSolveOrElseEmpty(quiz, user), rateService.countOfGood(quiz), rateService.didIrateGood(quiz, user)));
+            responses.add(QuizSummaryResponse.of(quiz, user, findSolveOrElseEmpty(quiz, user), rateService.countOfGood(quiz), rateService.didIrate(quiz, user)));
         }
         return responses;
     }
