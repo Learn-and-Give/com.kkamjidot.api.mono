@@ -11,6 +11,7 @@ import com.kkamjidot.api.mono.service.QuizService;
 import com.kkamjidot.api.mono.service.RateService;
 import com.kkamjidot.api.mono.service.ReadableService;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +43,7 @@ public class QuizQueryService {
         Solve solve = findSolveOrElseEmpty(quiz, user);
 
         // 응답 객체 생성
-        return QuizResponse.of(quiz, user, solve, rateService.countOfGood(quiz));
+        return QuizResponse.of(quiz, user, solve, rateService.countOfGood(quiz), rateService.didIrateGood(quiz, user));
     }
 
     public QuizRublicResponse readQuizRubric(Long quizId, User user) throws UnauthorizedException {
@@ -57,7 +58,7 @@ public class QuizQueryService {
 
     public MyQuizResponse readMyQuiz(Long quizId, User user) throws UnauthorizedException {
         Quiz quiz = quizService.findOneMine(quizId, user);
-        return MyQuizResponse.of(quiz, rateService.countOfGood(quiz));
+        return MyQuizResponse.of(quiz, rateService.countOfGood(quiz), rateService.didIrateGood(quiz, user));
     }
 
     public List<QuizSummaryResponse> readMyQuizzes(Integer week, User user, Long challengeId) {
@@ -67,11 +68,7 @@ public class QuizQueryService {
         else quizzes = quizRepository.findByQuizWeekAndUserAndChallenge_Id(week, user, challengeId);
 
         // 응답 개체 생성
-        List<QuizSummaryResponse> responses = new ArrayList<>(quizzes.size());
-        for (Quiz quiz : quizzes) {
-            responses.add(QuizSummaryResponse.of(quiz, user, findSolveOrElseEmpty(quiz, user), rateService.countOfGood(quiz)));
-        }
-        return responses;
+        return getQuizSummaryResponses(user, quizzes);
     }
 
     public QuizCountResponse countMyQuizzes(Integer week, User user, Long challengeId) {
@@ -95,9 +92,14 @@ public class QuizQueryService {
         List<Quiz> quizzes = quizQueryRepository.findByUserAndChallenge_IdAndQuizWeek(challengeId, weeks);
 
         // 응답 개체 생성
+        return getQuizSummaryResponses(user, quizzes);
+    }
+
+    @NotNull
+    private List<QuizSummaryResponse> getQuizSummaryResponses(User user, List<Quiz> quizzes) {
         List<QuizSummaryResponse> responses = new ArrayList<>(quizzes.size());
         for (Quiz quiz : quizzes) {
-            responses.add(QuizSummaryResponse.of(quiz, user, findSolveOrElseEmpty(quiz, user), rateService.countOfGood(quiz)));
+            responses.add(QuizSummaryResponse.of(quiz, user, findSolveOrElseEmpty(quiz, user), rateService.countOfGood(quiz), rateService.didIrateGood(quiz, user)));
         }
         return responses;
     }

@@ -14,4 +14,6 @@ public interface RateRepository extends JpaRepository<Rate, Long> {
     Integer countOfGood(Quiz quiz);
 
     Optional<Rate> findByUserAndQuiz_id(User user, Long id);
+
+    boolean existsByRateAndQuizAndUser(RateValue rate, Quiz quiz, User user);
 }
