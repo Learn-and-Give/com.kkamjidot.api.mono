@@ -2,6 +2,8 @@ package com.kkamjidot.api.mono.service;
 
 import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.Rate;
+import com.kkamjidot.api.mono.domain.User;
+import com.kkamjidot.api.mono.domain.enumerate.RateValue;
 import com.kkamjidot.api.mono.repository.RateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,5 +26,9 @@ public class RateService {
 
     public Integer countOfGood(Quiz quiz) {
         return rateRepository.countOfGood(quiz);
+    }
+
+    public boolean didIrateGood(Quiz quiz, User user) {
+        return rateRepository.existsByRateAndQuizAndUser(RateValue.GOOD, quiz, user);
     }
 }

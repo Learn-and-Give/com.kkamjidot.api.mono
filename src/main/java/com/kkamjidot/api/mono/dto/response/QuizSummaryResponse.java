@@ -30,8 +30,9 @@ public class QuizSummaryResponse implements Serializable {
     private final String writerName;
     private final Long challengeId;
     private final Integer cntOfGood;
+    private final Boolean didIrate;
 
-    public static QuizSummaryResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood) {
+    public static QuizSummaryResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, Boolean didIrate) {
         return QuizSummaryResponse.builder()
                 .quizId(quiz.getId())
                 .quizTitle(quiz.getQuizTitle())
@@ -45,6 +46,7 @@ public class QuizSummaryResponse implements Serializable {
                 .writerName(quiz.getWriterName())
                 .challengeId(quiz.getChallengeId())
                 .cntOfGood(cntOfGood)
+                .didIrate(didIrate)
                 .build();
     }
 }
