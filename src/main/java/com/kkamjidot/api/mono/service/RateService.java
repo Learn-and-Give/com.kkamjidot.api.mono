@@ -28,7 +28,7 @@ public class RateService {
         return rateRepository.countOfGood(quiz);
     }
 
-    public boolean didIrateGood(Quiz quiz, User user) {
-        return rateRepository.existsByRateAndQuizAndUser(RateValue.GOOD, quiz, user);
+    public RateValue didIrate(Quiz quiz, User user) {
+        return rateRepository.findByQuizAndUser(quiz, user).map(Rate::getRate).orElse(null);
     }
 }

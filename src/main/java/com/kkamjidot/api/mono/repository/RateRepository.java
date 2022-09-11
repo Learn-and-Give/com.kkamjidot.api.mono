@@ -15,5 +15,5 @@ public interface RateRepository extends JpaRepository<Rate, Long> {
 
     Optional<Rate> findByUserAndQuiz_id(User user, Long id);
 
-    boolean existsByRateAndQuizAndUser(RateValue rate, Quiz quiz, User user);
+    Optional<Rate> findByQuizAndUser(Quiz quiz, User user);
 }

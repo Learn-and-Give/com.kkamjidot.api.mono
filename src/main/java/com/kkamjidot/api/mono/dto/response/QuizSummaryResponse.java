@@ -4,6 +4,7 @@ import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.Solve;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.domain.enumerate.QuizCategory;
+import com.kkamjidot.api.mono.domain.enumerate.RateValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,9 +31,9 @@ public class QuizSummaryResponse implements Serializable {
     private final String writerName;
     private final Long challengeId;
     private final Integer cntOfGood;
-    private final Boolean didIrate;
+    private final RateValue didIrate;
 
-    public static QuizSummaryResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, Boolean didIrate) {
+    public static QuizSummaryResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, RateValue didIrate) {
         return QuizSummaryResponse.builder()
                 .quizId(quiz.getId())
                 .quizTitle(quiz.getQuizTitle())
