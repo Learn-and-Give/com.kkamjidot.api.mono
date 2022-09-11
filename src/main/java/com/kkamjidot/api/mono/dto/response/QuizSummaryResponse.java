@@ -4,11 +4,13 @@ import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.Solve;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.domain.enumerate.QuizCategory;
+import com.kkamjidot.api.mono.domain.enumerate.RateValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -28,8 +30,10 @@ public class QuizSummaryResponse implements Serializable {
     private final Integer solveScore;
     private final String writerName;
     private final Long challengeId;
+    private final Integer cntOfGood;
+    private final RateValue didIRate;
 
-    public static QuizSummaryResponse of(Quiz quiz, User user, Solve solve) {
+    public static QuizSummaryResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, RateValue didIRate) {
         return QuizSummaryResponse.builder()
                 .quizId(quiz.getId())
                 .quizTitle(quiz.getQuizTitle())
@@ -42,6 +46,8 @@ public class QuizSummaryResponse implements Serializable {
                 .solveScore(solve.getSolveScore())
                 .writerName(quiz.getWriterName())
                 .challengeId(quiz.getChallengeId())
+                .cntOfGood(cntOfGood)
+                .didIRate(didIRate)
                 .build();
     }
 }

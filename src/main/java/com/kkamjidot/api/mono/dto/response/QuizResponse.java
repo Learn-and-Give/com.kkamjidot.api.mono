@@ -2,7 +2,10 @@ package com.kkamjidot.api.mono.dto.response;
 
 import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.QuizFile;
+import com.kkamjidot.api.mono.domain.Solve;
+import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.domain.enumerate.QuizCategory;
+import com.kkamjidot.api.mono.domain.enumerate.RateValue;
 import com.kkamjidot.api.mono.dto.QuizFileDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -15,8 +18,9 @@ import java.util.Set;
 
 @ToString
 @Getter
+@Setter
 @Builder
-@Schema(name = "퀴즈 전체 내용 응답")
+@Schema(name = "퀴즈 내용 응답")
 public class QuizResponse implements Serializable {
     private final Long quizId;
     private final String quizTitle;
@@ -29,28 +33,38 @@ public class QuizResponse implements Serializable {
     private final String quizSource;
     private final LocalDateTime quizCreatedDate;
     private final LocalDateTime quizModifiedDate;
+    private final Boolean isMine;
+    private final String solveAnswer;
+    private final Integer solveScore;
     private final String writerName;
+    private final Integer cntOfGood;
+    private final RateValue didIRate;
     private final Long challengeId;
-    private List<QuizFileDto> quizFiles;
+    private final List<QuizFileDto> quizFiles;
 
     public void addQuizFiles(QuizFileDto quizFile) {
         this.quizFiles.add(quizFile);
     }
 
-    public static QuizResponse of(Quiz quiz) {
+    public static QuizResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, RateValue didIRate) {
         QuizResponse quizResponse = QuizResponse.builder()
                 .quizId(quiz.getId())
                 .quizTitle(quiz.getQuizTitle())
                 .quizWeek(quiz.getQuizWeek())
                 .quizCategory(quiz.getQuizCategory())
                 .quizContent(quiz.getQuizContent())
-                .quizAnswer(quiz.getQuizAnswer())
-                .quizExplanation(quiz.getQuizExplanation())
-                .quizRubric(quiz.getQuizRubric())
-                .quizSource(quiz.getQuizSource())
+                .quizAnswer(solve.getSolveAnswer() != null ? quiz.getQuizAnswer() : null)
+                .quizExplanation(solve.getSolveAnswer() != null ? quiz.getQuizExplanation() : null)
+                .quizRubric(solve.getSolveAnswer() != null ? quiz.getQuizRubric() : null)
+                .quizSource(solve.getSolveAnswer() != null ? quiz.getQuizSource() : null)
                 .quizCreatedDate(quiz.getQuizCreatedDate())
                 .quizModifiedDate(quiz.getQuizModifiedDate())
+                .isMine(quiz.isMine(user))
+                .solveAnswer(solve.getSolveAnswer())
+                .solveScore(solve.getSolveScore())
                 .writerName(quiz.getWriterName())
+                .cntOfGood(cntOfGood)
+                .didIRate(didIRate)
                 .challengeId(quiz.getChallengeId())
                 .quizFiles(new ArrayList<QuizFileDto>())
                 .build();
