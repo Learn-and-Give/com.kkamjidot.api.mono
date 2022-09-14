@@ -29,4 +29,8 @@ public class SolveService {
         Solve solve = solveRepository.findByQuizAndUserAndSolveAnswerNotNull(quiz, user).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
         solve.setSolveScore(score);
     }
+
+    public Solve findSolveOrElseEmpty(Quiz quiz, User user) {
+        return solveRepository.findByQuizAndUser(quiz, user).orElseGet(Solve::empty);
+    }
 }

@@ -34,7 +34,6 @@ public class QuizController {
     private final TakeAClassService takeAClassService;
     private final SolveService solveService;
     private final ReadableService readableService;
-    private final RateService rateService;
 
     @Operation(summary = "퀴즈 개요 목록 조회 API", description = "한 챌린지에 여러 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 열람 가능 주차의 문제가 아니면 403 에러를 반환한다. 쿼리 week에는 여러 주차를 입력받는다.")
     @GetMapping("v1/challenges/{challengeId}/quizzes")
@@ -129,7 +128,7 @@ public class QuizController {
                                                      @RequestPart(required = false) List<MultipartFile> quizFiles,
                                                      UriComponentsBuilder uriBuilder) {
         User user = userService.authenticate(code);
-        Challenge challenge = takeAClassService.findOneTakedAndInProgress(challengeId, user);
+        Challenge challenge = takeAClassService.findOneChallengeTakenAndInProgress(challengeId, user);
 
         Quiz quiz = Quiz.of(createQuizRequest, user, challenge);
         quizService.createOne(quiz, quizFiles);
@@ -208,32 +207,5 @@ public class QuizController {
 
         LOGGER.info("퀴즈 풀기 채점 점수 제출 API: Patch v1/quizzes/{}/grade [User: {}, quiz: {}]", quizId, user.getId(), quiz.getId());
         return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
-    }
-
-    @Operation(summary = "퀴즈 평가 API", description = "퀴즈에 좋아요(GOOD)/싫어요(BAD)/취소(null)로 평가한다. 열람 가능 주차의 문제가 아니면 403 에러를 반환한다.")
-    @ApiResponse(responseCode = "201", description = "퀴즈 평가 성공")
-    @PutMapping(path = "v1/quizzes/{quizId}/rate")
-    public ResponseEntity<QuizRateResponse> rateQuiz(@RequestHeader @Parameter(description = "로그인한 회원 코드", example = "1234") String code,
-                                                     @PathVariable @Parameter(description = "퀴즈 ID", example = "0") Long quizId,
-                                                     @RequestBody QuizRateRequest request,
-                                                     UriComponentsBuilder uriBuilder) {
-        User user = userService.authenticate(code);
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
-
-        Rate rate = Rate.builder()
-                .rate(request.getRate())
-                .user(user)
-                .quiz(quiz)
-                .build();
-        rateService.rateQuiz(rate);
-
-        QuizRateResponse response = QuizRateResponse.builder()
-                .cntOfGood(rateService.countOfGood(quiz))
-                .quizId(rate.getQuiz().getId())
-                .build();
-        URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(response.getQuizId()).toUri();
-
-        LOGGER.info("퀴즈 평가 API: PUT v1/quizzes/{}/rate [User: {}, response: {}]", quizId, user.getId(), response);
-        return ResponseEntity.created(location).body(response);
     }
 }
