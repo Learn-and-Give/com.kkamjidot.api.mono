@@ -4,8 +4,6 @@ import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.dto.response.ChallengeResponse;
 import com.kkamjidot.api.mono.dto.response.nowResponse;
 import com.kkamjidot.api.mono.dto.response.WeekResponse;
-import com.kkamjidot.api.mono.service.ChallengeService;
-import com.kkamjidot.api.mono.service.ReadableService;
 import com.kkamjidot.api.mono.service.UserService;
 import com.kkamjidot.api.mono.service.query.ChallengeQueryService;
 import io.swagger.v3.oas.annotations.Operation;

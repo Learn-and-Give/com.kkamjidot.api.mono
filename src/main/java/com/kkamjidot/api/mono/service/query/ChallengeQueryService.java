@@ -1,7 +1,6 @@
 package com.kkamjidot.api.mono.service.query;
 
 import com.kkamjidot.api.mono.domain.Challenge;
-import com.kkamjidot.api.mono.domain.Readable;
 import com.kkamjidot.api.mono.domain.TakeAClass;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.domain.enumerate.ApplicationStatus;
@@ -10,10 +9,9 @@ import com.kkamjidot.api.mono.dto.response.WeekResponse;
 import com.kkamjidot.api.mono.dto.response.enumerate.WeekStatus;
 import com.kkamjidot.api.mono.dto.response.nowResponse;
 import com.kkamjidot.api.mono.repository.ChallengeRepository;
-import com.kkamjidot.api.mono.repository.ReadableRepository;
 import com.kkamjidot.api.mono.repository.TakeAClassRepository;
 import com.kkamjidot.api.mono.service.ChallengeService;
-import com.kkamjidot.api.mono.service.ReadableService;
+import com.kkamjidot.api.mono.service.CompleteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +26,7 @@ import java.util.*;
 public class ChallengeQueryService {
     private final ChallengeRepository challengeRepository;
     private final TakeAClassRepository takeAClassRepository;
-    private final ReadableService readableService;
+    private final CompleteService completeService;
     private final ChallengeService challengeService;
 
     public List<ChallengeResponse> readChallenges(User user) {
@@ -75,16 +73,16 @@ public class ChallengeQueryService {
 
     public WeekResponse readWeeks(Long challengeId, User user) {
         Challenge challenge = challengeService.findOne(challengeId);
-        List<Integer> readableWeeks = readableService.findReadableWeeks(user, challenge);
+        List<Integer> completeWeeks = completeService.findCompleteWeeks(user, challenge);
         int challTotalWeeks = challenge.getChallTotalWeeks();   // 총 주차 조회
 
         // 열람 가능한 주차 true로 변경
         Map<Integer, WeekStatus> weeks = new HashMap<>(challTotalWeeks);
         for (int i = 1; i <= challTotalWeeks; ++i) {
             if (i < challenge.getNowWeek()) {
-                if (readableWeeks.contains(i)) weeks.put(i, WeekStatus.READABLE);
+                if (completeWeeks.contains(i)) weeks.put(i, WeekStatus.READABLE);
                 else weeks.put(i, WeekStatus.UNREADABLE);
-            } else if (i == challenge.getNowWeek() && readableWeeks.contains(i)) weeks.put(i, WeekStatus.READABLE_CLOSED);
+            } else if (i == challenge.getNowWeek() && completeWeeks.contains(i)) weeks.put(i, WeekStatus.READABLE_CLOSED);
             else weeks.put(i, WeekStatus.CLOSED);
         }
 

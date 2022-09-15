@@ -67,9 +67,11 @@ public class Challenge {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cinfo_id", nullable = false)
+    @ToString.Exclude
     private ChallengeInfo challengeInfo;
 
     @OneToMany(mappedBy = "challenge")
+    @ToString.Exclude
     private Set<Quiz> quizzes = new LinkedHashSet<>();
 
     public Integer getNowWeek() {

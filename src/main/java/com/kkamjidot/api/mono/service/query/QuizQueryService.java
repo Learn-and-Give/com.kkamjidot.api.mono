@@ -25,13 +25,13 @@ public class QuizQueryService {
     private final QuizQueryRepository quizQueryRepository;
 
     private final QuizService quizService;
-    private final ReadableService readableService;
+    private final CompleteService completeService;
     private final ChallengeService challengeService;
     private final RateService rateService;
     private final SolveService solveService;
 
     public QuizResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
+        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
 
 //        if (!quiz.isMine(user)
 //                && (quiz.getChallenge().getNowWeek() <= quiz.getQuizWeek()
@@ -83,7 +83,7 @@ public class QuizQueryService {
 
     public List<QuizSummaryResponse> readQuizSummaries(User user, Long challengeId, List<Integer> weeks) throws UnauthorizedException {
         Challenge challenge = challengeService.findOne(challengeId);
-        List<Integer> readableWeeks = readableService.findReadableWeeks(user, challenge);
+        List<Integer> readableWeeks = completeService.findCompleteWeeks(user, challenge);
         for (int week : weeks) {
             if (week == challenge.getNowWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
         }

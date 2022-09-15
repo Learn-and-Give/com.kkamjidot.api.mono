@@ -1,4 +1,9 @@
 # com.kkamjidot.api.mono
+### v1.4.0 - 
+- GET v1/challenges/{challengeId}/my-good-quizzes 좋아요한 문제들 조회 API 추가
+  - 내가 좋아요한 문제들의 개요 리스트를 반환한다. 수강중이거나 수강했던 챌린지가 아니라면 403 에러를 반환한다.
+
+
 ### v1.3.0 - 2022-09-11
 - PUT v1/quizzes/{quizId}/rate 퀴즈 평가 API 추가
   - 퀴즈에 좋아요(GOOD)/싫어요(BAD)/취소(null)로 평가한다. 열람 가능 주차의 문제가 아니면 403 에러를 반환한다.

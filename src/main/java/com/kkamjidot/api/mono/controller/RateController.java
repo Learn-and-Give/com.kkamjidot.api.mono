@@ -8,7 +8,6 @@ import com.kkamjidot.api.mono.dto.request.QuizRateRequest;
 import com.kkamjidot.api.mono.dto.response.QuizRateResponse;
 import com.kkamjidot.api.mono.dto.response.QuizSummaryResponse;
 import com.kkamjidot.api.mono.service.*;
-import com.kkamjidot.api.mono.service.query.QuizQueryService;
 import com.kkamjidot.api.mono.service.query.RateQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -16,8 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,9 +28,8 @@ import java.util.List;
 @RestController
 public class RateController {
     private final UserService userService;
-    private final ReadableService readableService;
+    private final QuizService quizService;
     private final RateService rateService;
-    private final ChallengeService challengeService;
     private final RateQueryService rateQueryService;
     private final TakeAClassService takeAClassService;
 
@@ -45,7 +41,7 @@ public class RateController {
                                                      @RequestBody QuizRateRequest request,
                                                      UriComponentsBuilder uriBuilder) {
         User user = userService.authenticate(code);
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
+        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
 
         Rate rate = Rate.builder()
                 .rate(request.getRate())

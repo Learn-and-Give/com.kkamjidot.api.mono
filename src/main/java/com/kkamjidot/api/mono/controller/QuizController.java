@@ -33,7 +33,7 @@ public class QuizController {
     private final QuizQueryService quizQueryService;
     private final TakeAClassService takeAClassService;
     private final SolveService solveService;
-    private final ReadableService readableService;
+    private final CompleteService completeService;
 
     @Operation(summary = "퀴즈 개요 목록 조회 API", description = "한 챌린지에 여러 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 열람 가능 주차의 문제가 아니면 403 에러를 반환한다. 쿼리 week에는 여러 주차를 입력받는다.")
     @GetMapping("v1/challenges/{challengeId}/quizzes")
@@ -134,7 +134,7 @@ public class QuizController {
         quizService.createOne(quiz, quizFiles);
 
         // 챌린지 퀴즈 제출 조건 이상의 퀴즈를 제출했으면 열람 가능한 권한 생성
-        readableService.createOneIfRight(challenge, user, quiz.getQuizWeek());
+        completeService.createOneIfRight(challenge, user, quiz.getQuizWeek());
         URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
 
         LOGGER.info("퀴즈 제출 API: Post v1/challenges/{}/quizzes [User: {}, Quiz: {}]", challengeId, user.getId(), quiz.getId());
@@ -165,7 +165,7 @@ public class QuizController {
                                                     @RequestBody @Valid SolveRequest request,
                                                     UriComponentsBuilder uriBuilder) {
         User user = userService.authenticate(code);
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
+        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
         solveService.checkNotSolved(quiz, user);                    // 이미 푼 문제인지 확인
 
         Solve solve = Solve.of(request, quiz, user);
@@ -201,11 +201,18 @@ public class QuizController {
                                                     @RequestBody @Valid ScoreRequest request,
                                                     UriComponentsBuilder uriBuilder) {
         User user = userService.authenticate(code);
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
+        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
         solveService.updateSolveScore(quiz, user, request.getScore());// 이미 푼 문제인지 확인
         URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
 
         LOGGER.info("퀴즈 풀기 채점 점수 제출 API: Patch v1/quizzes/{}/grade [User: {}, quiz: {}]", quizId, user.getId(), quiz.getId());
         return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
+    }
+
+    @Operation(summary = "퀴즈 제출 현황 조회 API", description = "현재 챌린지의 퀴즈 제출 현황을 조회한다. 주차 및 챌린지원별 퀴즈 제출 횟수가 반환된다. 수강중이거나 수강했던 챌린지가 아니라면 403 에러를 반환한다.")
+    @GetMapping("v1/challenges/{challengeId}/submissions-status")
+    public ResponseEntity<QuizSubmissionStatusResponse> readStatusBoard(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+                                                                        @PathVariable Long challengeId) {
+        return null;
     }
 }
