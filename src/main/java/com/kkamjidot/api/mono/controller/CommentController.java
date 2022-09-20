@@ -33,7 +33,6 @@ public class CommentController {
     private final Logger LOGGER = LoggerFactory.getLogger(ChallengeController.class);
 
     private final UserService userService;
-    private final CompleteService completeService;
     private final QuizService quizService;
     private final CommentService commentService;
     private final CommentQueryService commentQueryService;

@@ -105,4 +105,10 @@ public class QuizQueryService {
     public Solve findSolve(Long quizId, User user) {
         return solveRepository.findByQuiz_IdAndUserAndSolveAnswerNotNull(quizId, user).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
     }
+
+    public QuizSubmissionStatusResponse readQuizSubmissionStatus(User user, Long challengeId) {
+        Challenge challenge = challengeService.findOne(challengeId);
+
+        return null;
+    }
 }

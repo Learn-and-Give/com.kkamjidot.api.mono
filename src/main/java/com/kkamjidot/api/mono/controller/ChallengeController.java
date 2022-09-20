@@ -2,6 +2,7 @@ package com.kkamjidot.api.mono.controller;
 
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.dto.response.ChallengeResponse;
+import com.kkamjidot.api.mono.dto.response.ChallengeSummaryResponse;
 import com.kkamjidot.api.mono.dto.response.nowResponse;
 import com.kkamjidot.api.mono.dto.response.WeekResponse;
 import com.kkamjidot.api.mono.service.UserService;
@@ -30,10 +31,10 @@ public class ChallengeController {
 
     @Operation(summary = "챌린지 목록 조회 API", description = "모든 챌린지를 조회한다.")
     @GetMapping("v1/challenges")
-    public ResponseEntity<List<ChallengeResponse>> readChallenges(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
+    public ResponseEntity<List<ChallengeSummaryResponse>> readChallenges(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
         User user = userService.authenticate(code);
 
-        List<ChallengeResponse> responses = challengeQueryService.readChallenges(user);
+        List<ChallengeSummaryResponse> responses = challengeQueryService.readChallenges(user);
 
         LOGGER.info("챌린지 목록 조회 API: Get v1/challenges [User: {}, responses: {}]", user.getId(), responses);
         return ResponseEntity.ok(responses);
@@ -53,10 +54,10 @@ public class ChallengeController {
 
     @Operation(summary = "내가 참여한 챌린지 목록 조회 API", description = "내가 참여한 챌린지 목록을 조회한다.")
     @GetMapping("v1/my/challenges")
-    public ResponseEntity<List<ChallengeResponse>> readMyChallenges(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
+    public ResponseEntity<List<ChallengeSummaryResponse>> readMyChallenges(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
         User user = userService.authenticate(code);
 
-        List<ChallengeResponse> responses = challengeQueryService.readMyChallenges(user);
+        List<ChallengeSummaryResponse> responses = challengeQueryService.readMyChallenges(user);
 
         LOGGER.info("내가 참여한 챌린지 목록 조회 API: Get v1/my/challenges [User: {}, responses: {}]", user.getId(), responses);
         return ResponseEntity.ok(responses);
