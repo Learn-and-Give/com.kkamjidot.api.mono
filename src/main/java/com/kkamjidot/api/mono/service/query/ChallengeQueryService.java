@@ -5,6 +5,7 @@ import com.kkamjidot.api.mono.domain.TakeAClass;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.domain.enumerate.ApplicationStatus;
 import com.kkamjidot.api.mono.dto.response.ChallengeResponse;
+import com.kkamjidot.api.mono.dto.response.ChallengeSummaryResponse;
 import com.kkamjidot.api.mono.dto.response.WeekResponse;
 import com.kkamjidot.api.mono.dto.response.enumerate.WeekStatus;
 import com.kkamjidot.api.mono.dto.response.nowResponse;
@@ -29,25 +30,25 @@ public class ChallengeQueryService {
     private final CompleteService completeService;
     private final ChallengeService challengeService;
 
-    public List<ChallengeResponse> readChallenges(User user) {
+    public List<ChallengeSummaryResponse> readChallenges(User user) {
         // 챌린지 목록 조회
         List<Challenge> challenges = challengeRepository.findByChallDeletedDateNull();
 
         // 응답 객체 생성
-        List<ChallengeResponse> challengeResponses = new ArrayList<>(challenges.size());
+        List<ChallengeSummaryResponse> challengeSummaryResponses = new ArrayList<>(challenges.size());
         for (Challenge challenge : challenges) {
-            ChallengeResponse challengeResponse = ChallengeResponse.of(challenge);
-            findApplicationStatus(challenge, user).ifPresent(challengeResponse::setApplicationStatus);     // 신청상태
-            challengeResponses.add(challengeResponse);
+            ChallengeSummaryResponse challengeSummaryResponse = ChallengeSummaryResponse.of(challenge);
+            findApplicationStatus(challenge, user).ifPresent(challengeSummaryResponse::setApplicationStatus);     // 신청상태
+            challengeSummaryResponses.add(challengeSummaryResponse);
         }
 
-        return challengeResponses;
+        return challengeSummaryResponses;
     }
 
     public ChallengeResponse readChallenge(Long challengeId, User user) {
         // 챌린지 조회
         Challenge challenge = challengeService.findOne(challengeId);
-        ChallengeResponse challengeResponse = ChallengeResponse.of(challenge);
+        ChallengeResponse challengeResponse = ChallengeResponse.of(challenge, completeService.countComplete(challenge));
         findApplicationStatus(challenge, user).ifPresent(challengeResponse::setApplicationStatus);     // 신청상태
         return challengeResponse;
     }
@@ -56,19 +57,19 @@ public class ChallengeQueryService {
         return takeAClassRepository.findByChallAndUser(challenge, user).map(TakeAClass::getTcApplicationstatus);
     }
 
-    public List<ChallengeResponse> readMyChallenges(User user) {
+    public List<ChallengeSummaryResponse> readMyChallenges(User user) {
         // 수강 목록 조회
         List<TakeAClass> takes = takeAClassRepository.findByUser(user);
 
         // 응답 객체 생성
-        List<ChallengeResponse> challengeResponses = new ArrayList<>(takes.size());
+        List<ChallengeSummaryResponse> challengeSummaryResponses = new ArrayList<>(takes.size());
         for (TakeAClass take : takes) {
-            ChallengeResponse challengeResponse = ChallengeResponse.of(take.getChall());
-            challengeResponse.setApplicationStatus(take.getTcApplicationstatus());
-            challengeResponses.add(challengeResponse);
+            ChallengeSummaryResponse challengeSummaryResponse = ChallengeSummaryResponse.of(take.getChall());
+            challengeSummaryResponse.setApplicationStatus(take.getTcApplicationstatus());
+            challengeSummaryResponses.add(challengeSummaryResponse);
         }
 
-        return challengeResponses;
+        return challengeSummaryResponses;
     }
 
     public WeekResponse readWeeks(Long challengeId, User user) {

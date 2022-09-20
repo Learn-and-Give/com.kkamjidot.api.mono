@@ -5,6 +5,7 @@ import com.kkamjidot.api.mono.dto.request.*;
 import com.kkamjidot.api.mono.dto.response.*;
 import com.kkamjidot.api.mono.service.*;
 import com.kkamjidot.api.mono.service.query.QuizQueryService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -209,10 +210,13 @@ public class QuizController {
         return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
     }
 
+    @Hidden
     @Operation(summary = "퀴즈 제출 현황 조회 API", description = "현재 챌린지의 퀴즈 제출 현황을 조회한다. 주차 및 챌린지원별 퀴즈 제출 횟수가 반환된다. 수강중이거나 수강했던 챌린지가 아니라면 403 에러를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/submissions-status")
-    public ResponseEntity<QuizSubmissionStatusResponse> readStatusBoard(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
-                                                                        @PathVariable Long challengeId) {
+    public ResponseEntity<QuizSubmissionStatusResponse> readQuizSubmissionStatus(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+                                                                                 @PathVariable Long challengeId) {
+        User user = userService.authenticate(code);
+
         return null;
     }
 }
