@@ -1,5 +1,5 @@
 # com.kkamjidot.api.mono
-### v1.4.0 - 
+### v1.4.3 - 2022-09-22
 - GET v1/challenges/{challengeId}/my-good-quizzes 좋아요한 문제들 조회 API 추가
   - 내가 좋아요한 문제들의 개요 리스트를 반환한다. 수강중이거나 수강했던 챌린지가 아니라면 403 에러를 반환한다.
 - GET v1/challenges 챌린지 목록 조회 API, GET v1/my/challenges 내가 참여한 챌린지 목록 조회 API의 응답 수정
