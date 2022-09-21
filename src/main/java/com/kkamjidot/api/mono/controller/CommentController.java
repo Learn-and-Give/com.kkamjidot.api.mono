@@ -7,8 +7,8 @@ import com.kkamjidot.api.mono.dto.request.CreateCommentRequest;
 import com.kkamjidot.api.mono.dto.response.CommentIdResponse;
 import com.kkamjidot.api.mono.dto.response.CommentResponse;
 import com.kkamjidot.api.mono.service.CommentService;
+import com.kkamjidot.api.mono.service.CompleteService;
 import com.kkamjidot.api.mono.service.QuizService;
-import com.kkamjidot.api.mono.service.ReadableService;
 import com.kkamjidot.api.mono.service.UserService;
 import com.kkamjidot.api.mono.service.query.CommentQueryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,18 +16,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.client.utils.URIBuilder;
-import org.hibernate.id.SequenceIdentityGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -39,7 +33,7 @@ public class CommentController {
     private final Logger LOGGER = LoggerFactory.getLogger(ChallengeController.class);
 
     private final UserService userService;
-    private final ReadableService readableService;
+    private final QuizService quizService;
     private final CommentService commentService;
     private final CommentQueryService commentQueryService;
 
@@ -50,7 +44,7 @@ public class CommentController {
                                                         @PathVariable Long quizId,
                                                         @RequestBody @Valid CreateCommentRequest request) {
         User user = userService.authenticate(code);
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);     // 열람 가능한 주차의 문제인지 확인
+        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);     // 열람 가능한 주차의 문제인지 확인
 
         Comment comment = Comment.builder()
                 .commentContent(request.getContent())
@@ -68,7 +62,7 @@ public class CommentController {
     public ResponseEntity<List<CommentResponse>> readComments(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                              @PathVariable Long quizId) {
         User user = userService.authenticate(code);
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
+        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
         List<CommentResponse> responses = commentQueryService.readComments(user, quiz);
 
         LOGGER.info("댓글 목록 조회 API: Get v1/quizzes/{}/comments [User: {}, responses: {}]", quizId, user.getId(), responses);

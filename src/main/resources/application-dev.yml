@@ -15,7 +15,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        generate_statistics: true # 쿼리 통계 출력
+#        generate_statistics: true # 쿼리 통계 출력
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: validate

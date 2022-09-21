@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -20,10 +18,15 @@ public class TakeAClassService {
     /**
      * 수강중이고 진행중인 챌린지를 조회한다.
      */
-    public Challenge findOneTakedAndInProgress(Long challengeId, User user) throws UnauthorizedException {
+    public Challenge findOneChallengeTakenAndInProgress(Long challengeId, User user) throws UnauthorizedException {
         Challenge challenge = takeAClassRepository.findByTcApplicationstatusAndChall_IdAndUser(ApplicationStatus.ACCEPTED, challengeId, user)
                 .orElseThrow(() -> new UnauthorizedException("수강중인 챌린지가 아닙니다.")).getChall();
         if (!challenge.isInProgress()) throw new UnauthorizedException("이미 종료된 챌린지입니다.");
         return challenge;
+    }
+
+    public Challenge findOneChallengeTaken(Long challengeId, User user) throws UnauthorizedException {
+        return takeAClassRepository.findByTcApplicationstatusAndChall_IdAndUser(ApplicationStatus.ACCEPTED, challengeId, user)
+                .orElseThrow(() -> new UnauthorizedException("열람 가능한 챌린지가 아닙니다.")).getChall();
     }
 }

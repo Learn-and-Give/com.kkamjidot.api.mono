@@ -76,11 +76,13 @@ public class ChallengeResponse implements Serializable {
     @Schema(description = "챌린지 신청 상태")
     private ApplicationStatus applicationStatus;
 
+    @Schema(description = "현재 주차 미션 성공 챌린지원 수") private int numberOfChallengerWhoCompleted;
+
     public void setApplicationStatus(ApplicationStatus status) {
         this.applicationStatus = status;
     }
 
-    public static ChallengeResponse of(Challenge challenge) {
+    public static ChallengeResponse of(Challenge challenge, int numberOfChallengerWhoCompleted) {
         ChallengeInfo challengeInfo = challenge.getChallengeInfo();
         return ChallengeResponse.builder()
                 .challengeId(challenge.getId())
@@ -102,6 +104,7 @@ public class ChallengeResponse implements Serializable {
                 .imageUrl(challengeInfo.getCinfoImageUrl())
                 .createdDate(challenge.getChallCreatedDate())
                 .modifiedDate(challenge.getChallModifiedDate())
+                .numberOfChallengerWhoCompleted(numberOfChallengerWhoCompleted)
                 .build();
     }
 }

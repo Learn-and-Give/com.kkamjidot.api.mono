@@ -1,4 +1,35 @@
 # com.kkamjidot.api.mono
+### v1.4.3 - 2022-09-22
+- GET v1/challenges/{challengeId}/my-good-quizzes 좋아요한 문제들 조회 API 추가
+  - 내가 좋아요한 문제들의 개요 리스트를 반환한다. 수강중이거나 수강했던 챌린지가 아니라면 403 에러를 반환한다.
+- GET v1/challenges 챌린지 목록 조회 API, GET v1/my/challenges 내가 참여한 챌린지 목록 조회 API의 응답 수정
+  - <details  markdown="1">
+    <summary>ChallengeSummaryResponse 응답 DTO 세부 내용</summary>
+
+    ```
+    @Schema(description = "현재 주차 미션 성공 챌린지원 수") private int numberOfChallengerWhoCompleted;@Schema(description = "챌린지 ID") private final Long challengeId;
+    @Schema(description = "챌린지 제목") private final String title;
+    @Schema(description = "챌린지가 진행되는 주차 수") private final Integer totalWeeks;
+    @Schema(description = "주차별 최소 제출 문제 수") private final Integer minNumOfQuizzesByWeek;
+    @Schema(description = "챌린지 참가비(없으면 0)") private final Integer cost;
+    @Schema(description = "대상 대학") private final String university;
+    @Schema(description = "대상 학과") private final String department;
+    @Schema(description = "교수명") private final String professorName;
+    @Schema(description = "챌린지 기수") private final Integer chapter;
+    @Schema(description = "챌린지 대상") private final String target;
+    @Schema(description = "챌린지 시작일시") private final LocalDateTime startDate;
+    @Schema(description = "챌린지 종료일시") private final LocalDateTime endDate;
+    @Schema(description = "신청시작일시") private final LocalDateTime applicationStartDate;
+    @Schema(description = "신청종료일시") private final LocalDateTime applicationEndDate;
+    @Schema(description = "챌린지 이미지 경로") private final String imageUrl;
+    @Schema(description = "챌린지 신청 상태") private ApplicationStatus applicationStatus;
+    ```
+    </details>
+- GET v1/challenges/{challengeId} 챌린지 조회 API 응답 수정
+  - 현재 주차 미션 성공 챌린지원 수 추가
+  - ```private int numberOfChallengerWhoCompleted```
+
+
 ### v1.3.0 - 2022-09-11
 - PUT v1/quizzes/{quizId}/rate 퀴즈 평가 API 추가
   - 퀴즈에 좋아요(GOOD)/싫어요(BAD)/취소(null)로 평가한다. 열람 가능 주차의 문제가 아니면 403 에러를 반환한다.

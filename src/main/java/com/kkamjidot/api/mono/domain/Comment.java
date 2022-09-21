@@ -38,10 +38,12 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quiz_id", nullable = false)
+    @ToString.Exclude
     private Quiz quiz;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude
     private User user;
 
     public boolean isMine(User user) {

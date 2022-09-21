@@ -1,5 +1,6 @@
 package com.kkamjidot.api.mono.service;
 
+import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.Rate;
 import com.kkamjidot.api.mono.domain.User;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -30,5 +32,9 @@ public class RateService {
 
     public RateValue didIRate(Quiz quiz, User user) {
         return rateRepository.findByQuizAndUser(quiz, user).map(Rate::getRate).orElse(null);
+    }
+
+    public List<Quiz> findMyGoodQuizzes(User user, Challenge challenge) {
+        return rateRepository.findMyGoodQuizzes(user, challenge);
     }
 }

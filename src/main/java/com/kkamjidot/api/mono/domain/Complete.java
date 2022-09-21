@@ -15,22 +15,22 @@ import java.time.LocalDateTime;
 @ToString
 @DynamicInsert
 @DynamicUpdate
-@Entity(name = "Readable")
-@Table(name = "readable")
-public class Readable {
+@Entity(name = "Complete")
+@Table(name = "complete")
+public class Complete {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "readable_id", nullable = false)
+    @Column(name = "complete_id", nullable = false)
     private Long id;
 
     @Column(name = "week", nullable = false)
     private Integer week;
 
-    @Column(name = "readable_created_date")
-    private LocalDateTime readableCreatedDate;
+    @Column(name = "complete_created_date")
+    private LocalDateTime completeCreatedDate;
 
-    @Column(name = "readable_modified_date")
-    private LocalDateTime readableModifiedDate;
+    @Column(name = "complete_modified_date")
+    private LocalDateTime completeModifiedDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

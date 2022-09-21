@@ -6,10 +6,7 @@ import com.kkamjidot.api.mono.exception.UnauthorizedException;
 import com.kkamjidot.api.mono.repository.QuizRepository;
 import com.kkamjidot.api.mono.repository.SolveRepository;
 import com.kkamjidot.api.mono.repository.query.QuizQueryRepository;
-import com.kkamjidot.api.mono.service.ChallengeService;
-import com.kkamjidot.api.mono.service.QuizService;
-import com.kkamjidot.api.mono.service.RateService;
-import com.kkamjidot.api.mono.service.ReadableService;
+import com.kkamjidot.api.mono.service.*;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -28,19 +25,20 @@ public class QuizQueryService {
     private final QuizQueryRepository quizQueryRepository;
 
     private final QuizService quizService;
-    private final ReadableService readableService;
+    private final CompleteService completeService;
     private final ChallengeService challengeService;
     private final RateService rateService;
+    private final SolveService solveService;
 
     public QuizResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
-        Quiz quiz = readableService.findOneInReadableWeek(quizId, user);
+        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
 
 //        if (!quiz.isMine(user)
 //                && (quiz.getChallenge().getNowWeek() <= quiz.getQuizWeek()
 //                || !readableRepository.existsByWeekAndUserAndChall(quiz.getQuizWeek(), user, quiz.getChallenge())))
 //            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
 
-        Solve solve = findSolveOrElseEmpty(quiz, user);
+        Solve solve = solveService.findSolveOrElseEmpty(quiz, user);
 
         // 응답 객체 생성
         return QuizResponse.of(quiz, user, solve, rateService.countOfGood(quiz), rateService.didIRate(quiz, user));
@@ -85,7 +83,7 @@ public class QuizQueryService {
 
     public List<QuizSummaryResponse> readQuizSummaries(User user, Long challengeId, List<Integer> weeks) throws UnauthorizedException {
         Challenge challenge = challengeService.findOne(challengeId);
-        List<Integer> readableWeeks = readableService.findReadableWeeks(user, challenge);
+        List<Integer> readableWeeks = completeService.findCompleteWeeks(user, challenge);
         for (int week : weeks) {
             if (week == challenge.getNowWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
         }
@@ -99,15 +97,18 @@ public class QuizQueryService {
     private List<QuizSummaryResponse> getQuizSummaryResponses(User user, List<Quiz> quizzes) {
         List<QuizSummaryResponse> responses = new ArrayList<>(quizzes.size());
         for (Quiz quiz : quizzes) {
-            responses.add(QuizSummaryResponse.of(quiz, user, findSolveOrElseEmpty(quiz, user), rateService.countOfGood(quiz), rateService.didIRate(quiz, user)));
+            responses.add(QuizSummaryResponse.of(quiz, user, solveService.findSolveOrElseEmpty(quiz, user), rateService.countOfGood(quiz), rateService.didIRate(quiz, user)));
         }
         return responses;
     }
 
-    private Solve findSolveOrElseEmpty(Quiz quiz, User user) {
-        return solveRepository.findByQuizAndUser(quiz, user).orElseGet(Solve::empty);
-    }
     public Solve findSolve(Long quizId, User user) {
         return solveRepository.findByQuiz_IdAndUserAndSolveAnswerNotNull(quizId, user).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
+    }
+
+    public QuizSubmissionStatusResponse readQuizSubmissionStatus(User user, Long challengeId) {
+        Challenge challenge = challengeService.findOne(challengeId);
+
+        return null;
     }
 }
