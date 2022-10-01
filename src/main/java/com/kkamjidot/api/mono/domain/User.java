@@ -4,6 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -52,4 +56,6 @@ public class User {
     @Column(name = "user_deleted_date")
     private LocalDateTime userDeletedDate;
 
+    @OneToMany(mappedBy = "tokenUser")
+    private List<NotiToken> notiTokens = new ArrayList<>();
 }

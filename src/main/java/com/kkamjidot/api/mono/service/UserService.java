@@ -23,4 +23,9 @@ public class UserService {
         return userRepository.findByUserPassword(code)
                 .orElseThrow(() -> new UserNotFoundException("잘못된 코드입니다."));
     }
+
+    public User findById(Long id) throws UserNotFoundException {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
+    }
 }

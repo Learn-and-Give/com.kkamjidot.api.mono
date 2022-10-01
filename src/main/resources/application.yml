@@ -23,3 +23,7 @@ cloud:
     credentials:
       access-key: ${aws.access-key}
       secret-key: ${aws.secret-key}
+
+google:
+  application:
+    credentials: ${google.application.credentials}
