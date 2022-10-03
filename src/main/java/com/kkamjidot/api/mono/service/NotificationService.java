@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.channels.ScatteringByteChannel;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -25,22 +26,30 @@ public class NotificationService {
     }
 
     @Transactional
-    public void register(final Long userId, final String fcmToken, boolean isAlleowdNotification) {
+    public void register(final Long userId, final String fcmToken, String platform) {
         User user = userService.findById(userId);
-        if (validateDuplicatedToken(user, fcmToken)) {
+
+        try {
+            validateDuplicatedToken(user, fcmToken);
             NotiToken notiToken = NotiToken.builder()
                     .tokenValue(fcmToken)
-                    .isAllowedNoti(isAlleowdNotification)
+                    .platform(platform)
                     .tokenDesc("fcm")
                     .tokenUser(user)
                     .build();
             notiTokenRepository.save(notiToken);
+        } catch (IllegalStateException e) {
+            log.info(e.getMessage());
         }
     }
 
-    public boolean validateDuplicatedToken(User user, final String fcmToken) throws IllegalStateException {
-        return user.getNotiTokens().stream()
-                .anyMatch(notiToken -> notiToken.getTokenValue().equals(fcmToken));
+    private void validateDuplicatedToken(User user, final String fcmToken) throws IllegalStateException {
+        user.getNotiTokens().stream()
+                .filter(notiToken -> notiToken.getTokenValue().equals(fcmToken))
+                .findAny()
+                .ifPresent(notiToken -> {
+                    throw new IllegalStateException("이미 등록된 토큰입니다.");
+                });
     }
 
     public void sendNotification(final NotificationRequest request) {

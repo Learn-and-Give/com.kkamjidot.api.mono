@@ -29,8 +29,9 @@ public class NotiToken {
     @Column(name = "token_value", nullable = false, length = 256)
     private String tokenValue;
 
-    @Column(name = "is_allowed_noti", nullable = false)
-    private Boolean isAllowedNoti = false;
+    @Size(max = 256)
+    @Column(name = "token_platform", nullable = false, length = 256)
+    private String platform;
 
     @Column(name = "token_created_date", nullable = false)
     private LocalDateTime tokenCreatedDate;
