@@ -1,4 +1,33 @@
 # com.kkamjidot.api.mono
+### v1.5.0 - 2022-10-05
+- 금,토,일 독려 알림 발송
+- 커스텀 알림 발송
+- GET v1/my/quizzes/count 모든 챌린지에서 내가 작성한 퀴즈 주차별 개수 조회 API 추가
+  - <details  markdown="1">
+    <summary>ChallengeSummaryResponse 응답 DTO 세부 내용</summary>
+
+    ```
+    [
+      {
+        "week": 1,
+        "count": 4
+      },
+      {
+        "week": 2,
+        "count": 3
+      },
+      {
+        "week": 3,
+        "count": 2
+      },
+      {
+        "week": 4,
+        "count": 1
+      }
+    ]
+    ```
+    </details>
+
 ### v1.4.3 - 2022-09-22
 - GET v1/challenges/{challengeId}/my-good-quizzes 좋아요한 문제들 조회 API 추가
   - 내가 좋아요한 문제들의 개요 리스트를 반환한다. 수강중이거나 수강했던 챌린지가 아니라면 403 에러를 반환한다.

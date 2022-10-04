@@ -8,8 +8,8 @@ import lombok.ToString;
 @ToString
 @Getter
 @Builder
-@Schema(name = "퀴즈 개수 응답")
-public class QuizCountResponse {
+@Schema(name = "챌린지 별 퀴즈 수 응답")
+public class QuizCountByChallengeResponse {
     private final Integer count;
     private final Long challengeId;
     private final Integer week;

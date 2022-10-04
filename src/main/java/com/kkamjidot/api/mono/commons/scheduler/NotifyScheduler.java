@@ -6,6 +6,7 @@ import com.kkamjidot.api.mono.dto.NotificationRequest;
 import com.kkamjidot.api.mono.repository.ChallengeRepository;
 import com.kkamjidot.api.mono.repository.CompleteRepository;
 import com.kkamjidot.api.mono.repository.NotificationSchedulerRepository;
+import com.kkamjidot.api.mono.repository.query.ChallengeQueryRepository;
 import com.kkamjidot.api.mono.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ import java.util.Set;
 @Transactional(readOnly = true)
 public class NotifyScheduler {
     private final ChallengeRepository challengeRepository;
+    private final ChallengeQueryRepository challengeQueryRepository;
     private final CompleteRepository completeRepository;
     private final NotificationSchedulerRepository notificationSchedulerRepository;
     private final NotificationService notificationService;
