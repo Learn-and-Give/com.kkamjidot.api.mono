@@ -3,14 +3,11 @@ package com.kkamjidot.api.mono.domain;
 import com.kkamjidot.api.mono.domain.enumerate.QuizCategory;
 import com.kkamjidot.api.mono.dto.request.CreateQuizRequest;
 import com.kkamjidot.api.mono.dto.request.UpdateQuizRequest;
-import com.kkamjidot.api.mono.service.RateService;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -111,7 +108,7 @@ public class Quiz {
     public static Quiz of(CreateQuizRequest request, User user, Challenge challenge) {
         return Quiz.builder()
                 .quizTitle(request.getQuizTitle())
-                .quizWeek(challenge.getNowWeek())
+                .quizWeek(challenge.getThisWeek())
                 .quizContent(request.getQuizContent())
                 .quizAnswer(request.getQuizAnswer())
                 .quizExplanation(request.getQuizExplanation())

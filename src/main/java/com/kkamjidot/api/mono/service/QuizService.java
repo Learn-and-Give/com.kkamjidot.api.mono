@@ -13,7 +13,6 @@ import com.kkamjidot.api.mono.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,7 +38,7 @@ public class QuizService {
         Quiz quiz = quizRepository.findByIdAndQuizDeletedDateNull(quizId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 퀴즈입니다."));
 
         // 퀴즈의 주차가 현재 주차보다 이전이고, 열람 가능한 권한이 있는지 검사
-        if (quiz.getChallenge().getNowWeek() <= quiz.getQuizWeek() || !completeRepository.existsByWeekAndUserAndChall(quiz.getQuizWeek(), user, quiz.getChallenge()))
+        if (quiz.getChallenge().getThisWeek() <= quiz.getQuizWeek() || !completeRepository.existsByWeekAndUserAndChall(quiz.getQuizWeek(), user, quiz.getChallenge()))
             throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
 
         return quiz;

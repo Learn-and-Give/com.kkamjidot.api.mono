@@ -58,4 +58,8 @@ public class User {
 
     @OneToMany(mappedBy = "tokenUser")
     private List<NotiToken> notiTokens = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<Complete> completes = new LinkedHashSet<>();
+
 }
