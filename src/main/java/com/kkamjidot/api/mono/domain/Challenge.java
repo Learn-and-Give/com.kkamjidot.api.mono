@@ -62,18 +62,20 @@ public class Challenge {
     @Column(name = "chall_deleted_date")
     private LocalDateTime challDeletedDate;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cinfo_id", nullable = false)
-    @ToString.Exclude
     private ChallengeInfo challengeInfo;
 
-    @OneToMany(mappedBy = "challenge")
     @ToString.Exclude
+    @OneToMany(mappedBy = "challenge")
     private Set<Quiz> quizzes = new LinkedHashSet<>();
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "chall")
     private Set<Complete> completes = new LinkedHashSet<>();
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "chall")
     private Set<TakeAClass> takeAClasses = new LinkedHashSet<>();
 
