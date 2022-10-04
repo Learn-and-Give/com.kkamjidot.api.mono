@@ -21,15 +21,14 @@ public class NotificationContent {
     @Column(name = "nc_id", nullable = false)
     private Long id;
 
+    @Size(max = 255)
+    @Column(name = "nc_title")
+    private String ncTitle;
+
     @Size(max = 1000)
     @NotNull
     @Column(name = "nc_content", nullable = false, length = 1000)
     private String ncContent;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ns_id", nullable = false)
-    private NotificationScheduler ns;
 
     @NotNull
     @Column(name = "nc_created_date", nullable = false)
@@ -37,5 +36,4 @@ public class NotificationContent {
 
     @Column(name = "nc_modified_date")
     private LocalDateTime ncModifiedDate;
-
 }

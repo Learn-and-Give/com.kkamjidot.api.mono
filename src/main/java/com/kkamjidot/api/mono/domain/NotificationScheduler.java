@@ -6,6 +6,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -37,7 +39,12 @@ public class NotificationScheduler {
     @Column(name = "ns_modified_date")
     private LocalDateTime nsModifiedDate;
 
-    @OneToMany(mappedBy = "ns")
-    private Set<NotificationContent> notificationContents = new LinkedHashSet<>();
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "nc_id", nullable = false)
+    private NotificationContent notificationContent;
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "ns")
+    private List<Notify> notifies = new LinkedList<>();
 }

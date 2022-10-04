@@ -1,13 +1,11 @@
 package com.kkamjidot.api.mono.commons.scheduler;
 
-import com.kkamjidot.api.mono.domain.Challenge;
-import com.kkamjidot.api.mono.domain.TakeAClass;
-import com.kkamjidot.api.mono.domain.User;
+import com.kkamjidot.api.mono.domain.*;
 import com.kkamjidot.api.mono.domain.enumerate.ApplicationStatus;
 import com.kkamjidot.api.mono.dto.NotificationRequest;
 import com.kkamjidot.api.mono.repository.ChallengeRepository;
 import com.kkamjidot.api.mono.repository.CompleteRepository;
-import com.kkamjidot.api.mono.repository.NotiTokenRepository;
+import com.kkamjidot.api.mono.repository.NotificationSchedulerRepository;
 import com.kkamjidot.api.mono.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,19 +21,14 @@ import java.util.Random;
 import java.util.Set;
 
 @Slf4j
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Component
 @Transactional(readOnly = true)
-public class NotificationScheduler {
+public class NotifyScheduler {
     private final ChallengeRepository challengeRepository;
     private final CompleteRepository completeRepository;
+    private final NotificationSchedulerRepository notificationSchedulerRepository;
     private final NotificationService notificationService;
-
-    public NotificationScheduler(ChallengeRepository challengeRepository, CompleteRepository completeRepository, NotificationService notificationService) {
-        this.challengeRepository = challengeRepository;
-        this.completeRepository = completeRepository;
-        this.notificationService = notificationService;
-    }
 
 
 //    @Scheduled(cron = "0/3 * * * * ?")      // 테스트용
@@ -61,25 +54,35 @@ public class NotificationScheduler {
             });
         });
 
-        String[] notificationContent = new String[]{"이번 주 배운 내용을 깜지에 기록해보세요!", "우리 깜지에서 같이 공부해봐요🤗"};
+        String[] notificationContents = new String[]{"이번 주 배운 내용을 깜지에 기록해보세요!", "우리 깜지에서 같이 공부해봐요🤗"};
 
         // 알림 메시지 발송
-        sendUserSet.forEach(user -> user.getNotificationTokens().forEach(token -> {
+        sendUserSet.forEach(user -> sendNotificationToUser("깜지", notificationContents, user));
+    }
+
+//    @Scheduled(cron = "0/3 * 5 * * ?")      // 테스트용
+    @Scheduled(cron = "0 0 9-18 ? * ?")
+    public void SendCustomNotification() {
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        List<NotificationScheduler> notificationSchedulerList = notificationSchedulerRepository.findByNsDayAndNsHour(now.getDayOfWeek().getValue(), now.getHour());
+
+        notificationSchedulerList.forEach(notificationScheduler -> {
+            NotificationContent notificationContent = notificationScheduler.getNotificationContent();
+            String[] notificationContents = notificationContent.getNcContent().split("\n");
+            notificationScheduler.getNotifies().forEach(notify -> sendNotificationToUser(notificationContent.getNcTitle(), notificationContents, notify.getUser()));
+        });
+    }
+
+    private void sendNotificationToUser(String notificationTitle, String[] notificationContents, User user) {
+        user.getNotificationTokens().forEach(token -> {
             if (token.getTokenDeletedDate() == null) {
                 NotificationRequest notificationRequest = NotificationRequest.builder()
                         .token(token.getTokenValue())
-                        .title("깜지")
-                        .message(notificationContent[new Random().nextInt(notificationContent.length)])
+                        .title(notificationTitle)
+                        .message(notificationContents[new Random().nextInt(notificationContents.length)])
                         .build();
                 notificationService.sendNotification(notificationRequest);
             }
-        }));
-    }
-
-
-//    @Scheduled(cron = "0/3 * * * * ?")      // 테스트용
-    @Scheduled(cron = "0 0 9-18 ? * ?")
-    public void SendCustomNotification() {
-
+        });
     }
 }
