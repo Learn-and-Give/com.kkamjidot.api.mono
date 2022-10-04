@@ -56,9 +56,11 @@ public class User {
     @Column(name = "user_deleted_date")
     private LocalDateTime userDeletedDate;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "tokenUser")
-    private List<NotiToken> notiTokens = new ArrayList<>();
+    private List<NotificationToken> notificationTokens = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "user")
     private Set<Complete> completes = new LinkedHashSet<>();
 

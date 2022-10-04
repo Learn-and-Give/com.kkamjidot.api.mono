@@ -5,7 +5,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -17,9 +16,9 @@ import java.time.LocalDateTime;
 @ToString
 @DynamicInsert
 @DynamicUpdate
-@Entity(name = "NotiToken")
-@Table(name = "noti_token")
-public class NotiToken {
+@Entity(name = "NotificationToken")
+@Table(name = "notification_token")
+public class NotificationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "token_id", nullable = false)

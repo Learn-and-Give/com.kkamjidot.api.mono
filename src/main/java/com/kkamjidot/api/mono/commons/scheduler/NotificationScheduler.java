@@ -8,12 +8,10 @@ import com.kkamjidot.api.mono.dto.NotificationRequest;
 import com.kkamjidot.api.mono.repository.ChallengeRepository;
 import com.kkamjidot.api.mono.repository.CompleteRepository;
 import com.kkamjidot.api.mono.repository.NotiTokenRepository;
-import com.kkamjidot.api.mono.repository.TakeAClassRepository;
 import com.kkamjidot.api.mono.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.support.CronExpression;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,20 +23,19 @@ import java.util.Random;
 import java.util.Set;
 
 @Slf4j
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Component
 @Transactional(readOnly = true)
 public class NotificationScheduler {
     private final ChallengeRepository challengeRepository;
     private final CompleteRepository completeRepository;
     private final NotificationService notificationService;
-    private final NotiTokenRepository notiTokenRepository;
 
-//    public NotificationScheduler(ChallengeRepository challengeRepository, CompleteRepository completeRepository, NotificationService notificationService) {
-//        this.challengeRepository = challengeRepository;
-//        this.completeRepository = completeRepository;
-//        this.notificationService = notificationService;
-//    }
+    public NotificationScheduler(ChallengeRepository challengeRepository, CompleteRepository completeRepository, NotificationService notificationService) {
+        this.challengeRepository = challengeRepository;
+        this.completeRepository = completeRepository;
+        this.notificationService = notificationService;
+    }
 
 
 //    @Scheduled(cron = "0/3 * * * * ?")      // 테스트용
@@ -67,7 +64,7 @@ public class NotificationScheduler {
         String[] notificationContent = new String[]{"이번 주 배운 내용을 깜지에 기록해보세요!", "우리 깜지에서 같이 공부해봐요🤗"};
 
         // 알림 메시지 발송
-        sendUserSet.forEach(user -> user.getNotiTokens().forEach(token -> {
+        sendUserSet.forEach(user -> user.getNotificationTokens().forEach(token -> {
             if (token.getTokenDeletedDate() == null) {
                 NotificationRequest notificationRequest = NotificationRequest.builder()
                         .token(token.getTokenValue())
@@ -83,8 +80,6 @@ public class NotificationScheduler {
 //    @Scheduled(cron = "0/3 * * * * ?")      // 테스트용
     @Scheduled(cron = "0 0 9-18 ? * ?")
     public void SendCustomNotification() {
-        for (String s : notiTokenRepository.findById(2L).get().getTokenValue().split("\n")) {
-            System.out.println("<<>>" + s);
-        }
+
     }
 }

@@ -1,6 +1,6 @@
 package com.kkamjidot.api.mono.service;
 
-import com.kkamjidot.api.mono.domain.NotiToken;
+import com.kkamjidot.api.mono.domain.NotificationToken;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.dto.NotificationRequest;
 import com.kkamjidot.api.mono.repository.NotiTokenRepository;
@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.channels.ScatteringByteChannel;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -31,23 +30,23 @@ public class NotificationService {
 
         try {
             validateDuplicatedToken(user, fcmToken);
-            NotiToken notiToken = NotiToken.builder()
+            NotificationToken notificationToken = NotificationToken.builder()
                     .tokenValue(fcmToken)
                     .platform(platform)
                     .tokenDesc("fcm")
                     .tokenUser(user)
                     .build();
-            notiTokenRepository.save(notiToken);
+            notiTokenRepository.save(notificationToken);
         } catch (IllegalStateException e) {
             log.info(e.getMessage());
         }
     }
 
     private void validateDuplicatedToken(User user, final String fcmToken) throws IllegalStateException {
-        user.getNotiTokens().stream()
-                .filter(notiToken -> notiToken.getTokenValue().equals(fcmToken))
+        user.getNotificationTokens().stream()
+                .filter(notificationToken -> notificationToken.getTokenValue().equals(fcmToken))
                 .findAny()
-                .ifPresent(notiToken -> {
+                .ifPresent(notificationToken -> {
                     throw new IllegalStateException("이미 등록된 토큰입니다.");
                 });
     }
