@@ -85,7 +85,7 @@ public class QuizQueryService {
         Challenge challenge = challengeService.findOne(challengeId);
         List<Integer> readableWeeks = completeService.findCompleteWeeks(user, challenge);
         for (int week : weeks) {
-            if (week == challenge.getNowWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+            if (week == challenge.getThisWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
         }
         List<Quiz> quizzes = quizQueryRepository.findByUserAndChallenge_IdAndQuizWeek(challengeId, weeks);
 

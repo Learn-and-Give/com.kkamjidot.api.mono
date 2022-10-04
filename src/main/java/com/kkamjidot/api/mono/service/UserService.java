@@ -14,13 +14,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User login(String name, String code) throws UserNotFoundException {
+    public Long login(String name, String code) throws UserNotFoundException {
         return userRepository.findByUserNameAndUserPasswordAndUserDeletedDateNull(name, code)
-                .orElseThrow(() -> new UserNotFoundException("잘못된 이름 혹은 코드입니다."));
+                .orElseThrow(() -> new UserNotFoundException("잘못된 이름 혹은 코드입니다."))
+                .getId();
     }
 
     public User authenticate(String code) throws UserNotFoundException {
         return userRepository.findByUserPassword(code)
                 .orElseThrow(() -> new UserNotFoundException("잘못된 코드입니다."));
+    }
+
+    public User findById(Long id) throws UserNotFoundException {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("존재하지 않는 사용자입니다."));
     }
 }

@@ -55,6 +55,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
+	// https://firebase.google.com/docs/admin/setup?authuser=2#java
+	implementation 'com.google.firebase:firebase-admin:9.0.0'
+
 //	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 }
