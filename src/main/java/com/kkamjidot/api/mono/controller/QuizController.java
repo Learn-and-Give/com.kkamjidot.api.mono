@@ -102,17 +102,27 @@ public class QuizController {
         return ResponseEntity.ok(responses);
     }
 
-    @Operation(summary = "주차별 내가 작성한 퀴즈 개수 조회 API", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개수를 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다. "
+    @Operation(summary = "각 챌린지당 주차별 내가 작성한 퀴즈 개수 조회 API", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개수를 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다. "
             + "만약 주차가 0이거나 없으면 총 제출 수를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/my/quizzes/count")
-    public ResponseEntity<QuizCountResponse> countMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
-                                                                @PathVariable Long challengeId,
-                                                                @RequestParam(defaultValue = "0", required = false) Integer week) {
+    public ResponseEntity<QuizCountByChallengeResponse> countMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+                                                                       @PathVariable Long challengeId,
+                                                                       @RequestParam(defaultValue = "0", required = false) Integer week) {
         User user = userService.authenticate(code);
 
-        QuizCountResponse response = quizQueryService.countMyQuizzes(week, user, challengeId);
+        QuizCountByChallengeResponse response = quizQueryService.countMyQuizzes(week, user, challengeId);
 
         LOGGER.info("주차별 내가 작성한 퀴즈 개수 조회 API: Get v1/challenges/{}/my/quizzes/count?week={} [User: {}, count: {}]", challengeId, week, user.getId(), response.getCount());
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "모든 챌린지에서 내가 작성한 퀴즈 주차별 개수 조회 API", description = "지금까지 제출한 퀴즈 개수를 주차별로 조회한다.")
+    @GetMapping("v1/my/quizzes/count")
+    public ResponseEntity<List<QuizTotalCountByWeekResponse>> countMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
+        User user = userService.authenticate(code);
+
+        List<QuizTotalCountByWeekResponse> response = quizQueryService.countMyTotalQuizzes(user.getId());
+
         return ResponseEntity.ok(response);
     }
 

@@ -1,7 +1,9 @@
 package com.kkamjidot.api.mono.repository.query;
 
 import com.kkamjidot.api.mono.domain.Quiz;
+import com.kkamjidot.api.mono.dto.response.QuizTotalCountByWeekResponse;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
@@ -41,5 +43,14 @@ public class QuizQueryRepository {
             builder.or(quiz.quizWeek.eq(week));
         }
         return builder;
+    }
+
+    public List<QuizTotalCountByWeekResponse> countQuizzesByUserId(Long userId) {
+        return query.select(Projections.constructor(QuizTotalCountByWeekResponse.class, quiz.quizWeek.as("week"), quiz.count().as("count")))
+                .from(quiz)
+                .where(quiz.quizDeletedDate.isNull()
+                        .and(user.id.eq(userId)))
+                .groupBy(quiz.quizWeek)
+                .fetch();
     }
 }

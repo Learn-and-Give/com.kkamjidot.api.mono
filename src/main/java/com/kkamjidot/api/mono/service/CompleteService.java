@@ -3,9 +3,7 @@ package com.kkamjidot.api.mono.service;
 import com.kkamjidot.api.mono.controller.ChallengeController;
 import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.Complete;
-import com.kkamjidot.api.mono.domain.Quiz;
 import com.kkamjidot.api.mono.domain.User;
-import com.kkamjidot.api.mono.exception.UnauthorizedException;
 import com.kkamjidot.api.mono.repository.CompleteRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -51,6 +49,6 @@ public class CompleteService {
     }
 
     public int countComplete(Challenge challenge) {
-        return completeRepository.countByChallAndWeek(challenge, challenge.getNowWeek());
+        return completeRepository.countByChallAndWeek(challenge, challenge.getThisWeek());
     }
 }

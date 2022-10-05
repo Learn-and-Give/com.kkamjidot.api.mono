@@ -37,9 +37,11 @@ public class TakeAClass {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "chall_id", nullable = false)
+    @ToString.Exclude
     private Challenge chall;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude
     private User user;
 }

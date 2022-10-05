@@ -1,10 +1,13 @@
 package com.kkamjidot.api.mono.service.query;
 
 import com.kkamjidot.api.mono.domain.*;
+import com.kkamjidot.api.mono.domain.enumerate.ApplicationStatus;
 import com.kkamjidot.api.mono.dto.response.*;
 import com.kkamjidot.api.mono.exception.UnauthorizedException;
 import com.kkamjidot.api.mono.repository.QuizRepository;
 import com.kkamjidot.api.mono.repository.SolveRepository;
+import com.kkamjidot.api.mono.repository.TakeAClassRepository;
+import com.kkamjidot.api.mono.repository.query.ChallengeQueryRepository;
 import com.kkamjidot.api.mono.repository.query.QuizQueryRepository;
 import com.kkamjidot.api.mono.service.*;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,8 @@ public class QuizQueryService {
     private final QuizRepository quizRepository;
     private final SolveRepository solveRepository;
     private final QuizQueryRepository quizQueryRepository;
+    private final ChallengeQueryRepository challengeQueryRepository;
+    private final TakeAClassRepository takeAClassRepository;
 
     private final QuizService quizService;
     private final CompleteService completeService;
@@ -69,23 +74,28 @@ public class QuizQueryService {
         return getQuizSummaryResponses(user, quizzes);
     }
 
-    public QuizCountResponse countMyQuizzes(Integer week, User user, Long challengeId) {
+    public QuizCountByChallengeResponse countMyQuizzes(Integer week, User user, Long challengeId) {
         int count;
         if (week == 0) count = quizRepository.countByUserAndChallenge_Id(user, challengeId);           // 제출한 모든 퀴즈 개수
         else count = quizRepository.countByQuizWeekAndUserAndChallenge_Id(week, user, challengeId);   // 주차별 제출한 퀴즈 개수
 
-        return QuizCountResponse.builder()
+        return QuizCountByChallengeResponse.builder()
                 .count(count)   // 퀴즈 개수 조회
                 .challengeId(challengeId)
                 .week(week == 0 ? null : week)
                 .build();
     }
 
+    public List<QuizTotalCountByWeekResponse> countMyTotalQuizzes(Long userId) {
+//        List<Challenge> challengeList = challengeQueryRepository.findRunningChallengesByUserId(userId);
+        return quizQueryRepository.countQuizzesByUserId(userId);
+    }
+
     public List<QuizSummaryResponse> readQuizSummaries(User user, Long challengeId, List<Integer> weeks) throws UnauthorizedException {
         Challenge challenge = challengeService.findOne(challengeId);
         List<Integer> readableWeeks = completeService.findCompleteWeeks(user, challenge);
         for (int week : weeks) {
-            if (week == challenge.getNowWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+            if (week == challenge.getThisWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
         }
         List<Quiz> quizzes = quizQueryRepository.findByUserAndChallenge_IdAndQuizWeek(challengeId, weeks);
 

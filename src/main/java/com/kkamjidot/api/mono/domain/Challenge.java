@@ -1,9 +1,6 @@
 package com.kkamjidot.api.mono.domain;
 
-import com.kkamjidot.api.mono.repository.QuizRepository;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -65,16 +62,25 @@ public class Challenge {
     @Column(name = "chall_deleted_date")
     private LocalDateTime challDeletedDate;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "cinfo_id", nullable = false)
-    @ToString.Exclude
     private ChallengeInfo challengeInfo;
 
-    @OneToMany(mappedBy = "challenge")
     @ToString.Exclude
+    @OneToMany(mappedBy = "challenge")
     private Set<Quiz> quizzes = new LinkedHashSet<>();
 
-    public Integer getNowWeek() {
+    @ToString.Exclude
+    @OneToMany(mappedBy = "chall")
+    private Set<Complete> completes = new LinkedHashSet<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "chall")
+    private Set<TakeAClass> takeAClasses = new LinkedHashSet<>();
+
+
+    public Integer getThisWeek() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         return Math.toIntExact(ChronoUnit.DAYS.between(this.challStartDate, now) / 7 + 1);        // 오늘 주차
     }
