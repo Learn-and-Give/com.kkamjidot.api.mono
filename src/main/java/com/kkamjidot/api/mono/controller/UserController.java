@@ -27,7 +27,7 @@ public class UserController {
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
         Long userId = userService.login(request.getName(), request.getCode());  // 로그인
 
-        if (request.getToken() != null)
+        if (request.getToken() != null && !request.getToken().isBlank())
             notificationService.register(userId, request.getToken(), request.getPlatform());  // 푸시 알림 용 토큰 등록
 
         LoginResponse response = LoginResponse.builder().userId(userId).build();  // 응답 객체 생성
