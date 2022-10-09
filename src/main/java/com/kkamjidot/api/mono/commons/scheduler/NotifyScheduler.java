@@ -36,7 +36,7 @@ public class NotifyScheduler {
 //    @Scheduled(cron = "0/3 * * * * ?")      // 테스트용
     @Scheduled(cron = "0 0 19 ? * FRI,SAT")
     @Scheduled(cron = "0 0 15 ? * SUN")
-    @Scheduled(cron = "0 55 22 ? * SUN")
+    @Scheduled(cron = "0 0 23 ? * SUN")
     public void SendDeadlineNotification() {
         // 알림 전송할 유저
         Set<User> sendUserSet = new LinkedHashSet<>();
