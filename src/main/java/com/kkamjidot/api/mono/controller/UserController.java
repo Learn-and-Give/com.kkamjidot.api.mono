@@ -33,4 +33,16 @@ public class UserController {
         LoginResponse response = LoginResponse.builder().userId(userId).build();  // 응답 객체 생성
         return ResponseEntity.ok(response);
     }
+
+    @Operation(summary = "로그인 API", description = "회원 여부를 확인한다.")
+    @PostMapping("v2/user/login")
+    public ResponseEntity<LoginResponse> loginV2(@RequestBody @Valid LoginRequest request) {
+        Long userId = userService.login(request.getName(), request.getCode());  // 로그인
+
+        if (request.getToken() != null && !request.getToken().isBlank())
+            notificationService.register(userId, request.getToken(), request.getPlatform());  // 푸시 알림 용 토큰 등록
+
+        LoginResponse response = LoginResponse.builder().userId(userId).build();  // 응답 객체 생성
+        return ResponseEntity.ok(response);
+    }
 }
