@@ -7,7 +7,6 @@ import com.kkamjidot.api.mono.dto.request.CreateCommentRequest;
 import com.kkamjidot.api.mono.dto.response.CommentIdResponse;
 import com.kkamjidot.api.mono.dto.response.CommentResponse;
 import com.kkamjidot.api.mono.service.CommentService;
-import com.kkamjidot.api.mono.service.CompleteService;
 import com.kkamjidot.api.mono.service.QuizService;
 import com.kkamjidot.api.mono.service.UserService;
 import com.kkamjidot.api.mono.service.query.CommentQueryService;
@@ -43,7 +42,7 @@ public class CommentController {
     public ResponseEntity<CommentIdResponse> createComment(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                         @PathVariable Long quizId,
                                                         @RequestBody @Valid CreateCommentRequest request) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
         Quiz quiz = quizService.findOneInReadableWeek(quizId, user);     // 열람 가능한 주차의 문제인지 확인
 
         Comment comment = Comment.builder()
@@ -61,7 +60,7 @@ public class CommentController {
     @GetMapping("v1/quizzes/{quizId}/comments")
     public ResponseEntity<List<CommentResponse>> readComments(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                              @PathVariable Long quizId) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
         Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
         List<CommentResponse> responses = commentQueryService.readComments(user, quiz);
 
@@ -74,7 +73,7 @@ public class CommentController {
     @DeleteMapping("v1/comments/{commentId}")
     public ResponseEntity<Void> deleteComment(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                              @PathVariable Long commentId) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
         commentService.deleteOne(commentId, user);
         LOGGER.info("댓글 삭제 API: Delete v1/comments/{} [User: {}]", commentId, user.getId());
         return ResponseEntity.noContent().build();

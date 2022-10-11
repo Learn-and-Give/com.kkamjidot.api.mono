@@ -32,7 +32,7 @@ public class ChallengeController {
     @Operation(summary = "챌린지 목록 조회 API", description = "모든 챌린지를 조회한다.")
     @GetMapping("v1/challenges")
     public ResponseEntity<List<ChallengeSummaryResponse>> readChallenges(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         List<ChallengeSummaryResponse> responses = challengeQueryService.readChallenges(user);
 
@@ -44,7 +44,7 @@ public class ChallengeController {
     @GetMapping("v1/challenges/{challengeId}")
     public ResponseEntity<ChallengeResponse> readChallenge(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                            @PathVariable Long challengeId) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         ChallengeResponse response = challengeQueryService.readChallenge(challengeId, user);
 
@@ -55,7 +55,7 @@ public class ChallengeController {
     @Operation(summary = "내가 참여한 챌린지 목록 조회 API", description = "내가 참여한 챌린지 목록을 조회한다.")
     @GetMapping("v1/my/challenges")
     public ResponseEntity<List<ChallengeSummaryResponse>> readMyChallenges(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         List<ChallengeSummaryResponse> responses = challengeQueryService.readMyChallenges(user);
 
@@ -67,7 +67,7 @@ public class ChallengeController {
     @GetMapping("v1/challenges/{challengeId}/weeks")
     public ResponseEntity<WeekResponse> readWeeks(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                   @PathVariable Long challengeId) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         WeekResponse response = challengeQueryService.readWeeks(challengeId, user);
 
@@ -79,7 +79,7 @@ public class ChallengeController {
     @GetMapping("v1/challenges/{challengeId}/now")
     public ResponseEntity<nowResponse> readThisWeek(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                     @PathVariable Long challengeId) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         nowResponse response = challengeQueryService.readThisWeek(challengeId);
 
