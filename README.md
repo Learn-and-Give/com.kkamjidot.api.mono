@@ -1,4 +1,9 @@
 # com.kkamjidot.api.mono
+### v2.0.0 - 2022-10-12
+- POST v2/user/login 로그인 API 방식 변경
+  - 요청: email*(string), password*(string), isAutoLogin*(bool), platform*(string), fcmToken(string)
+  - 응답: token(string)
+
 ### v1.5.0 - 2022-10-05
 - 금,토,일 독려 알림 발송
 - 커스텀 알림 발송
