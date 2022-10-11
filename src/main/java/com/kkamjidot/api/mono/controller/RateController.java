@@ -40,7 +40,7 @@ public class RateController {
                                                      @PathVariable @Parameter(description = "퀴즈 ID", example = "0") Long quizId,
                                                      @RequestBody QuizRateRequest request,
                                                      UriComponentsBuilder uriBuilder) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
         Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
 
         Rate rate = Rate.builder()
@@ -64,7 +64,7 @@ public class RateController {
     @GetMapping(path = "v1/challenges/{challengeId}/my-good-quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readMyGoodQuizzes(@RequestHeader @Parameter(description = "로그인한 회원 코드", example = "1234") String code,
                                                                        @PathVariable @Parameter(description = "챌린지 ID", example = "0") Long challengeId) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
         Challenge challenge = takeAClassService.findOneChallengeTaken(challengeId, user);
         List<QuizSummaryResponse> responses = rateQueryService.readMyGoodQuizzes(user, challenge);
 

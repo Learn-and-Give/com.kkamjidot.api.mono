@@ -1,7 +1,6 @@
 package com.kkamjidot.api.mono.service;
 
 import com.kkamjidot.api.mono.domain.User;
-import com.kkamjidot.api.mono.exception.UnauthorizedException;
 import com.kkamjidot.api.mono.exception.UserNotFoundException;
 import com.kkamjidot.api.mono.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class UserService {
                 .getId();
     }
 
-    public User authenticate(String code) throws UserNotFoundException {
+    public User authenticate_deprecated(String code) throws UserNotFoundException {
         return userRepository.findByUserPassword(code)
                 .orElseThrow(() -> new UserNotFoundException("잘못된 코드입니다."));
     }

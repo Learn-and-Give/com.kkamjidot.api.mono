@@ -43,7 +43,7 @@ public class QuizController {
                                                                        @RequestParam List<Integer> week) throws MissingServletRequestParameterException {
         if (week.isEmpty()) throw new org.springframework.web.bind.MissingServletRequestParameterException("week", "List");
 
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         List<QuizSummaryResponse> responses = quizQueryService.readQuizSummaries(user, challengeId, week);
 
@@ -55,7 +55,7 @@ public class QuizController {
     @GetMapping("v1/quizzes/{quizId}")
     public ResponseEntity<QuizResponse> readQuizContent(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                         @PathVariable Long quizId) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         QuizResponse response = quizQueryService.readQuizContent(quizId, user);
 
@@ -68,7 +68,7 @@ public class QuizController {
     @GetMapping("v1/quizzes/{quizId}/rubric")
     public ResponseEntity<QuizRublicResponse> readQuizRubric(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                              @PathVariable Long quizId) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         QuizRublicResponse response = quizQueryService.readQuizRubric(quizId, user);
 
@@ -80,7 +80,7 @@ public class QuizController {
     @GetMapping("v1/my/quizzes/{quizId}")
     public ResponseEntity<MyQuizResponse> readMyQuiz(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                      @PathVariable Long quizId) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         MyQuizResponse response = quizQueryService.readMyQuiz(quizId, user);
 
@@ -94,7 +94,7 @@ public class QuizController {
     public ResponseEntity<List<QuizSummaryResponse>> readMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                    @PathVariable Long challengeId,
                                                                    @RequestParam(defaultValue = "0", required = false) Integer week) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         List<QuizSummaryResponse> responses = quizQueryService.readMyQuizzes(week, user, challengeId);
 
@@ -108,7 +108,7 @@ public class QuizController {
     public ResponseEntity<QuizCountByChallengeResponse> countMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                        @PathVariable Long challengeId,
                                                                        @RequestParam(defaultValue = "0", required = false) Integer week) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         QuizCountByChallengeResponse response = quizQueryService.countMyQuizzes(week, user, challengeId);
 
@@ -119,7 +119,7 @@ public class QuizController {
     @Operation(summary = "모든 챌린지에서 내가 작성한 퀴즈 주차별 개수 조회 API", description = "지금까지 제출한 퀴즈 개수를 주차별로 조회한다.")
     @GetMapping("v1/my/quizzes/count")
     public ResponseEntity<List<QuizTotalCountByWeekResponse>> countMyQuizzes(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         List<QuizTotalCountByWeekResponse> response = quizQueryService.countMyTotalQuizzes(user.getId());
 
@@ -138,7 +138,7 @@ public class QuizController {
                                                      @Valid @RequestPart CreateQuizRequest createQuizRequest,
                                                      @RequestPart(required = false) List<MultipartFile> quizFiles,
                                                      UriComponentsBuilder uriBuilder) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
         Challenge challenge = takeAClassService.findOneChallengeTakenAndInProgress(challengeId, user);
 
         Quiz quiz = Quiz.of(createQuizRequest, user, challenge);
@@ -159,7 +159,7 @@ public class QuizController {
                                                      @PathVariable Long quizId,
                                                      @RequestBody @Valid UpdateQuizRequest request,
                                                      UriComponentsBuilder uriBuilder) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         quizService.updateAnswer(quizId, user, request);
         URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quizId).toUri();
@@ -175,7 +175,7 @@ public class QuizController {
                                                     @PathVariable Long quizId,
                                                     @RequestBody @Valid SolveRequest request,
                                                     UriComponentsBuilder uriBuilder) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
         Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
         solveService.checkNotSolved(quiz, user);                    // 이미 푼 문제인지 확인
 
@@ -191,7 +191,7 @@ public class QuizController {
     @GetMapping(path = "v1/quizzes/{quizId}/solve")
     public ResponseEntity<QuizSolveAnswerResponse> readQuizSolvedAnswer(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                         @PathVariable Long quizId) {
-        User user = userService.authenticate(code);                     // 회원 인증
+        User user = userService.authenticate_deprecated(code);                     // 회원 인증
         Solve solve = quizQueryService.findSolve(quizId, user);   // 제출한 정답 조회
 
         // 응답 객체 생성
@@ -211,7 +211,7 @@ public class QuizController {
                                                     @PathVariable Long quizId,
                                                     @RequestBody @Valid ScoreRequest request,
                                                     UriComponentsBuilder uriBuilder) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
         Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
         solveService.updateSolveScore(quiz, user, request.getScore());// 이미 푼 문제인지 확인
         URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
@@ -225,7 +225,7 @@ public class QuizController {
     @GetMapping("v1/challenges/{challengeId}/submissions-status")
     public ResponseEntity<QuizSubmissionStatusResponse> readQuizSubmissionStatus(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
                                                                                  @PathVariable Long challengeId) {
-        User user = userService.authenticate(code);
+        User user = userService.authenticate_deprecated(code);
 
         return null;
     }
