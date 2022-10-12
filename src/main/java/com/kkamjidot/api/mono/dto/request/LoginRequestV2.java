@@ -18,7 +18,7 @@ public class LoginRequestV2 implements Serializable {
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     private String email;
 
-    @Schema(description = "비밀번호", example = "", required = true)
+    @Schema(description = "비밀번호", example = "kkamjidot123", required = true)
     @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
     private String password;
 

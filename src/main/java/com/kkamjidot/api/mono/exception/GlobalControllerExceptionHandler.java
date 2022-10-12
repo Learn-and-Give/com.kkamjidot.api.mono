@@ -20,9 +20,9 @@ public class GlobalControllerExceptionHandler {
     private final Logger LOGGER = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 
 //    @ApiResponse(responseCode = "401", description = "UNAUTHORIZED", content = @Content(mediaType = MediaType.TEXT_PLAIN_VALUE))
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler({UserNotFoundException.class, UnauthenticatedException.class})
 //    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException e) {
+    public ResponseEntity<?> handleUserNotFoundException(RuntimeException e) {
         LOGGER.info("UNAUTHORIZED: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());     // 401 UNAUTHORIZED
     }

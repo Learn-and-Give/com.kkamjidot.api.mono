@@ -1,5 +1,10 @@
 # com.kkamjidot.api.mono
-### v2.0.0 - 2022-10-12
+### v2.0.3
+#### v2.0.2 - 2022-10-13
+- 인가 방식 변경(코드 -> jwt)
+#### v2.0.1 - 2022-10-13
+- PATCH v1/users/password 비밀번호 변경 API 추가
+#### v2.0.0 - 2022-10-12
 - POST v2/user/login 로그인 API 방식 변경
   - 요청: email*(string), password*(string), isAutoLogin*(bool), platform*(string), fcmToken(string)
   - 응답: token(string)
