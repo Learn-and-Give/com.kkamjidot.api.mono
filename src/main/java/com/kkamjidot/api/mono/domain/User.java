@@ -1,8 +1,10 @@
 package com.kkamjidot.api.mono.domain;
 
+import com.kkamjidot.api.mono.exception.UserNotFoundException;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -64,4 +66,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Complete> completes = new LinkedHashSet<>();
 
+    public boolean isMatchPassword(String password) {
+        return this.userPassword.equals(password);
+    }
+
+    public void setPassword(String password) {
+        this.userPassword = password;
+    }
 }

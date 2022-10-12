@@ -18,7 +18,7 @@ public class AuthService {
 
     public String login(String email, String password, boolean isAutoLogin) throws UserNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("잘못된 이메일 혹은 비밀번호입니다."));
-        if (!user.getUserPassword().equals(password)) {
+        if (!user.isMatchPassword(password)) {
             throw new UserNotFoundException("잘못된 이메일 혹은 비밀번호입니다.");
         }
 
