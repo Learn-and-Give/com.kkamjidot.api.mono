@@ -69,7 +69,7 @@ public class QuizSolveController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "퀴즈 풀기 채점 점수 제출 API", description = "퀴즈를 채점한다. 퀴즈 정답을 제출한 문제가 아니거나, 이미 푼 문제면 403 에러를 반환한다.")
+    @Operation(summary = "퀴즈 풀기 채점 점수 제출 API", description = "퀴즈를 채점한다. 퀴즈 정답을 제출한 문제가 아니거나, 이미 채점한 문제면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 풀기 성공")
     @PostMapping(path = "v1/quizzes/{quizId}/grade")
     public ResponseEntity<QuizIdResponse> gradeQuiz(@RequestHeader String jwt,
@@ -77,9 +77,8 @@ public class QuizSolveController {
                                                     @RequestBody @Valid ScoreRequest request,
                                                     UriComponentsBuilder uriBuilder) {
         User user = authService.authenticate(jwt);
-        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
-        solveService.updateSolveScore(quiz, user, request.getScore());// 이미 푼 문제인지 확인
-        URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
+        solveService.updateSolveScore(quizId, user.getId(), request.getScore());// 이미 푼 문제인지 확인
+        URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quizId).toUri();
 
         return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
     }

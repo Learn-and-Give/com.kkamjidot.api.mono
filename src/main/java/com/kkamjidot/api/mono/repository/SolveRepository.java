@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface SolveRepository extends JpaRepository<Solve, Long> {
     Optional<Solve> findByQuizAndUser(Quiz quiz, User user);
 
-    Optional<Solve> findByQuizAndUserAndSolveAnswerNotNull(Quiz quiz, User user);
+    Optional<Solve> findByQuiz_IdAndUser_IdAndSolveAnswerNotNull(Long quizId, Long userId);
 
     Optional<Solve> findByQuiz_IdAndUserAndSolveAnswerNotNull(Long quizId, User user);
 

@@ -25,8 +25,9 @@ public class SolveService {
     }
 
     @Transactional
-    public void updateSolveScore(Quiz quiz, User user, int score) {
-        Solve solve = solveRepository.findByQuizAndUserAndSolveAnswerNotNull(quiz, user).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
+    public void updateSolveScore(Long quizId, Long userId, int score) {
+        Solve solve = solveRepository.findByQuiz_IdAndUser_IdAndSolveAnswerNotNull(quizId, userId).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
+        if (solve.getSolveScore() != null) throw new UnauthorizedException("이미 채점한 문제입니다.");
         solve.setSolveScore(score);
     }
 
