@@ -42,7 +42,7 @@ public class JwtUtil {
     private final long REFRESH_TOKEN_VALIDATiON_MILLISECOND = 60 * 60 * 24 * 30 * 1000L;
 
     //토큰생성
-    public String createJWT(JwtTokenDto tokenDto, boolean willExpire) {
+    public String createJWT(JwtTokenDto tokenDto) {
         // 토큰에 서명하는 데 사용할 JWT 서명 알고리즘
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -66,7 +66,7 @@ public class JwtUtil {
                 .setIssuer("kkamji")
                 .setIssuedAt(now)
                 .setClaims(claims)
-                .setExpiration(willExpire ? validity : null)
+//                .setExpiration(willExpire ? validity : null)
                 .signWith(signingKey, signatureAlgorithm)
                 .compact();
         log.info("@@@@@@@@@@@@@@@@ jwt : {}", jwt);

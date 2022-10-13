@@ -31,19 +31,19 @@ public class UserService {
     }
 
     @Transactional
-    public void updatePassword(UpdatePasswordRequest updatePasswordRequest) throws UserNotFoundException, IllegalArgumentException {
-        User user = userRepository.findByEmail(updatePasswordRequest.getEmail()).orElseThrow(() -> new UserNotFoundException("잘못된 이메일 혹은 비밀번호입니다."));
-        if (!user.isMatchPassword(updatePasswordRequest.getExistingPassword())) {
+    public void updatePassword(UpdatePasswordRequest request) throws UserNotFoundException, IllegalArgumentException {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new UserNotFoundException("잘못된 이메일 혹은 비밀번호입니다."));
+        if (!user.isMatchPassword(request.getExistingPassword())) {
             throw new UserNotFoundException("잘못된 이메일 혹은 비밀번호입니다.");
         }
 
-        validatePassword(updatePasswordRequest.getNewPassword());
-        user.setPassword(updatePasswordRequest.getNewPassword());
+        validatePassword(request.getNewPassword(), request.getNewPasswordConfirm());
+        user.setPassword(request.getNewPassword());
     }
 
-    private void validatePassword(String password) {
-        if (password.length() < 8) {
-            throw new IllegalArgumentException("비밀번호는 8자 이상이어야 합니다.");
+    private void validatePassword(String newPassword, String newPasswordConfirm) throws IllegalArgumentException {
+        if (!newPassword.equals(newPasswordConfirm)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
     }
 }

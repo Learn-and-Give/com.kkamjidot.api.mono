@@ -41,7 +41,7 @@ public class AuthController {
     @Operation(summary = "로그인 API V2", description = "회원 여부를 확인한다.")
     @PostMapping("v2/user/login")
     public ResponseEntity<LoginResponseV2> loginV2(@RequestBody @Valid LoginRequestV2 request) {
-        String jwt = authService.login(request.getEmail(), request.getPassword(), request.getIsAutoLogin());
+        String jwt = authService.login(request.getEmail(), request.getPassword());
 
         LoginResponseV2 response = LoginResponseV2.builder().token(jwt).build();
         return ResponseEntity.ok(response);

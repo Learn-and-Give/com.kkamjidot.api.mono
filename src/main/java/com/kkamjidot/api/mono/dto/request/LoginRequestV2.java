@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Getter
@@ -19,12 +20,8 @@ public class LoginRequestV2 implements Serializable {
     private String email;
 
     @Schema(description = "비밀번호", example = "kkamjidot123", required = true)
-    @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
+    @Size(min = 8, max = 255, message = "비밀번호는 8자 이상 255자 이하여야 합니다.")
     private String password;
-
-    @Schema(description = "자동로그인 여부", example = "false", required = true)
-    @NotNull(message = "자동로그인 여부는 필수 입력 값입니다.")
-    private Boolean isAutoLogin;
 
     @Schema(description = "로그인하는 플랫폼", example = "MacIntel", required = true) private String platform;
 
