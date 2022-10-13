@@ -64,19 +64,6 @@ public class QuizController {
         return ResponseEntity.ok(response);
     }
 
-    @Deprecated
-    @Operation(summary = "퀴즈 루브릭 조회 API", description = "퀴즈의 루브릭을 조회한다. 퀴즈 정답을 제출한 적이 없으면 403 에러를 반환한다.")
-    @GetMapping("v1/quizzes/{quizId}/rubric")
-    public ResponseEntity<QuizRublicResponse> readQuizRubric(@RequestHeader String jwt,
-                                                             @PathVariable Long quizId) {
-        User user = authService.authenticate(jwt);
-
-        QuizRublicResponse response = quizQueryService.readQuizRubric(quizId, user);
-
-        LOGGER.info("퀴즈 루브릭 조회 API: Get v1/quizzes/{}/rubric [User: {}, response: {}]", quizId, user.getId(), response);
-        return ResponseEntity.ok(response);
-    }
-
     @Operation(summary = "내 퀴즈 전체 내용 조회 API", description = "작성자가 본인인 퀴즈의 모든 정보를 조회한다.")
     @GetMapping("v1/my/quizzes/{quizId}")
     public ResponseEntity<MyQuizResponse> readMyQuiz(@RequestHeader String jwt,

@@ -49,16 +49,6 @@ public class QuizQueryService {
         return QuizResponse.of(quiz, user, solve, rateService.countOfGood(quiz), rateService.didIRate(quiz, user));
     }
 
-    public QuizRublicResponse readQuizRubric(Long quizId, User user) throws UnauthorizedException {
-        Solve solve = findSolve(quizId, user);
-
-        // 응답 객체 생성
-        return QuizRublicResponse.builder()
-                .quizId(solve.getQuiz().getId())
-                .quizRubric(solve.getQuiz().getQuizRubric())
-                .build();
-    }
-
     public MyQuizResponse readMyQuiz(Long quizId, User user) throws UnauthorizedException {
         Quiz quiz = quizService.findOneMine(quizId, user);
         return MyQuizResponse.of(quiz, rateService.countOfGood(quiz), rateService.didIRate(quiz, user));
