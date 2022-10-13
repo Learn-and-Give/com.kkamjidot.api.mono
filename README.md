@@ -1,12 +1,18 @@
 # com.kkamjidot.api.mono
-### v2.3.0
-#### v2.3.0 - 2022-10-13
-#### v2.2.0 - 2022-10-13
+### v2.3.0 업데이트
+#### ㄷㄹㅈ
+#### v2.3.0 - 퀴즈 조회 큐칙 변경(2022.10.13.)
+- 앞으로는 주차별 퀴즈 열람 가능하다는 규칙이 제거되고 참여중인 모든 퀴즈를 조회할 수 있습니다.
+- 챌린지
+  - GET v1/challenges/{challengeId}/weeks 챌린지 주차 정보 목록 조회 API Deprecated
+- 퀴즈
+  - 
+#### v2.2.0 - 인가 방식 변경(2022.10.13.)
 - 인가 방식 변경(코드 -> jwt)
   - api 호출 방식 변경(코드 -> jwt)
-#### v2.1.0 - 2022-10-13
+#### v2.1.0 - 2022.10.13.
 - PATCH v1/users/password 비밀번호 변경 API 추가
-#### v2.0.0 - 2022-10-12
+#### v2.0.0 - 2022.10.12.
 - POST v2/user/login 로그인 API 방식 변경
   - 요청: email*(string), password*(string), isAutoLogin*(bool), platform*(string), fcmToken(string)
   - 응답: token(string)

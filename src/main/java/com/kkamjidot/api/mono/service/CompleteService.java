@@ -45,7 +45,7 @@ public class CompleteService {
     }
 
     public List<Integer> findCompleteWeeks(User user, Challenge challenge) {
-        return completeRepository.findByUserAndChall(user, challenge).stream().map(Complete::getWeek).toList();  // 열람 가능 주차 조회
+        return completeRepository.findByUserAndChall(user, challenge).stream().map(Complete::getWeek).toList();  // 미션 완료 주차 조회
     }
 
     public int countComplete(Challenge challenge) {

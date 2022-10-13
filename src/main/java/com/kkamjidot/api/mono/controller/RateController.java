@@ -34,7 +34,7 @@ public class RateController {
     private final TakeAClassService takeAClassService;
     private final AuthService authService;
 
-    @Operation(summary = "퀴즈 평가 API", description = "퀴즈에 좋아요(GOOD)/싫어요(BAD)/취소(null)로 평가한다. 열람 가능 주차의 문제가 아니면 403 에러를 반환한다.")
+    @Operation(summary = "퀴즈 평가 API", description = "퀴즈에 좋아요(GOOD)/싫어요(BAD)/취소(null)로 평가한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 평가 성공")
     @PutMapping(path = "v1/quizzes/{quizId}/rate")
     public ResponseEntity<QuizRateResponse> rateQuiz(@RequestHeader String jwt,
@@ -42,7 +42,8 @@ public class RateController {
                                                      @RequestBody QuizRateRequest request,
                                                      UriComponentsBuilder uriBuilder) {
         User user = authService.authenticate(jwt);
-        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
+        Quiz quiz = quizService.findById(quizId);
+        takeAClassService.checkCanReadChallengeByChallengeId(quiz.getChallengeId(), user.getId());
 
         Rate rate = Rate.builder()
                 .rate(request.getRate())
