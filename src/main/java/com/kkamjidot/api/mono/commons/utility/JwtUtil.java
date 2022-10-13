@@ -22,11 +22,12 @@ import java.util.Date;
 /**
  * JWT 토큰 생성 및 검증
  * 참고 사이트
- * - <a href="https://github.com/jwtk/jjwt">...</a>
+ * - <a href="https://github.com/jwtk/jjwt">공식문서</a>
  * - <a href="https://stormpath.com/blog/jwt-java-create-verify">How to Create and verify JWTs in Java</a>
  * - <a href="https://ocblog.tistory.com/56">...</a>
  * - <a href="https://bibi6666667.tistory.com/311">...</a>
  * - <a href="https://lemontia.tistory.com/1021">[springboot, jwt] jwt 로 토큰 생성, 유효시간 관리 하기</a>
+ * - <a href="https://yookeun.github.io/java/2020/12/29/spring-jwt/">Springboot에서 JWT 간단 사용하기</a> 차후 참고
  */
 @Slf4j
 @Component

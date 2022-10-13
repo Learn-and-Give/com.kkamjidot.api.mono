@@ -37,7 +37,7 @@ public class QuizController {
     private final CompleteService completeService;
     private final AuthService authService;
 
-    @Operation(summary = "퀴즈 개요 목록 조회 API", description = "한 챌린지에 여러 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 열람 가능 주차의 문제가 아니면 403 에러를 반환한다. 쿼리 week에는 여러 주차를 입력받는다.")
+    @Operation(summary = "퀴즈 개요 목록 조회 API", description = "한 챌린지에 여러 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 쿼리 week에는 여러 주차를 입력받는다.")
     @GetMapping("v1/challenges/{challengeId}/quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readQuizSummaries(@RequestHeader String jwt,
                                                                        @PathVariable Long challengeId,

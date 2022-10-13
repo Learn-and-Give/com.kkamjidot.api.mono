@@ -16,6 +16,7 @@ import java.util.Optional;
 
 public interface TakeAClassRepository extends JpaRepository<TakeAClass, Long> {
     Optional<TakeAClass> findByChallAndUser(Challenge chall, User user);
+    Boolean existsByChall_IdAndUser_IdAndTcApplicationstatus(Long challengeId, Long userId, ApplicationStatus applicationStatus);
 
     Optional<TakeAClass> findByTcApplicationstatusAndChall_IdAndUser(ApplicationStatus status, Long challengeId, User user);
 

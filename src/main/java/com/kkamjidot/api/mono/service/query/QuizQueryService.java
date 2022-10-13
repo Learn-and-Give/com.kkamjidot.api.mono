@@ -92,11 +92,14 @@ public class QuizQueryService {
     }
 
     public List<QuizSummaryResponse> readQuizSummaries(User user, Long challengeId, List<Integer> weeks) throws UnauthorizedException {
-        Challenge challenge = challengeService.findOne(challengeId);
-        List<Integer> readableWeeks = completeService.findCompleteWeeks(user, challenge);
-        for (int week : weeks) {
-            if (week == challenge.getThisWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
-        }
+//        Challenge challenge = challengeService.findOne(challengeId);
+//        List<Integer> readableWeeks = completeService.findCompleteWeeks(user, challenge);
+//        for (int week : weeks) {
+//            if (week == challenge.getThisWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+//        }
+        if (!takeAClassRepository.existsByChall_IdAndUser_IdAndTcApplicationstatus(challengeId, user.getId(), ApplicationStatus.ACCEPTED))
+            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+
         List<Quiz> quizzes = quizQueryRepository.findByUserAndChallenge_IdAndQuizWeek(challengeId, weeks);
 
         // 응답 개체 생성
