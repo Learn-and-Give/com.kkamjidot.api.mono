@@ -1,6 +1,8 @@
 # com.kkamjidot.api.mono
-### v2.3.8 업데이트
-#### v2.3.8 - 로그인, 비밀번보 변경 API 수정(2022.10.13.)
+### v2.4.1 업데이트
+#### v2.4.1 - 챌린지 주차 정보 목록 조회 API 복구(2022.10.13.)
+- GET v1/challenges/{challengeId}/weeks 챌린지 주차 정보 목록 조회 API Deprecated 제거
+#### v2.4.0 - 로그인, 비밀번보 변경 API 수정(2022.10.13.)
 #### v2.3.7 - 퀴즈 조회 규칙 변경(2022.10.13.)
 - 앞으로는 주차별 퀴즈 열람 가능하다는 규칙이 제거되고 참여중인 모든 퀴즈를 조회할 수 있습니다.
 - GET v1/challenges/{challengeId}/weeks 챌린지 주차 정보 목록 조회 API Deprecated

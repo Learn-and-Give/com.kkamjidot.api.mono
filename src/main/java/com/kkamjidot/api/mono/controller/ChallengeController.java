@@ -65,7 +65,6 @@ public class ChallengeController {
         return ResponseEntity.ok(responses);
     }
 
-    @Deprecated
     @Operation(summary = "챌린지 주차 정보 목록 조회 API", description = "한 챌린지의 주차별 열람가능 여부 정보 목록을 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/weeks")
     public ResponseEntity<WeekResponse> readWeeks(@RequestHeader String jwt,
