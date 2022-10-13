@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Schema(name = "비밀번호 변경 요청")
 public class UpdatePasswordRequest {
-    @Schema(description = "이메일", example = "kkamjidot@gmial.com", required = true)
+    @Schema(description = "이메일", example = "kkamjidot@gmail.com", required = true)
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     private String email;
 

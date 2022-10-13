@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Schema(name = "로그인 요청")
 public class LoginRequestV2 implements Serializable {
-    @Schema(description = "이메일", example = "kkamjidot@gmial.com", required = true)
+    @Schema(description = "이메일", example = "kkamjidot@gmail.com", required = true)
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     private String email;
 
