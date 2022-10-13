@@ -36,12 +36,12 @@ public class QuizQueryService {
     private final SolveService solveService;
 
     public QuizResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
-        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
-
-//        if (!quiz.isMine(user)
-//                && (quiz.getChallenge().getNowWeek() <= quiz.getQuizWeek()
-//                || !readableRepository.existsByWeekAndUserAndChall(quiz.getQuizWeek(), user, quiz.getChallenge())))
+//        if (!takeAClassRepository.existsByChall_IdAndUser_IdAndTcApplicationstatus(challengeId, user.getId(), ApplicationStatus.ACCEPTED))
 //            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+
+        Quiz quiz = quizService.findById(quizId);
+
+        checkCanReadChallenge(quiz.getChallengeId(), user.getId());
 
         Solve solve = solveService.findSolveOrElseEmpty(quiz, user);
 
@@ -97,8 +97,7 @@ public class QuizQueryService {
 //        for (int week : weeks) {
 //            if (week == challenge.getThisWeek() || !readableWeeks.contains(week)) throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
 //        }
-        if (!takeAClassRepository.existsByChall_IdAndUser_IdAndTcApplicationstatus(challengeId, user.getId(), ApplicationStatus.ACCEPTED))
-            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+        checkCanReadChallenge(challengeId, user.getId());
 
         List<Quiz> quizzes = quizQueryRepository.findByUserAndChallenge_IdAndQuizWeek(challengeId, weeks);
 
@@ -123,5 +122,10 @@ public class QuizQueryService {
         Challenge challenge = challengeService.findOne(challengeId);
 
         return null;
+    }
+
+    private void checkCanReadChallenge(Long challengeId, Long userId) {
+        if (!takeAClassRepository.existsByChall_IdAndUser_IdAndTcApplicationstatus(challengeId, userId, ApplicationStatus.ACCEPTED))
+            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
     }
 }

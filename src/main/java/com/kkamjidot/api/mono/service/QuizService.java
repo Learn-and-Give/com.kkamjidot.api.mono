@@ -71,4 +71,8 @@ public class QuizService {
     public int countByWeek(Challenge challenge, User user, int week) {
         return quizRepository.countByChallengeAndUserAndQuizWeekAndQuizDeletedDateNull(challenge, user, week);
     }
+
+    public Quiz findById(Long quizId) {
+        return quizRepository.findByIdAndQuizDeletedDateNull(quizId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 퀴즈입니다."));
+    }
 }

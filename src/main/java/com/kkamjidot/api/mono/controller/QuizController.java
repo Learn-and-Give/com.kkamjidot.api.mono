@@ -52,7 +52,7 @@ public class QuizController {
         return ResponseEntity.ok(responses);
     }
 
-    @Operation(summary = "퀴즈 조회 API", description = "퀴즈의 내용을 조회한다. 문제를 풀었으면 모든 정보를 반환해주고 아니면 정답부분은 null을 보내준다. 열람 가능 주차가 아니면 403 에러를 반환한다.")
+    @Operation(summary = "퀴즈 조회 API", description = "퀴즈의 내용을 조회한다. 문제를 풀었으면 모든 정보를 반환해주고 아니면 정답부분은 null을 보내준다.")
     @GetMapping("v1/quizzes/{quizId}")
     public ResponseEntity<QuizResponse> readQuizContent(@RequestHeader String jwt,
                                                         @PathVariable Long quizId) {
