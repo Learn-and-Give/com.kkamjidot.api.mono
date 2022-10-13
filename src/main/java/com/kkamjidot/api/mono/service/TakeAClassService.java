@@ -4,6 +4,7 @@ import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.domain.enumerate.ApplicationStatus;
 import com.kkamjidot.api.mono.exception.UnauthorizedException;
+import com.kkamjidot.api.mono.repository.QuizRepository;
 import com.kkamjidot.api.mono.repository.TakeAClassRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TakeAClassService {
     private final TakeAClassRepository takeAClassRepository;
+    private final QuizService quizService;
 
     /**
      * 수강중이고 진행중인 챌린지를 조회한다.
@@ -28,5 +30,17 @@ public class TakeAClassService {
     public Challenge findOneChallengeTaken(Long challengeId, User user) throws UnauthorizedException {
         return takeAClassRepository.findByTcApplicationstatusAndChall_IdAndUser(ApplicationStatus.ACCEPTED, challengeId, user)
                 .orElseThrow(() -> new UnauthorizedException("열람 가능한 챌린지가 아닙니다.")).getChall();
+    }
+
+    public void checkCanReadChallengeByChallengeId(Long challengeId, Long userId) {
+        if (Boolean.FALSE.equals(takeAClassRepository.existsByChall_IdAndUser_IdAndTcApplicationstatus(challengeId, userId, ApplicationStatus.ACCEPTED)))
+            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
+    }
+
+    public void checkCanReadChallengeByQuizId(Long quizId, Long userId) {
+        Long challengeId = quizService.findById(quizId).getChallengeId();
+
+        if (Boolean.FALSE.equals(takeAClassRepository.existsByChall_IdAndUser_IdAndTcApplicationstatus(challengeId, userId, ApplicationStatus.ACCEPTED)))
+            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
     }
 }

@@ -37,7 +37,7 @@ public class QuizController {
     private final CompleteService completeService;
     private final AuthService authService;
 
-    @Operation(summary = "퀴즈 개요 목록 조회 API", description = "한 챌린지에 여러 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 쿼리 week에는 여러 주차를 입력받는다.")
+    @Operation(summary = "퀴즈 개요 목록 조회 API", description = "한 챌린지에 여러 주차에 해당하는 퀴즈의 개요 목록을 조회한다. 쿼리 week에는 여러 주차를 입력받는다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readQuizSummaries(@RequestHeader String jwt,
                                                                        @PathVariable Long challengeId,
@@ -52,7 +52,7 @@ public class QuizController {
         return ResponseEntity.ok(responses);
     }
 
-    @Operation(summary = "퀴즈 조회 API", description = "퀴즈의 내용을 조회한다. 문제를 풀었으면 모든 정보를 반환해주고 아니면 정답부분은 null을 보내준다.")
+    @Operation(summary = "퀴즈 조회 API", description = "퀴즈의 내용을 조회한다. 문제를 풀었으면 모든 정보를 반환해주고 아니면 정답부분은 null을 보내준다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다.")
     @GetMapping("v1/quizzes/{quizId}")
     public ResponseEntity<QuizResponse> readQuizContent(@RequestHeader String jwt,
                                                         @PathVariable Long quizId) {
@@ -152,69 +152,6 @@ public class QuizController {
         quizService.updateAnswer(quizId, user, request);
         URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quizId).toUri();
 
-        LOGGER.info("퀴즈 정답 수정 API: Patch v1/quizzes/{} [User: {}, quiz: {}]", quizId, user.getId(), quizId);
         return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
-    }
-
-    @Operation(summary = "퀴즈 풀기 정답 제출 API", description = "퀴즈를 푼다. 열람 가능한 주차의 문제가 아니거나, 이미 푼 문제면 403 에러를 반환한다.")
-    @ApiResponse(responseCode = "201", description = "퀴즈 풀기 성공")
-    @PostMapping(path = "v1/quizzes/{quizId}/solve")
-    public ResponseEntity<QuizIdResponse> solveQuiz(@RequestHeader String jwt,
-                                                    @PathVariable Long quizId,
-                                                    @RequestBody @Valid SolveRequest request,
-                                                    UriComponentsBuilder uriBuilder) {
-        User user = authService.authenticate(jwt);
-        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
-        solveService.checkNotSolved(quiz, user);                    // 이미 푼 문제인지 확인
-
-        Solve solve = Solve.of(request, quiz, user);
-        solveService.createOne(solve);                              // 정답 제출
-        URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
-
-        LOGGER.info("퀴즈 풀기 정답 제출 API: Post v1/quizzes/{}/solve [User: {}, quiz: {}]", quizId, user.getId(), quiz.getId());
-        return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
-    }
-
-    @Operation(summary = "퀴즈 풀었던 정답 조회 API", description = "한 문제에 내가 제출한 정답을 조회한다.")
-    @GetMapping(path = "v1/quizzes/{quizId}/solve")
-    public ResponseEntity<QuizSolveAnswerResponse> readQuizSolvedAnswer(@RequestHeader String jwt,
-                                                                        @PathVariable Long quizId) {
-        User user = authService.authenticate(jwt);                     // 회원 인증
-        Solve solve = quizQueryService.findSolve(quizId, user);   // 제출한 정답 조회
-
-        // 응답 객체 생성
-        QuizSolveAnswerResponse response = QuizSolveAnswerResponse.builder()
-                .quizId(solve.getQuiz().getId())
-                .solveAnswer(solve.getSolveAnswer())
-                .build();
-
-        LOGGER.info("퀴즈 풀었던 정답 조회 API: Get v1/quizzes/{}/solve [User: {}, response: {}]", quizId, user.getId(), response);
-        return ResponseEntity.ok(response);
-    }
-
-    @Operation(summary = "퀴즈 풀기 채점 점수 제출 API", description = "퀴즈를 채점한다. 퀴즈 정답을 제출한 문제가 아니거나, 이미 푼 문제면 403 에러를 반환한다.")
-    @ApiResponse(responseCode = "201", description = "퀴즈 풀기 성공")
-    @PostMapping(path = "v1/quizzes/{quizId}/grade")
-    public ResponseEntity<QuizIdResponse> gradeQuiz(@RequestHeader String jwt,
-                                                    @PathVariable Long quizId,
-                                                    @RequestBody @Valid ScoreRequest request,
-                                                    UriComponentsBuilder uriBuilder) {
-        User user = authService.authenticate(jwt);
-        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
-        solveService.updateSolveScore(quiz, user, request.getScore());// 이미 푼 문제인지 확인
-        URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
-
-        LOGGER.info("퀴즈 풀기 채점 점수 제출 API: Patch v1/quizzes/{}/grade [User: {}, quiz: {}]", quizId, user.getId(), quiz.getId());
-        return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
-    }
-
-    @Hidden
-    @Operation(summary = "퀴즈 제출 현황 조회 API", description = "현재 챌린지의 퀴즈 제출 현황을 조회한다. 주차 및 챌린지원별 퀴즈 제출 횟수가 반환된다. 수강중이거나 수강했던 챌린지가 아니라면 403 에러를 반환한다.")
-    @GetMapping("v1/challenges/{challengeId}/submissions-status")
-    public ResponseEntity<QuizSubmissionStatusResponse> readQuizSubmissionStatus(@RequestHeader String jwt,
-                                                                                 @PathVariable Long challengeId) {
-        User user = authService.authenticate(jwt);
-
-        return null;
     }
 }
