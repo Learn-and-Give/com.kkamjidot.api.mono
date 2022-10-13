@@ -22,7 +22,7 @@ public class LoginRequest implements Serializable {
     @NotNull(message = "비밀번호는 필수 입력 값입니다.")
     private String code;
 
-    @Schema(description = "알림용 토큰 저장 테이블", example = "MacIntel", required = true) private String platform;
+    @Schema(description = "로그인하는 플랫폼", example = "MacIntel", required = true) private String platform;
 
     @Schema(description = "토큰") private String token;
 }

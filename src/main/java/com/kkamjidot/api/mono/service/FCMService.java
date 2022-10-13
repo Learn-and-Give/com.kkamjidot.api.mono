@@ -1,9 +1,6 @@
 package com.kkamjidot.api.mono.service;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.WebpushConfig;
-import com.google.firebase.messaging.WebpushNotification;
+import com.google.firebase.messaging.*;
 import com.kkamjidot.api.mono.dto.NotificationRequest;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +17,9 @@ public class FCMService {
     public void send(final NotificationRequest notificationRequest) throws InterruptedException, ExecutionException {
         Message message = Message.builder()
                 .setToken(notificationRequest.getToken())
-                .setWebpushConfig(WebpushConfig.builder().putHeader("ttl", "300")
-                        .setNotification(new WebpushNotification(notificationRequest.getTitle(),
-                                notificationRequest.getMessage()))
+                .setNotification(Notification.builder()
+                        .setTitle(notificationRequest.getTitle())
+                        .setBody(notificationRequest.getMessage())
                         .build())
                 .build();
 

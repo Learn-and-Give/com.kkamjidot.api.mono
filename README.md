@@ -1,4 +1,27 @@
 # com.kkamjidot.api.mono
+### v2.4.1 업데이트
+#### v2.4.1 - 챌린지 주차 정보 목록 조회 API 복구(2022.10.13.)
+- GET v1/challenges/{challengeId}/weeks 챌린지 주차 정보 목록 조회 API Deprecated 제거
+#### v2.4.0 - 로그인, 비밀번보 변경 API 수정(2022.10.13.)
+#### v2.3.7 - 퀴즈 조회 규칙 변경(2022.10.13.)
+- 앞으로는 주차별 퀴즈 열람 가능하다는 규칙이 제거되고 참여중인 모든 퀴즈를 조회할 수 있습니다.
+- GET v1/challenges/{challengeId}/weeks 챌린지 주차 정보 목록 조회 API Deprecated
+- GET v1/challenges/{challengeId}/quizzes 퀴즈 개요 목록 조회 API 인가 변경
+- GET v1/quizzes/{quizId} 퀴즈 조회 API 인가 변경
+- GET v1/quizzes/{quizId}/rubric 퀴즈 루브릭 조회 API 삭제
+- POST v1/quizzes/{quizId}/solve 퀴즈 정답 제출 API 인가 변경
+- POST v1/quizzes/{quizId}/grade 퀴즈 풀기 채점 점수 제출 API 인가 변경 및 반복 채점 오류 해결
+- PUT v1/quizzes/{quizId}/rate 퀴즈 평가 API 인가 변경
+#### v2.2.0 - 인가 방식 변경(2022.10.13.)
+- 인가 방식 변경(코드 -> jwt)
+  - api 호출 방식 변경(코드 -> jwt)
+#### v2.1.0 - 2022.10.13.
+- PATCH v1/users/password 비밀번호 변경 API 추가
+#### v2.0.0 - 2022.10.12.
+- POST v2/user/login 로그인 API 방식 변경
+  - 요청: email*(string), password*(string), isAutoLogin*(bool), platform*(string), fcmToken(string)
+  - 응답: token(string)
+
 ### v1.5.0 - 2022-10-05
 - 금,토,일 독려 알림 발송
 - 커스텀 알림 발송

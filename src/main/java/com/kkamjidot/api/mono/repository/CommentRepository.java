@@ -20,5 +20,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("update Comment c set c.commentDeletedDate = ?1 where c.id = ?2")
     void updateCommentDeletedDateById(LocalDateTime commentDeletedDate, Long id);
 
-    List<Comment> findByQuizAndCommentDeletedDateNullOrderByCommentCreatedDateAsc(Quiz quiz );
+    List<Comment> findByQuizAndCommentDeletedDateNullOrderByCommentCreatedDateAsc(Quiz quiz);
 }

@@ -32,16 +32,18 @@ public class RateController {
     private final RateService rateService;
     private final RateQueryService rateQueryService;
     private final TakeAClassService takeAClassService;
+    private final AuthService authService;
 
-    @Operation(summary = "퀴즈 평가 API", description = "퀴즈에 좋아요(GOOD)/싫어요(BAD)/취소(null)로 평가한다. 열람 가능 주차의 문제가 아니면 403 에러를 반환한다.")
+    @Operation(summary = "퀴즈 평가 API", description = "퀴즈에 좋아요(GOOD)/싫어요(BAD)/취소(null)로 평가한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 평가 성공")
     @PutMapping(path = "v1/quizzes/{quizId}/rate")
-    public ResponseEntity<QuizRateResponse> rateQuiz(@RequestHeader @Parameter(description = "로그인한 회원 코드", example = "1234") String code,
+    public ResponseEntity<QuizRateResponse> rateQuiz(@RequestHeader String jwt,
                                                      @PathVariable @Parameter(description = "퀴즈 ID", example = "0") Long quizId,
                                                      @RequestBody QuizRateRequest request,
                                                      UriComponentsBuilder uriBuilder) {
-        User user = userService.authenticate(code);
-        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);
+        User user = authService.authenticate(jwt);
+        Quiz quiz = quizService.findById(quizId);
+        takeAClassService.checkCanReadChallengeByChallengeId(quiz.getChallengeId(), user.getId());
 
         Rate rate = Rate.builder()
                 .rate(request.getRate())
@@ -62,9 +64,9 @@ public class RateController {
 
     @Operation(summary = "좋아요한 문제들 조회 API", description = "내가 좋아요한 문제들의 개요 리스트를 반환한다. 수강중이거나 수강했던 챌린지가 아니라면 403 에러를 반환한다.")
     @GetMapping(path = "v1/challenges/{challengeId}/my-good-quizzes")
-    public ResponseEntity<List<QuizSummaryResponse>> readMyGoodQuizzes(@RequestHeader @Parameter(description = "로그인한 회원 코드", example = "1234") String code,
+    public ResponseEntity<List<QuizSummaryResponse>> readMyGoodQuizzes(@RequestHeader String jwt,
                                                                        @PathVariable @Parameter(description = "챌린지 ID", example = "0") Long challengeId) {
-        User user = userService.authenticate(code);
+        User user = authService.authenticate(jwt);
         Challenge challenge = takeAClassService.findOneChallengeTaken(challengeId, user);
         List<QuizSummaryResponse> responses = rateQueryService.readMyGoodQuizzes(user, challenge);
 

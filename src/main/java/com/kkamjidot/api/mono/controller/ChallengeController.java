@@ -5,6 +5,7 @@ import com.kkamjidot.api.mono.dto.response.ChallengeResponse;
 import com.kkamjidot.api.mono.dto.response.ChallengeSummaryResponse;
 import com.kkamjidot.api.mono.dto.response.nowResponse;
 import com.kkamjidot.api.mono.dto.response.WeekResponse;
+import com.kkamjidot.api.mono.service.AuthService;
 import com.kkamjidot.api.mono.service.UserService;
 import com.kkamjidot.api.mono.service.query.ChallengeQueryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,11 +29,12 @@ public class ChallengeController {
     private final Logger LOGGER = LoggerFactory.getLogger(ChallengeController.class);
     private final UserService userService;
     private final ChallengeQueryService challengeQueryService;
+    private final AuthService authService;
 
     @Operation(summary = "챌린지 목록 조회 API", description = "모든 챌린지를 조회한다.")
     @GetMapping("v1/challenges")
-    public ResponseEntity<List<ChallengeSummaryResponse>> readChallenges(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
-        User user = userService.authenticate(code);
+    public ResponseEntity<List<ChallengeSummaryResponse>> readChallenges(@RequestHeader String jwt) {
+        User user = authService.authenticate(jwt);
 
         List<ChallengeSummaryResponse> responses = challengeQueryService.readChallenges(user);
 
@@ -42,9 +44,9 @@ public class ChallengeController {
 
     @Operation(summary = "챌린지 조회 API", description = "한 챌린지 정보를 조회한다.")
     @GetMapping("v1/challenges/{challengeId}")
-    public ResponseEntity<ChallengeResponse> readChallenge(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+    public ResponseEntity<ChallengeResponse> readChallenge(@RequestHeader String jwt,
                                                            @PathVariable Long challengeId) {
-        User user = userService.authenticate(code);
+        User user = authService.authenticate(jwt);
 
         ChallengeResponse response = challengeQueryService.readChallenge(challengeId, user);
 
@@ -54,8 +56,8 @@ public class ChallengeController {
 
     @Operation(summary = "내가 참여한 챌린지 목록 조회 API", description = "내가 참여한 챌린지 목록을 조회한다.")
     @GetMapping("v1/my/challenges")
-    public ResponseEntity<List<ChallengeSummaryResponse>> readMyChallenges(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code) {
-        User user = userService.authenticate(code);
+    public ResponseEntity<List<ChallengeSummaryResponse>> readMyChallenges(@RequestHeader String jwt) {
+        User user = authService.authenticate(jwt);
 
         List<ChallengeSummaryResponse> responses = challengeQueryService.readMyChallenges(user);
 
@@ -65,9 +67,9 @@ public class ChallengeController {
 
     @Operation(summary = "챌린지 주차 정보 목록 조회 API", description = "한 챌린지의 주차별 열람가능 여부 정보 목록을 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/weeks")
-    public ResponseEntity<WeekResponse> readWeeks(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+    public ResponseEntity<WeekResponse> readWeeks(@RequestHeader String jwt,
                                                   @PathVariable Long challengeId) {
-        User user = userService.authenticate(code);
+        User user = authService.authenticate(jwt);
 
         WeekResponse response = challengeQueryService.readWeeks(challengeId, user);
 
@@ -77,9 +79,9 @@ public class ChallengeController {
 
     @Operation(summary = "현재 주자 반환 API", description = "현재 일시와 현재 챌린지에서의 주차를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/now")
-    public ResponseEntity<nowResponse> readThisWeek(@Parameter(description = "로그인한 회원 코드", example = "1234") @RequestHeader String code,
+    public ResponseEntity<nowResponse> readThisWeek(@RequestHeader String jwt,
                                                     @PathVariable Long challengeId) {
-        User user = userService.authenticate(code);
+        User user = authService.authenticate(jwt);
 
         nowResponse response = challengeQueryService.readThisWeek(challengeId);
 
