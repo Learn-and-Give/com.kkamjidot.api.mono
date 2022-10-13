@@ -11,6 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Schema(name = "댓글 등록 요청")
 public class CreateCommentRequest implements Serializable {
+    @Schema(description = "댓글 내용", example = "댓글 내용", required = true)
     @Size(min = 1, max = 4000, message = "댓글 내용은 1자 이상 4000자 이하여야 합니다.")
     private String content;
 }
