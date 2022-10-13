@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 @NoArgsConstructor
@@ -19,6 +20,10 @@ public class UpdatePasswordRequest {
     private String existingPassword;
 
     @Schema(description = "새로운 비밀번호", example = "", required = true)
-    @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
+    @Size(min = 8, max = 255, message = "비밀번호는 8자 이상 255자 이하여야 합니다.")
     private String newPassword;
+
+    @Schema(description = "새로운 비밀번호 확인", example = "", required = true)
+    @Size(min = 8, max = 255, message = "비밀번호는 8자 이상 255자 이하여야 합니다.")
+    private String newPasswordConfirm;
 }
