@@ -71,6 +71,7 @@ public class QuizSolveController {
         return ResponseEntity.ok(response);
     }
 
+    @Deprecated
     @Operation(summary = "퀴즈 풀기 채점 점수 제출 API V1", description = "퀴즈를 채점한다. 퀴즈 정답을 제출한 문제가 아니거나, 이미 채점한 문제면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "퀴즈 풀기 성공")
     @PostMapping(path = "v1/quizzes/{quizId}/grade")
