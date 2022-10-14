@@ -62,7 +62,7 @@ public class RateController {
         return ResponseEntity.created(location).body(response);
     }
 
-    @Operation(summary = "좋아요한 문제들 조회 API", description = "내가 좋아요한 문제들의 개요 리스트를 반환한다. 수강중이거나 수강했던 챌린지가 아니라면 403 에러를 반환한다.")
+    @Operation(summary = "좋아요한 문제들 개요 목록 조회 API", description = "내가 좋아요한 문제들의 개요 리스트를 반환한다. 수강중이거나 수강했던 챌린지가 아니라면 403 에러를 반환한다.")
     @GetMapping(path = "v1/challenges/{challengeId}/my-good-quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readMyGoodQuizzes(@RequestHeader String jwt,
                                                                        @PathVariable @Parameter(description = "챌린지 ID", example = "0") Long challengeId) {

@@ -1,13 +1,14 @@
 package com.kkamjidot.api.mono.controller;
 
-import com.kkamjidot.api.mono.domain.*;
-import com.kkamjidot.api.mono.dto.request.*;
+import com.kkamjidot.api.mono.domain.Challenge;
+import com.kkamjidot.api.mono.domain.Quiz;
+import com.kkamjidot.api.mono.domain.User;
+import com.kkamjidot.api.mono.dto.request.CreateQuizRequest;
+import com.kkamjidot.api.mono.dto.request.UpdateQuizRequest;
 import com.kkamjidot.api.mono.dto.response.*;
 import com.kkamjidot.api.mono.service.*;
 import com.kkamjidot.api.mono.service.query.QuizQueryService;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.LinkedList;
 import java.util.List;
 
 @Tag(name = "퀴즈", description = "퀴즈 관련 작업들")
@@ -29,7 +31,6 @@ import java.util.List;
 @RestController
 public class QuizController {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-    private final UserService userService;
     private final QuizService quizService;
     private final QuizQueryService quizQueryService;
     private final TakeAClassService takeAClassService;
@@ -41,8 +42,9 @@ public class QuizController {
     @GetMapping("v1/challenges/{challengeId}/quizzes")
     public ResponseEntity<List<QuizSummaryResponse>> readQuizSummaries(@RequestHeader String jwt,
                                                                        @PathVariable Long challengeId,
-                                                                       @RequestParam List<Integer> week) throws MissingServletRequestParameterException {
-        if (week.isEmpty()) throw new org.springframework.web.bind.MissingServletRequestParameterException("week", "List");
+                                                                       @RequestParam(required = false) List<Integer> week) throws MissingServletRequestParameterException {
+//        if (week.isEmpty()) throw new org.springframework.web.bind.MissingServletRequestParameterException("week", "List");
+        if (week == null || week.isEmpty()) week = new LinkedList<>();
 
         User user = authService.authenticate(jwt);
 
@@ -76,12 +78,12 @@ public class QuizController {
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "내가 작성한 퀴즈 주차별 개요 조회 API", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개요 목록을 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다."
+    @Operation(summary = "내가 작성한 퀴즈 주차별 개요 목록 조회 API", description = "내가 참여한 챌린지에 주차별로 해당하는 작성한 퀴즈의 개요 목록을 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다."
             + "만약 주차가 0이거나 없으면 모든 퀴즈를 반환한다.")
     @GetMapping("v1/challenges/{challengeId}/my/quizzes")
-    public ResponseEntity<List<QuizSummaryResponse>> readMyQuizzes(@RequestHeader String jwt,
-                                                                   @PathVariable Long challengeId,
-                                                                   @RequestParam(defaultValue = "0", required = false) Integer week) {
+    public ResponseEntity<List<QuizSummaryResponse>> readMyQuizSummaries(@RequestHeader String jwt,
+                                                                         @PathVariable Long challengeId,
+                                                                         @RequestParam(defaultValue = "0", required = false) Integer week) {
         User user = authService.authenticate(jwt);
 
         List<QuizSummaryResponse> responses = quizQueryService.readMyQuizzes(week, user, challengeId);

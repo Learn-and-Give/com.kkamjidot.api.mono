@@ -36,6 +36,7 @@ public class QuizResponse implements Serializable {
     private final Boolean isMine;
     private final String solveAnswer;
     private final Integer solveScore;
+    private final String solveRubric;
     private final String writerName;
     private final Integer cntOfGood;
     private final RateValue didIRate;
@@ -53,15 +54,16 @@ public class QuizResponse implements Serializable {
                 .quizWeek(quiz.getQuizWeek())
                 .quizCategory(quiz.getQuizCategory())
                 .quizContent(quiz.getQuizContent())
-                .quizAnswer(solve.getSolveAnswer() != null ? quiz.getQuizAnswer() : null)
-                .quizExplanation(solve.getSolveAnswer() != null ? quiz.getQuizExplanation() : null)
-                .quizRubric(solve.getSolveAnswer() != null ? quiz.getQuizRubric() : null)
-                .quizSource(solve.getSolveAnswer() != null ? quiz.getQuizSource() : null)
+                .quizAnswer(solve.isSolved() ? quiz.getQuizAnswer() : null)
+                .quizExplanation(solve.isSolved() ? quiz.getQuizExplanation() : null)
+                .quizRubric(solve.isSolved() ? quiz.getQuizRubric() : null)
+                .quizSource(solve.isSolved() ? quiz.getQuizSource() : null)
                 .quizCreatedDate(quiz.getQuizCreatedDate())
                 .quizModifiedDate(quiz.getQuizModifiedDate())
                 .isMine(quiz.isMine(user))
                 .solveAnswer(solve.getSolveAnswer())
                 .solveScore(solve.getSolveScore())
+                .solveRubric(solve.getSolveRubric())
                 .writerName(quiz.getWriterName())
                 .cntOfGood(cntOfGood)
                 .didIRate(didIRate)

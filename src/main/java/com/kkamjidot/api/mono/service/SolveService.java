@@ -25,10 +25,10 @@ public class SolveService {
     }
 
     @Transactional
-    public void updateSolveScore(Long quizId, Long userId, int score) {
+    public void updateSolveScore(Long quizId, Long userId, int score, String chosenRubric) {
         Solve solve = solveRepository.findByQuiz_IdAndUser_IdAndSolveAnswerNotNull(quizId, userId).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
         if (solve.getSolveScore() != null) throw new UnauthorizedException("이미 채점한 문제입니다.");
-        solve.setSolveScore(score);
+        solve.enterScore(score, chosenRubric);
     }
 
     public Solve findSolveOrElseEmpty(Quiz quiz, User user) {

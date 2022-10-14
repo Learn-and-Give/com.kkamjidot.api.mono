@@ -12,5 +12,5 @@ import lombok.ToString;
 public class QuizSolveAnswerResponse {
     private final Long quizId;
     private final String solveAnswer;
-    private final String solveExplanation;
+    private final String solveRubric;
 }
