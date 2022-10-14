@@ -1,4 +1,41 @@
 # com.kkamjidot.api.mono
+#### v2.4.6 응답 객체 변경
+- 범위
+  - GET v1/challenges/{challengeId}/quizzes 퀴즈 개요 목록 조회 API
+  - GET v1/challenges/{challengeId}/my/quizzes 내가 작성한 퀴즈 주차별 개요 조회 API
+  - GET v1/challenges/{challengeId}/my-good-quizzes 좋아요한 문제들 조회 API
+- 변경 내용
+  1. 기존 solveAnswer, solveScore는 deprecated 처리함. 삭제 요망
+  2. 정답 제출 여부는 isSolved로, 채점 여부는 isScored로 처리
+  - 코드
+    ```java
+    @Deprecated private final String solveAnswer; 
+    @Deprecated private final Integer solveScore; 
+    @Schema(description = "정답 제출 여부") private final Boolean isSolved; 
+    @Schema(description = "채점 여부") private final Boolean isScored;	
+    ```
+
+#### v2.4.5 퀴즈 모든 주차 목록 조회
+- GET v1/challenges/{challengeId}/quizzes 퀴즈 개요 목록 조회 API 모든 주차 조회 가능하게 변경
+- week가 빠지면 모든 주차 반환
+- 사용 예시
+  - GET v1/challenges/{challengeId}/quizzes
+  - GET v1/challenges/{challengeId}/quizzes?week
+  - GET v1/challenges/{challengeId}/quizzes?week=
+#### v2.4.4 퀴즈 제출할 때 선택된 루브릭 같이 제출
+- POST v2/quizzes/{quizId}/grade 퀴즈 풀기 채점 점수 제출 API V2
+- chosenRubric 필수 입력
+  ```java
+  @Schema(description = "점수", example = "0", required = true)  
+  private Integer score;  
+    
+  @NotBlank @Size(max = 3500)  
+  @Schema(description = "선택된 루브릭", example = "선택된 루브릭 내용입니다.", required = true)  
+  private String chosenRubric;
+  ```
+#### v2.4.3 퀴즈 조회할 때 풀 때 선택된 루브릭 같이 조회
+- GET v1/quizzes/{quizId} 퀴즈 조회 API
+- solveRubric 추가
 #### v2.4.2: 토큰 등록 기능 추가(2022.10.14.)
 ### 2022.10.13. 시험 기간 챌린지 운영 관련 대규모 업데이트
 #### v2.4.1 - 챌린지 주차 정보 목록 조회 API 복구(2022.10.13.)
