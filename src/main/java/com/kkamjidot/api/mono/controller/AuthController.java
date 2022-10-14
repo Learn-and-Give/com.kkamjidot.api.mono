@@ -1,8 +1,9 @@
 package com.kkamjidot.api.mono.controller;
 
 import com.kkamjidot.api.mono.dto.request.LoginRequestV2;
-import com.kkamjidot.api.mono.dto.response.LoginResponseV2;
+import com.kkamjidot.api.mono.dto.response.LoginResponse;
 import com.kkamjidot.api.mono.service.AuthService;
+import com.kkamjidot.api.mono.service.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +20,16 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final AuthService authService;
+    private final NotificationService notificationService;
 
     @Operation(summary = "로그인 API V2", description = "회원 여부를 확인한다.")
     @PostMapping("v2/user/login")
-    public ResponseEntity<LoginResponseV2> loginV2(@RequestBody @Valid LoginRequestV2 request) {
-        String jwt = authService.login(request.getEmail(), request.getPassword());
+    public ResponseEntity<LoginResponse> loginV2(@RequestBody @Valid LoginRequestV2 request) {
+        LoginResponse response = authService.login(request.getEmail(), request.getPassword());
 
-        LoginResponseV2 response = LoginResponseV2.builder().token(jwt).build();
+        if (request.getFcmToken() != null && !request.getFcmToken().isBlank())
+            notificationService.register(response.getUserId(), request.getFcmToken(), request.getPlatform());  // 푸시 알림 용 토큰 등록
+
         return ResponseEntity.ok(response);
     }
 }
