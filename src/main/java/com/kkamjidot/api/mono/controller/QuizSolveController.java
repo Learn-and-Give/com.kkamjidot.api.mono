@@ -54,12 +54,13 @@ public class QuizSolveController {
         return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
     }
 
+    @Deprecated
     @Operation(summary = "퀴즈 풀었던 정답 조회 API", description = "한 문제에 내가 제출한 정답을 조회한다.")
     @GetMapping(path = "v1/quizzes/{quizId}/solve")
-    public ResponseEntity<QuizSolveAnswerResponse> readQuizSolvedAnswer(@RequestHeader String jwt,
-                                                                        @PathVariable Long quizId) {
+    public ResponseEntity<QuizSolveAnswerResponse> readQuizSolvedAnswerV1(@RequestHeader String jwt,
+                                                                          @PathVariable Long quizId) {
         User user = authService.authenticate(jwt);                     // 회원 인증
-        Solve solve = quizQueryService.findSolve(quizId, user);   // 제출한 정답 조회
+        Solve solve = solveService.findSolve(quizId, user.getId());   // 제출한 정답 조회
 
         // 응답 객체 생성
         QuizSolveAnswerResponse response = QuizSolveAnswerResponse.builder()

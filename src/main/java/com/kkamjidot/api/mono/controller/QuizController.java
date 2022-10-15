@@ -2,6 +2,7 @@ package com.kkamjidot.api.mono.controller;
 
 import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.Quiz;
+import com.kkamjidot.api.mono.domain.Solve;
 import com.kkamjidot.api.mono.domain.User;
 import com.kkamjidot.api.mono.dto.request.CreateQuizRequest;
 import com.kkamjidot.api.mono.dto.request.UpdateQuizRequest;
@@ -54,16 +55,38 @@ public class QuizController {
         return ResponseEntity.ok(responses);
     }
 
+    @Deprecated
     @Operation(summary = "퀴즈 조회 API", description = "퀴즈의 내용을 조회한다. 문제를 풀었으면 모든 정보를 반환해주고 아니면 정답부분은 null을 보내준다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다.")
     @GetMapping("v1/quizzes/{quizId}")
-    public ResponseEntity<QuizResponse> readQuizContent(@RequestHeader String jwt,
-                                                        @PathVariable Long quizId) {
+    public ResponseEntity<QuizResponse> readQuiz(@RequestHeader String jwt,
+                                                 @PathVariable Long quizId) {
         User user = authService.authenticate(jwt);
 
-        QuizResponse response = quizQueryService.readQuizContent(quizId, user);
+        QuizResponse response = quizQueryService.readQuiz(quizId, user);
 
         LOGGER.info("퀴즈 문제 조회 API: Get v1/quizzes/{}/content [User: {}, response: {}]", quizId, user.getId(), response);
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "퀴즈 내용 조회 API", description = "퀴즈의 내용을 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다.")
+    @GetMapping("v1/quizzes/{quizId}/content")
+    public ResponseEntity<QuizContentResponse> readQuizContent(@RequestHeader String jwt,
+                                                               @PathVariable Long quizId) {
+        User user = authService.authenticate(jwt);
+
+        QuizContentResponse response = quizQueryService.readQuizContent(quizId, user);
+
+        LOGGER.info("퀴즈 문제 조회 API: Get v1/quizzes/{}/content [User: {}, response: {}]", quizId, user.getId(), response);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "퀴즈 정답 조회 API", description = "문제의 정답을 조회한다. 단, 정답을 제출한 적이 없으면 403 에러를 반환한다.")
+    @GetMapping(path = "v2/quizzes/{quizId}/solve")
+    public ResponseEntity<QuizAnswerResponse> readQuizAnswer(@RequestHeader String jwt,
+                                                             @PathVariable Long quizId) {
+        User user = authService.authenticate(jwt);                     // 회원 인증
+        solveService.checkSolved(quizId, user.getId());                // 퀴즈를 풀지 않았으면 403 에러
+        return ResponseEntity.ok(quizQueryService.readQuizAnswer(quizId, user.getId()));   // 제출한 정답 조회
     }
 
     @Operation(summary = "내 퀴즈 전체 내용 조회 API", description = "작성자가 본인인 퀴즈의 모든 정보를 조회한다.")

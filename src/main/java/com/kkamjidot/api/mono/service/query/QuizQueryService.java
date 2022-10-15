@@ -25,13 +25,13 @@ public class QuizQueryService {
     private final QuizQueryRepository quizQueryRepository;
 
     private final QuizService quizService;
-    private final CompleteService completeService;
+    private final UserService userService;
     private final ChallengeService challengeService;
     private final RateService rateService;
     private final SolveService solveService;
     private final TakeAClassService takeAClassService;
 
-    public QuizResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
+    public QuizResponse readQuiz(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
 //        if (!takeAClassRepository.existsByChall_IdAndUser_IdAndTcApplicationstatus(challengeId, user.getId(), ApplicationStatus.ACCEPTED))
 //            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
 
@@ -43,6 +43,25 @@ public class QuizQueryService {
 
         // 응답 객체 생성
         return QuizResponse.of(quiz, user, solve, rateService.countOfGood(quiz), rateService.didIRate(quiz, user));
+    }
+
+    public QuizContentResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
+        Quiz quiz = quizService.findById(quizId);
+
+        takeAClassService.checkCanReadChallengeByChallengeId(quiz.getChallengeId(), user.getId());
+
+        Solve solve = solveService.findSolveOrElseEmpty(quiz, user);
+
+        // 응답 객체 생성
+        return QuizContentResponse.of(quiz, user, solve, rateService.countOfGood(quiz), rateService.didIRate(quiz, user));
+    }
+
+    public QuizAnswerResponse readQuizAnswer(Long quizId, Long userId) {
+        Quiz quiz = quizService.findById(quizId);
+        Solve solve = solveService.findSolve(quizId, userId);
+
+        // 응답 객체 생성
+        return new QuizAnswerResponse(quiz, solve);
     }
 
     public MyQuizResponse readMyQuiz(Long quizId, User user) throws UnauthorizedException {
@@ -94,8 +113,8 @@ public class QuizQueryService {
         return responses;
     }
 
-    public Solve findSolve(Long quizId, User user) {
-        return solveRepository.findByQuiz_IdAndUserAndSolveAnswerNotNull(quizId, user).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
+    public Solve findSolve(Long quizId, Long userId) {
+        return solveRepository.findByQuiz_IdAndUser_Id(quizId, userId).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
     }
 
     public QuizSubmissionStatusResponse readQuizSubmissionStatus(User user, Long challengeId) {

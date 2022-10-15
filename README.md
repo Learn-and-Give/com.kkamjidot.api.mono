@@ -1,4 +1,44 @@
 # com.kkamjidot.api.mono
+#### v2.5.1 퀴즈 정답 조회 API V2로 변경
+- ~~GET v1/quizzes/{quizId}/grade~~ 퀴즈 풀기 채점 점수 제출 API V1 Deprecated
+- GET v2/quizzes/{quizId}/solve 퀴즈 정답 조회 API 추가
+- ```json
+  {
+    "quiz": {
+      "quizId": 1,
+      "answer": "R=8.3144J/mol",
+      "explanation": "1atm = 101325N/m^2 이다.....",
+      "rubric": "[{\"score\":\"5\",\"content....."
+    },
+    "solve": {
+      "answer": "1liter = 10^-3m^-3",
+      "score": 5,
+      "rubric": "1liter = 10^-3m^-3 임을 알고 있다."
+    }
+  }
+  ```
+#### v2.5.0 퀴즈 조회 API -> 퀴즈 내용 조회 API 변경
+- ~~GET v1/quizzes/{quizId}~~ 퀴즈 조회 API Deprecated
+- GET v1/quizzes/{quizId}/content 퀴즈 내용 조회 API 추가
+  ```json
+  {
+    "challengeId": 1,
+    "quizId": 1,
+    "quizTitle": "gas constant unit conversion (기체상수 단위 환산)",
+    "quizWeek": 1,
+    "quizContent": "R=0.082057 liter*atm/mol을 J/mol로 단위를 환산하시오\n",
+    "quizCreatedDate": "2022-09-09T00:17:33",
+    "quizModifiedDate": null,
+    "writerName": "홍길동",
+    "quizFiles": [],
+    "cntOfGood": 1,
+    "quizInfoPerUser": {
+      "isMine": true,
+      "didIRate": "GOOD",
+      "solveAnswer": "정답"
+    }
+  }
+  ```
 #### v2.4.7 응답 객체 변경
 - 범위
   - GET v1/challenges/{challengeId}/quizzes 퀴즈 개요 목록 조회 API

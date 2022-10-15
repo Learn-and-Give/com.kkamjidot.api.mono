@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Builder
-@Schema(name = "퀴즈 풀었던 정답 응답")
+@Schema(description = "퀴즈 풀었던 정답 응답")
 public class QuizSolveAnswerResponse {
     private final Long quizId;
     private final String solveAnswer;
