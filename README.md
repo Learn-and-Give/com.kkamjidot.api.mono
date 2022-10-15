@@ -1,4 +1,11 @@
 # com.kkamjidot.api.mono
+#### v2.4.7 응답 객체 변경
+- 범위
+  - GET v1/challenges/{challengeId}/quizzes 퀴즈 개요 목록 조회 API
+  - GET v1/challenges/{challengeId}/my/quizzes 내가 작성한 퀴즈 주차별 개요 조회 API
+  - GET v1/challenges/{challengeId}/my-good-quizzes 좋아요한 문제들 조회 API
+- 변경 내용
+  - isScored로 제거
 #### v2.4.6 응답 객체 변경
 - 범위
   - GET v1/challenges/{challengeId}/quizzes 퀴즈 개요 목록 조회 API
