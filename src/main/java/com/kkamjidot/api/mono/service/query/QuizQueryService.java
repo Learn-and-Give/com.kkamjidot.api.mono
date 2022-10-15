@@ -31,6 +31,7 @@ public class QuizQueryService {
     private final SolveService solveService;
     private final TakeAClassService takeAClassService;
 
+    @Deprecated
     public QuizResponse readQuiz(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
 //        if (!takeAClassRepository.existsByChall_IdAndUser_IdAndTcApplicationstatus(challengeId, user.getId(), ApplicationStatus.ACCEPTED))
 //            throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
@@ -45,15 +46,16 @@ public class QuizQueryService {
         return QuizResponse.of(quiz, user, solve, rateService.countOfGood(quiz), rateService.didIRate(quiz, user));
     }
 
-    public QuizContentResponse readQuizContent(Long quizId, User user) throws NoSuchElementException, UnauthorizedException {
+    public QuizContentResponse readQuizContent(Long quizId, Long userId) throws NoSuchElementException, UnauthorizedException {
         Quiz quiz = quizService.findById(quizId);
+        User user = userService.findById(userId);
 
-        takeAClassService.checkCanReadChallengeByChallengeId(quiz.getChallengeId(), user.getId());
+        takeAClassService.checkCanReadChallengeByChallengeId(quiz.getChallengeId(), userId);
 
-        Solve solve = solveService.findSolveOrElseEmpty(quiz, user);
+        Solve solve = solveService.findSolveOrElseEmpty(quizId, userId);
 
         // 응답 객체 생성
-        return QuizContentResponse.of(quiz, user, solve, rateService.countOfGood(quiz), rateService.didIRate(quiz, user));
+        return QuizContentResponse.of(quiz, user, solve, rateService.countOfGood(quiz), solveService.numberOfQuizzesSolved(quizId), rateService.didIRate(quiz, user));
     }
 
     public QuizAnswerResponse readQuizAnswer(Long quizId, Long userId) {
@@ -114,7 +116,7 @@ public class QuizQueryService {
     }
 
     public Solve findSolve(Long quizId, Long userId) {
-        return solveRepository.findByQuiz_IdAndUser_Id(quizId, userId).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
+        return solveRepository.findByQuizIdAndUserId(quizId, userId).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
     }
 
     public QuizSubmissionStatusResponse readQuizSubmissionStatus(User user, Long challengeId) {

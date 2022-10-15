@@ -10,9 +10,11 @@ import java.util.Optional;
 public interface SolveRepository extends JpaRepository<Solve, Long> {
     Optional<Solve> findByQuizAndUser(Quiz quiz, User user);
 
-    Optional<Solve> findByQuiz_IdAndUser_Id(Long quizId, Long userId);
+    Optional<Solve> findByQuizIdAndUserId(Long quizId, Long userId);
 
     boolean existsByQuizAndUser(Quiz quiz, User user);
 
-    boolean existsByQuiz_IdAndUser_Id(Long quizId, Long userId);
+    boolean existsByQuizIdAndUserId(Long quizId, Long userId);
+
+    Integer countByQuizId(Long quizId);
 }

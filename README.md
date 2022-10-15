@@ -1,4 +1,7 @@
 # com.kkamjidot.api.mono
+#### v2.5.2 퀴즈 내용 조회 API에 문제 풀린 횟수 추가
+- GET v1/quizzes/{quizId}/content 퀴즈 내용 조회 API 응답에 문제 풀린 횟수 추가
+- Integer cntOfSolved
 #### v2.5.1 퀴즈 정답 조회 API V2로 변경
 - ~~GET v1/quizzes/{quizId}/grade~~ 퀴즈 풀기 채점 점수 제출 API V1 Deprecated
 - GET v2/quizzes/{quizId}/solve 퀴즈 정답 조회 API 추가
@@ -32,7 +35,8 @@
     "writerName": "홍길동",
     "quizFiles": [],
     "cntOfGood": 1,
-    "quizInfoPerUser": {
+    "quizInfoByUser": {
+      "userId": 1,
       "isMine": true,
       "didIRate": "GOOD",
       "solveAnswer": "정답"

@@ -30,13 +30,14 @@ public class QuizContentResponse {
     private final String writerName;
     private final List<QuizFileDto> quizFiles;
     @Schema(description = "좋아요 수") private final Integer cntOfGood;
-    private final QuizInfoPerUser quizInfoPerUser;
+    @Schema(description = "문제 풀린 횟수") private final Integer cntOfSolved;
+    private final QuizInfoByUser quizInfoByUser;
 
     public void addQuizFiles(QuizFileDto quizFile) {
         this.quizFiles.add(quizFile);
     }
 
-    public static QuizContentResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, RateValue didIRate) {
+    public static QuizContentResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, Integer cntOfSolved, RateValue didIRate) {
         QuizContentResponse quizResponse = QuizContentResponse.builder()
                 .challengeId(quiz.getChallengeId())
                 .quizId(quiz.getId())
@@ -47,7 +48,8 @@ public class QuizContentResponse {
                 .quizModifiedDate(quiz.getQuizModifiedDate())
                 .writerName(quiz.getWriterName())
                 .cntOfGood(cntOfGood)
-                .quizInfoPerUser(new QuizInfoPerUser(quiz, user, solve, didIRate))
+                .cntOfSolved(cntOfSolved)
+                .quizInfoByUser(new QuizInfoByUser(quiz, user, solve, didIRate))
                 .quizFiles(new ArrayList<QuizFileDto>())
                 .build();
 
@@ -58,12 +60,13 @@ public class QuizContentResponse {
         return quizResponse;
     }
 
-    record QuizInfoPerUser(@Schema(description = "내가 작성한 문제인지 여부") Boolean isMine,
-                           @Schema(description = "내가 한 평가 내용") RateValue didIRate,
-                           @Schema(description = "제출한 정답") String solveAnswer) {
+    record QuizInfoByUser(@Schema(description = "유저 ID") Long userId,
+                          @Schema(description = "내가 작성한 문제인지 여부") Boolean isMine,
+                          @Schema(description = "내가 한 평가 내용") RateValue didIRate,
+                          @Schema(description = "제출한 정답") String solveAnswer) {
 
-        QuizInfoPerUser(Quiz quiz, User user, Solve solve, RateValue didIRate) {
-            this(quiz.isMine(user), didIRate, solve.getSolveAnswer());
+        QuizInfoByUser(Quiz quiz, User user, Solve solve, RateValue didIRate) {
+            this(user.getId(), quiz.isMine(user), didIRate, solve.getSolveAnswer());
         }
     }
 }

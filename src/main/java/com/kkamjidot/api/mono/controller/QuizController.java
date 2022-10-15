@@ -74,7 +74,7 @@ public class QuizController {
                                                                @PathVariable Long quizId) {
         User user = authService.authenticate(jwt);
 
-        QuizContentResponse response = quizQueryService.readQuizContent(quizId, user);
+        QuizContentResponse response = quizQueryService.readQuizContent(quizId, user.getId());
 
         LOGGER.info("퀴즈 문제 조회 API: Get v1/quizzes/{}/content [User: {}, response: {}]", quizId, user.getId(), response);
         return ResponseEntity.ok(response);

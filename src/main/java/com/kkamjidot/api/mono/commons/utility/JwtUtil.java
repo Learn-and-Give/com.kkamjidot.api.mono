@@ -59,9 +59,6 @@ public class JwtUtil {
 
         Date validity = new Date(now.getTime() + ACCESS_TOKEN_VALIDATiON_MILLISECOND);
 
-        log.info("@@@@@@@@@@@@@@@@ secretKey : {}", signingKey);
-        log.info("@@@@@@@@@@@@@@@@ secretKey : {}", signingKey.getEncoded());
-
         String jwt = Jwts.builder()
                 .setIssuer("kkamji")
                 .setIssuedAt(now)
@@ -69,15 +66,12 @@ public class JwtUtil {
 //                .setExpiration(willExpire ? validity : null)
                 .signWith(signingKey, signatureAlgorithm)
                 .compact();
-        log.info("@@@@@@@@@@@@@@@@ jwt : {}", jwt);
         return jwt;
     }
 
     public JwtTokenDto parseJWT(String jwt) {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(secretKey);
         SecretKey signingKey = Keys.hmacShaKeyFor(apiKeySecretBytes);
-        log.info("@@@@@@@@@@@@@@@@ secretKey : {}", signingKey);
-        log.info("@@@@@@@@@@@@@@@@ secretKey : {}", signingKey.getEncoded());
 
         try {
             Claims claims = Jwts.parserBuilder()

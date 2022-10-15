@@ -20,7 +20,7 @@ public class SolveService {
     }
 
     public void checkSolved(Long quizId, Long userId) throws UnauthorizedException {
-        if (!solveRepository.existsByQuiz_IdAndUser_Id(quizId, userId)) throw new UnauthorizedException("아직 풀지 않았습니다.");
+        if (!solveRepository.existsByQuizIdAndUserId(quizId, userId)) throw new UnauthorizedException("아직 풀지 않았습니다.");
     }
 
     @Transactional
@@ -30,7 +30,7 @@ public class SolveService {
 
     @Transactional
     public void updateSolveScore(Long quizId, Long userId, int score, String solveRubric) {
-        Solve solve = solveRepository.findByQuiz_IdAndUser_Id(quizId, userId).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
+        Solve solve = solveRepository.findByQuizIdAndUserId(quizId, userId).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
         if (solve.getSolveScore() != null) throw new UnauthorizedException("이미 채점한 문제입니다.");
         solve.enterScore(score, solveRubric);
     }
@@ -39,7 +39,15 @@ public class SolveService {
         return solveRepository.findByQuizAndUser(quiz, user).orElseGet(Solve::empty);
     }
 
+    public Solve findSolveOrElseEmpty(Long quizId, Long userId) {
+        return solveRepository.findByQuizIdAndUserId(quizId, userId).orElseGet(Solve::empty);
+    }
+
     public Solve findSolve(Long quizId, Long userId) {
-        return solveRepository.findByQuiz_IdAndUser_Id(quizId, userId).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
+        return solveRepository.findByQuizIdAndUserId(quizId, userId).orElseThrow(() -> new UnauthorizedException("아직 풀지 않았습니다."));
+    }
+
+    public Integer numberOfQuizzesSolved(Long quizId) {
+        return solveRepository.countByQuizId(quizId);
     }
 }
