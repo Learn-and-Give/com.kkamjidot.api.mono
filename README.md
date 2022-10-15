@@ -24,14 +24,14 @@
   - GET v1/challenges/{challengeId}/quizzes?week=
 #### v2.4.4 퀴즈 제출할 때 선택된 루브릭 같이 제출
 - POST v2/quizzes/{quizId}/grade 퀴즈 풀기 채점 점수 제출 API V2
-- chosenRubric 필수 입력
+- solveRubric 필수 입력
   ```java
   @Schema(description = "점수", example = "0", required = true)  
   private Integer score;  
     
   @NotBlank @Size(max = 3500)  
   @Schema(description = "선택된 루브릭", example = "선택된 루브릭 내용입니다.", required = true)  
-  private String chosenRubric;
+  private String solveRubric;
   ```
 #### v2.4.3 퀴즈 조회할 때 풀 때 선택된 루브릭 같이 조회
 - GET v1/quizzes/{quizId} 퀴즈 조회 API

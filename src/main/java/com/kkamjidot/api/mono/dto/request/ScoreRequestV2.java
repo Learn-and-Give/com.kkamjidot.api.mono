@@ -16,5 +16,5 @@ public class ScoreRequestV2 {
 
     @NotBlank @Size(max = 3500)
     @Schema(description = "선택된 루브릭", example = "선택된 루브릭 내용입니다.", required = true)
-    private String chosenRubric;
+    private String solveRubric;
 }

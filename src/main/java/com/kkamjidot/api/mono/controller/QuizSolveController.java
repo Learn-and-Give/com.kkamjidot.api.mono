@@ -94,7 +94,7 @@ public class QuizSolveController {
                                                     @RequestBody @Valid ScoreRequestV2 request,
                                                     UriComponentsBuilder uriBuilder) {
         User user = authService.authenticate(jwt);
-        solveService.updateSolveScore(quizId, user.getId(), request.getScore(), request.getChosenRubric());
+        solveService.updateSolveScore(quizId, user.getId(), request.getScore(), request.getSolveRubric());
         URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quizId).toUri();
 
         return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());
