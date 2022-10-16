@@ -38,6 +38,7 @@ public class QuizQueryRepository {
     }
 
     private BooleanBuilder weekEq(List<Integer> weeks) {
+        System.out.println(weeks);
         BooleanBuilder builder = new BooleanBuilder();
         for (int week : weeks) {
             builder.or(quiz.quizWeek.eq(week));

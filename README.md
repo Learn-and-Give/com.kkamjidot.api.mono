@@ -1,4 +1,92 @@
 # com.kkamjidot.api.mono
+#### v2.5.2 퀴즈 내용 조회 API에 문제 풀린 횟수 추가
+- GET v1/quizzes/{quizId}/content 퀴즈 내용 조회 API 응답에 문제 풀린 횟수 추가
+- Integer cntOfSolved
+#### v2.5.1 퀴즈 정답 조회 API V2로 변경
+- ~~GET v1/quizzes/{quizId}/grade~~ 퀴즈 풀기 채점 점수 제출 API V1 Deprecated
+- GET v2/quizzes/{quizId}/solve 퀴즈 정답 조회 API 추가
+- ```json
+  {
+    "quiz": {
+      "quizId": 1,
+      "answer": "R=8.3144J/mol",
+      "explanation": "1atm = 101325N/m^2 이다.....",
+      "rubric": "[{\"score\":\"5\",\"content....."
+    },
+    "solve": {
+      "answer": "1liter = 10^-3m^-3",
+      "score": 5,
+      "rubric": "1liter = 10^-3m^-3 임을 알고 있다."
+    }
+  }
+  ```
+#### v2.5.0 퀴즈 조회 API -> 퀴즈 내용 조회 API 변경
+- ~~GET v1/quizzes/{quizId}~~ 퀴즈 조회 API Deprecated
+- GET v1/quizzes/{quizId}/content 퀴즈 내용 조회 API 추가
+  ```json
+  {
+    "challengeId": 1,
+    "quizId": 1,
+    "quizTitle": "gas constant unit conversion (기체상수 단위 환산)",
+    "quizWeek": 1,
+    "quizContent": "R=0.082057 liter*atm/mol을 J/mol로 단위를 환산하시오\n",
+    "quizCreatedDate": "2022-09-09T00:17:33",
+    "quizModifiedDate": null,
+    "writerName": "홍길동",
+    "quizFiles": [],
+    "cntOfGood": 1,
+    "quizInfoByUser": {
+      "userId": 1,
+      "isMine": true,
+      "didIRate": "GOOD",
+      "solveAnswer": "정답"
+    }
+  }
+  ```
+#### v2.4.7 응답 객체 변경
+- 범위
+  - GET v1/challenges/{challengeId}/quizzes 퀴즈 개요 목록 조회 API
+  - GET v1/challenges/{challengeId}/my/quizzes 내가 작성한 퀴즈 주차별 개요 조회 API
+  - GET v1/challenges/{challengeId}/my-good-quizzes 좋아요한 문제들 조회 API
+- 변경 내용
+  - isScored로 제거
+#### v2.4.6 응답 객체 변경
+- 범위
+  - GET v1/challenges/{challengeId}/quizzes 퀴즈 개요 목록 조회 API
+  - GET v1/challenges/{challengeId}/my/quizzes 내가 작성한 퀴즈 주차별 개요 조회 API
+  - GET v1/challenges/{challengeId}/my-good-quizzes 좋아요한 문제들 조회 API
+- 변경 내용
+  1. 기존 solveAnswer, solveScore는 deprecated 처리함. 삭제 요망
+  2. 정답 제출 여부는 isSolved로, 채점 여부는 isScored로 처리
+  - 코드
+    ```java
+    @Deprecated private final String solveAnswer; 
+    @Deprecated private final Integer solveScore; 
+    @Schema(description = "정답 제출 여부") private final Boolean isSolved; 
+    @Schema(description = "채점 여부") private final Boolean isScored;	
+    ```
+
+#### v2.4.5 퀴즈 모든 주차 목록 조회
+- GET v1/challenges/{challengeId}/quizzes 퀴즈 개요 목록 조회 API 모든 주차 조회 가능하게 변경
+- week가 빠지면 모든 주차 반환
+- 사용 예시
+  - GET v1/challenges/{challengeId}/quizzes
+  - GET v1/challenges/{challengeId}/quizzes?week
+  - GET v1/challenges/{challengeId}/quizzes?week=
+#### v2.4.4 퀴즈 제출할 때 선택된 루브릭 같이 제출
+- POST v2/quizzes/{quizId}/grade 퀴즈 풀기 채점 점수 제출 API V2
+- solveRubric 필수 입력
+  ```java
+  @Schema(description = "점수", example = "0", required = true)  
+  private Integer score;  
+    
+  @NotBlank @Size(max = 3500)  
+  @Schema(description = "선택된 루브릭", example = "선택된 루브릭 내용입니다.", required = true)  
+  private String solveRubric;
+  ```
+#### v2.4.3 퀴즈 조회할 때 풀 때 선택된 루브릭 같이 조회
+- GET v1/quizzes/{quizId} 퀴즈 조회 API
+- solveRubric 추가
 #### v2.4.2: 토큰 등록 기능 추가(2022.10.14.)
 ### 2022.10.13. 시험 기간 챌린지 운영 관련 대규모 업데이트
 #### v2.4.1 - 챌린지 주차 정보 목록 조회 API 복구(2022.10.13.)

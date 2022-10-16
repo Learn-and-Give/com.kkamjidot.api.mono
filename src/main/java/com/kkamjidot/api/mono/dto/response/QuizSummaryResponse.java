@@ -26,8 +26,10 @@ public class QuizSummaryResponse implements Serializable {
     private final LocalDateTime quizCreatedDate;
     private final LocalDateTime quizModifiedDate;
     private final Boolean isMine;
-    private final String solveAnswer;
-    private final Integer solveScore;
+    @Deprecated private final String solveAnswer;
+    @Deprecated private final Integer solveScore;
+    @Schema(description = "정답 제출 여부") private final Boolean isSolved;
+//    @Schema(description = "채점 여부") private final Boolean isScored;
     private final String writerName;
     private final Long challengeId;
     private final Integer cntOfGood;
@@ -44,6 +46,8 @@ public class QuizSummaryResponse implements Serializable {
                 .isMine(quiz.isMine(user))
                 .solveAnswer(solve.getSolveAnswer())
                 .solveScore(solve.getSolveScore())
+                .isSolved(solve.isSolved())
+//                .isScored(solve.isScored())
                 .writerName(quiz.getWriterName())
                 .challengeId(quiz.getChallengeId())
                 .cntOfGood(cntOfGood)
