@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 public class Solve {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "`solve _id`", nullable = false)
+    @Column(name = "solve_id", nullable = false)
     private Long id;
 
     @NotBlank @Size(max = 3500)
