@@ -20,5 +20,5 @@ public interface SolveRepository extends JpaRepository<Solve, Long> {
     Integer countByQuizId(Long quizId);
 
     @Query("select count(s) from Solve s where s.quiz.user.id = ?1")
-    Integer countOfAllQuizzesSolvedByUser(Long id);
+    Long countOfAllQuizzesSolvedByUser(Long id);
 }
