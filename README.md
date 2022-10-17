@@ -1,4 +1,8 @@
 # com.kkamjidot.api.mono
+#### v2.5.4 포인트 조회 API 추가
+- GET v1/my/point 포인트 조회 API 추가 
+#### v2.5.3 푸시 알림용 FCM 토큰 등록 API 추가
+- POST v1/notification/register 푸시 알림용 FCM 토큰 등록 API
 #### v2.5.2 퀴즈 내용 조회 API에 문제 풀린 횟수 추가
 - GET v1/quizzes/{quizId}/content 퀴즈 내용 조회 API 응답에 문제 풀린 횟수 추가
 - Integer cntOfSolved
