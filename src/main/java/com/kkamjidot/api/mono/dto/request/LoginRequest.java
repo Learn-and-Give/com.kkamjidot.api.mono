@@ -25,5 +25,5 @@ public class LoginRequest implements Serializable {
 
     @Schema(description = "로그인하는 플랫폼", example = "MacIntel", required = true) private String platform;
 
-    @Schema(description = "토큰", required = false) private String fcmToken;
+    @Schema(description = "fcm 토큰", required = false) private String fcmToken;
 }
