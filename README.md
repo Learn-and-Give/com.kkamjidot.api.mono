@@ -1,4 +1,8 @@
 # com.kkamjidot.api.mono
+#### v2.5.5(2022.10.18.) 
+- 비밀번호 검증 기능 추가
+- solve_id 오타 변경
+- 포인트 테이블 추가
 #### v2.5.4 포인트 조회 API 추가
 - GET v1/my/point 포인트 조회 API 추가 
 #### v2.5.3 푸시 알림용 FCM 토큰 등록 API 추가
