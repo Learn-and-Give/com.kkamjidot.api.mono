@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -18,8 +20,8 @@ public class LoginRequest implements Serializable {
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     private String email;
 
-    @Size(min = 8, max = 255, message = "비밀번호는 8자 이상 255자 이하여야 합니다.")
-    @NotBlank(message = "비밀번호는 필수 입력 값입니다.")
+    @NotNull(message = "비밀번호는 필수 입력 값입니다.")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Za-z])[\40-\176]{8,255}$", message = "비밀번호는 영어, 숫자, 특수문자로 이루어지고 8자 이상 255자 이하여야 합니다.")
     @Schema(description = "비밀번호", example = "kkamjidot123", required = true)
     private String password;
 
