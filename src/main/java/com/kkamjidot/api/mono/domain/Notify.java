@@ -23,11 +23,13 @@ public class Notify {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude
     private User user;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ns_id", nullable = false)
+    @ToString.Exclude
     private NotificationScheduler ns;
 
     @NotNull
