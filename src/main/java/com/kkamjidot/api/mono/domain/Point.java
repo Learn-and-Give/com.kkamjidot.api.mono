@@ -6,11 +6,14 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
-@Builder
+//@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -27,34 +30,56 @@ public class Point {
     private Long id;
 
     @NotNull
+    @Min(0)
     @Column(name = "poi_value", nullable = false)
-    private Integer value;
+    private Integer poiValue;
 
     @Size(max = 255)
-    @Column(name = "poi_content")
-    private String content;
+    @Column(name = "poi_desc")
+    private String poiDesc;
 
-    @Size(max = 20)
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "poi_type", nullable = false, length = 20)
     private PointType poiType;
 
+    @NotNull
+    @Column(name = "poi_is_increase", nullable = false)
+    private Boolean poiIsIncrease;
+
+    @NotNull
+    @Column(name = "poi_balance", nullable = false)
+    private Integer poiBalance;
+
     @Size(max = 20)
     @Column(name = "poi_related_id", length = 20)
-    private String relatedId;
+    private String poiRelatedId;
+
+    @NotNull
+    @Column(name = "poi_datetime", nullable = false)
+    private LocalDateTime poiDatetime;
 
     @Column(name = "poi_created_date", nullable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime poiCreatedDate;
 
     @Column(name = "poi_modified_date")
-    private LocalDateTime modifiedDate;
+    private LocalDateTime poiModifiedDate;
 
     @ToString.Exclude
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Builder
+    public Point(Integer poiValue, String poiDesc, PointType poiType, Boolean poiIsIncrease, String poiRelatedId, User user, Integer preBalance) {
+        this.poiValue = poiValue;
+        this.poiDesc = poiDesc;
+        this.poiType = poiType;
+        this.poiIsIncrease = poiIsIncrease;
+        this.poiRelatedId = poiRelatedId;
+        this.user = user;
 
+        this.poiDatetime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.poiBalance = this.poiIsIncrease ? preBalance + poiValue : preBalance - poiValue;
+    }
 }
