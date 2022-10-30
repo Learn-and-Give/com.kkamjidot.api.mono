@@ -57,9 +57,9 @@ public class Solve {
         return Solve.builder().build();
     }
 
-    public static Solve of(SolveRequest request, Quiz quiz, User user) {
+    public static Solve of(String answer, Quiz quiz, User user) {
         return Solve.builder()
-                .solveAnswer(request.getAnswer())
+                .solveAnswer(answer)
                 .quiz(quiz)
                 .user(user)
                 .build();

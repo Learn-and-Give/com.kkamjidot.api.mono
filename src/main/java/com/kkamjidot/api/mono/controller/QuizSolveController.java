@@ -29,7 +29,6 @@ import java.net.URI;
 @RestController
 public class QuizSolveController {
     private final QuizService quizService;
-    private final QuizQueryService quizQueryService;
     private final TakeAClassService takeAClassService;
     private final SolveService solveService;
     private final AuthService authService;
@@ -47,8 +46,7 @@ public class QuizSolveController {
         takeAClassService.checkCanReadChallengeByChallengeId(quiz.getChallengeId(), user.getId());
         solveService.checkNotSolved(quiz, user);                    // 이미 푼 문제인지 확인
 
-        Solve solve = Solve.of(request, quiz, user);
-        solveService.createOne(solve);                              // 정답 제출
+        solveService.solveQuiz(request.getAnswer(), quizId, user.getId());                              // 정답 제출
         URI location = uriBuilder.path("/v1/quizzes/{quizId}").buildAndExpand(quiz.getId()).toUri();
 
         return ResponseEntity.created(location).body(QuizIdResponse.builder().quizId(quizId).build());

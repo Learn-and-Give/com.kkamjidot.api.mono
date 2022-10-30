@@ -5,4 +5,4 @@ import lombok.*;
 
 @Builder
 @Schema(description = "포인트")
-public record PointResponse(Long userId, Long point) { }
+public record PointResponse(Long userId, Integer point) { }
