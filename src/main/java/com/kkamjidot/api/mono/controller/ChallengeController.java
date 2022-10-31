@@ -38,7 +38,6 @@ public class ChallengeController {
 
         List<ChallengeSummaryResponse> responses = challengeQueryService.readChallenges(user);
 
-        LOGGER.info("챌린지 목록 조회 API: Get v1/challenges [User: {}, responses: {}]", user.getId(), responses);
         return ResponseEntity.ok(responses);
     }
 
@@ -50,7 +49,6 @@ public class ChallengeController {
 
         ChallengeResponse response = challengeQueryService.readChallenge(challengeId, user);
 
-        LOGGER.info("챌린지 조회 API: Get v1/challenges/{} [User: {}, response: {}]", challengeId, user.getId(), response);
         return ResponseEntity.ok(response);
     }
 
@@ -61,7 +59,6 @@ public class ChallengeController {
 
         List<ChallengeSummaryResponse> responses = challengeQueryService.readMyChallenges(user);
 
-        LOGGER.info("내가 참여한 챌린지 목록 조회 API: Get v1/my/challenges [User: {}, responses: {}]", user.getId(), responses);
         return ResponseEntity.ok(responses);
     }
 
@@ -73,7 +70,6 @@ public class ChallengeController {
 
         WeekResponse response = challengeQueryService.readWeeks(challengeId, user);
 
-        LOGGER.info("챌린지 주차 정보 목록 조회 API: Get v1/challenges/{}/weeks [User: {}, response: {}]", challengeId, user.getId(), response);
         return ResponseEntity.ok(response);
     }
 
@@ -85,7 +81,6 @@ public class ChallengeController {
 
         nowResponse response = challengeQueryService.readThisWeek(challengeId);
 
-        LOGGER.info("현재 주자 반환 API: Get v1/challenges/{}/now [User: {}, response: {}]", challengeId, user.getId(), response);
         return ResponseEntity.ok(response);
     }
 }

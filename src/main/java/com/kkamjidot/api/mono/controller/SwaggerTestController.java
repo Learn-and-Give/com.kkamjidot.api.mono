@@ -1,5 +1,6 @@
 package com.kkamjidot.api.mono.controller;
 
+import com.kkamjidot.api.mono.commons.interceptor.NoAuth;
 import com.kkamjidot.api.mono.domain.User;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,5 +1,6 @@
 package com.kkamjidot.api.mono.commons.utility;
 
+import com.kkamjidot.api.mono.exception.UnauthenticatedException;
 import com.kkamjidot.api.mono.exception.UserNotFoundException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -84,15 +85,15 @@ public class JwtUtil {
                     .userId(claims.get("userId", Long.class))
                     .build();
         } catch (SignatureException ex) {
-            throw new UserNotFoundException("Invalid JWT signature");
+            throw new UnauthenticatedException("Invalid JWT signature");
         } catch (MalformedJwtException ex) {
-            throw new InvalidParameterException("Invalid JWT token");
+            throw new UnauthenticatedException("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
-            throw new InvalidParameterException("Expired JWT token");
+            throw new UnauthenticatedException("Expired JWT token");
         } catch (UnsupportedJwtException ex) {
-            throw new InvalidParameterException("Unsupported JWT token");
+            throw new UnauthenticatedException("Unsupported JWT token");
         } catch (IllegalArgumentException ex) {
-            throw new InvalidParameterException("JWT claims string is empty.");
+            throw new UnauthenticatedException("JWT claims string is empty.");
         }
     }
 }

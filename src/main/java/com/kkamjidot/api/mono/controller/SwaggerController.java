@@ -1,5 +1,6 @@
 package com.kkamjidot.api.mono.controller;
 
+import com.kkamjidot.api.mono.commons.interceptor.NoAuth;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
