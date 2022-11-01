@@ -22,20 +22,19 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 public class NotificationApiController {
-    private final AuthService authService;
     private final NotificationService notificationService;
 
-    @Operation(summary = "푸시 알림용 FCM 토큰 등록 API", description = "푸시 알림용 FCM 토큰 등록한다.")
-    @ApiResponse(responseCode = "201", description = "알림 등록 성공")
-    @PostMapping("v1/notification/register")
-    public ResponseEntity<?> register(@RequestHeader String jwt,
-                                      @RequestBody @Valid RegisterFcmTokenRequest request) {
-        User user = authService.authenticate(jwt);
-
-        notificationService.register(user.getId(), request.getFcmToken(), request.getPlatform());  // 푸시 알림 용 토큰 등록
-
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+//    @Operation(summary = "푸시 알림용 FCM 토큰 등록 API", description = "푸시 알림용 FCM 토큰 등록한다.")
+//    @ApiResponse(responseCode = "201", description = "알림 등록 성공")
+//    @PostMapping("v1/notification/register")
+//    public ResponseEntity<?> register(HttpServletRequest request,
+//                                      @RequestBody @Valid RegisterFcmTokenRequest request) {
+//        Long userId = (Long) request.getAttribute("userId");
+//
+//        notificationService.register(user.getId(), request.getFcmToken(), request.getPlatform());  // 푸시 알림 용 토큰 등록
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).build();
+//    }
 
     @Operation(summary = "테스트용 알림 발송 API", description = "테스트용 알림을 보낸다.")
     @ApiResponse(responseCode = "201", description = "메시지 전송 성공")

@@ -1,10 +1,7 @@
 package com.kkamjidot.api.mono.repository;
 
-import com.kkamjidot.api.mono.domain.Challenge;
 import com.kkamjidot.api.mono.domain.Quiz;
-import com.kkamjidot.api.mono.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,15 +9,15 @@ import java.util.Optional;
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
     Optional<Quiz> findByIdAndQuizDeletedDateNull(Long id);
 
-    Optional<Quiz> findByIdAndUserAndQuizDeletedDateNull(Long id, User user);
+    Optional<Quiz> findByIdAndUserIdAndQuizDeletedDateNull(Long quizId, Long userId);
 
-    int countByQuizWeekAndUserAndChallenge_Id(Integer quizWeek, User user, Long challengeId);
+    int countByQuizWeekAndUserIdAndChallenge_Id(Integer quizWeek, Long userId, Long challengeId);
 
-    int countByUserAndChallenge_Id(User user, Long challengeId);
+    int countByUserIdAndChallenge_Id(Long userId, Long challengeId);
 
-    List<Quiz> findByQuizWeekAndUserAndChallenge_Id(Integer quizWeek, User user, Long id);
+    List<Quiz> findByQuizWeekAndUserIdAndChallenge_Id(Integer quizWeek, Long userId, Long challengeId);
 
-    List<Quiz> findByUserAndChallenge_IdOrderByQuizWeekAsc(User user, Long id);
+    List<Quiz> findByUserIdAndChallenge_IdOrderByQuizWeekAsc(Long userId, Long challengeId);
 
-    int countByChallengeAndUserAndQuizWeekAndQuizDeletedDateNull(Challenge challenge, User user, Integer quizWeek);
+    int countByChallenge_IdAndUserIdAndQuizWeekAndQuizDeletedDateNull(Long challengeId, Long userId, Integer quizWeek);
 }

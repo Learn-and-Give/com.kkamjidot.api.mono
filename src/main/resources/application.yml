@@ -18,7 +18,7 @@ springdoc:
   swagger-ui:
     doc-expansion: list
     operations-sorter: alpha
-  version: v2.5.6
+  version: v2.5.7
 
 # aws settings
 # S3 bucket region
