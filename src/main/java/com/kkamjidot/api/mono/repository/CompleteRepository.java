@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface CompleteRepository extends JpaRepository<Complete, Long> {
     List<Complete> findByUserAndChall(User user, Challenge chall);
-    boolean existsByWeekAndUserAndChall(Integer week, User user, Challenge chall);
+    boolean existsByWeekAndUserIdAndChallId(Integer week, Long userId, Long challengeId);
     int countByChallAndWeek(Challenge challenge, Integer week);
 }

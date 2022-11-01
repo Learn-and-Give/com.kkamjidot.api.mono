@@ -17,31 +17,28 @@ import java.util.List;
 @Transactional(readOnly = true)
 @Service
 public class CompleteService {
-    private final Logger LOGGER = LoggerFactory.getLogger(ChallengeController.class);
-
     private final CompleteRepository completeRepository;
-    private final QuizService quizService;
+    private final ChallengeService challengeService;
+    private final UserService userService;
 
     /**
      * 챌린지 퀴즈 제출 조건 이상의 퀴즈를 제출했으면 열람 가능한 권한을 생성한다.
-     * @param challenge 챌린지
-     * @param user 회원
+     * @param challengeId 챌린지 ID
+     * @param userId 회원 ID
      * @param week 권한 생성하기 위한 주차
      */
     @Transactional
-    public void createOneIfRight(Challenge challenge, User user, int week) {
-        int count = quizService.countByWeek(challenge, user, week);
-        if (challenge.isCountOfQuizzesIsEnough(count)) return;
+    public void createOneIfRight(Long challengeId, Long userId, int week) {
+        if (completeRepository.existsByWeekAndUserIdAndChallId(week, userId, challengeId)) return;
+        Challenge challenge = challengeService.findById(challengeId);
 
-        if (completeRepository.existsByWeekAndUserAndChall(week, user, challenge)) return;
-
+        User user = userService.findById(userId);
         Complete complete = Complete.builder()
                 .week(week)
                 .user(user)
                 .chall(challenge)
                 .build();
         completeRepository.save(complete);
-        LOGGER.info("Readable created: {}", complete);
     }
 
     public List<Integer> findCompleteWeeks(User user, Challenge challenge) {
