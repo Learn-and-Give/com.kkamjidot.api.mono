@@ -37,7 +37,10 @@ public class QuizQueryService {
         Solve solve = solveService.findSolveOrElseEmpty(userId, quizId);
 
         // 응답 객체 생성
-        return QuizContentResponse.of(quiz, user, solve, rateService.countOfGood(quizId), solveService.numberOfQuizzesSolved(quizId), rateService.didIRate(userId, quizId));
+        return QuizContentResponse.of(quiz, user, solve,
+                rateService.countOfGood(quizId),
+                solveService.numberOfQuizzesSolved(quizId),
+                rateService.didIRate(userId, quizId));
     }
 
     public QuizAnswerResponse readQuizAnswer(Long quizId, Long userId) {
@@ -50,7 +53,11 @@ public class QuizQueryService {
 
     public MyQuizResponse readMyQuiz(Long quizId, Long userId) throws UnauthorizedException {
         Quiz quiz = quizService.findOneMine(quizId, userId);
-        return MyQuizResponse.of(quiz, rateService.countOfGood(quizId), rateService.didIRate(userId, quizId));
+        return MyQuizResponse.of(
+                quiz,
+                rateService.countOfGood(quizId),
+                solveService.numberOfQuizzesSolved(quizId),
+                rateService.didIRate(userId, quizId));
     }
 
     public List<QuizSummaryResponse> readMyQuizzes(Integer week, Long userId, Long challengeId) {
@@ -99,6 +106,7 @@ public class QuizQueryService {
                     user,
                     solveService.findSolveOrElseEmpty(userId, quiz.getId()),
                     rateService.countOfGood(quiz.getId()),
+                    solveService.numberOfQuizzesSolved(quiz.getId()),
                     rateService.didIRate(userId, quiz.getId())
             ));
         }

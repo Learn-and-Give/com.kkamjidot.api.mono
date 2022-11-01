@@ -1,13 +1,13 @@
 package com.kkamjidot.api.mono.commons.interceptor;
 
 import com.kkamjidot.api.mono.commons.utility.JwtUtil;
+import com.kkamjidot.api.mono.exception.UnauthenticatedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,8 +48,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         //     - 예: 로그인 인증 처리 등
 
         String jwt = request.getHeader("Authorization");
-        if (jwt == null) throw new AuthenticationException("Authorization 헤더가 없습니다.");
-        if (!jwt.startsWith("Bearer ")) throw new AuthenticationException("Authorization 헤더의 형식이 올바르지 않습니다.");
+        if (jwt == null) throw new UnauthenticatedException("Authorization 헤더가 없습니다.");
+        if (!jwt.startsWith("Bearer ")) throw new UnauthenticatedException("Authorization 헤더의 형식이 올바르지 않습니다.");
         Long userId = jwtUtil.parseJWT(jwt.substring(7)).getUserId();
 
         // Controller 내 Method로 값을 보내려면, request.setAttribute()를 사용한다.

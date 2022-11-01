@@ -55,7 +55,7 @@ public class RateController {
     public ResponseEntity<List<QuizSummaryResponse>> readMyGoodQuizzes(HttpServletRequest request,
                                                                        @PathVariable @Parameter(description = "챌린지 ID", example = "0") Long challengeId) {
         Long userId = (Long) request.getAttribute("userId");
-        takeAClassService.checkUserTakesChallenge(challengeId, userId);
+        takeAClassService.checkCanReadChallengeByChallengeId(challengeId, userId);
         List<QuizSummaryResponse> responses = rateQueryService.readMyGoodQuizzes(userId, challengeId);
 
         return ResponseEntity.ok(responses);

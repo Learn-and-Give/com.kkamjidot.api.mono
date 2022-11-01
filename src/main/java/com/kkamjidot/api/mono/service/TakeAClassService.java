@@ -24,16 +24,17 @@ public class TakeAClassService {
         if (!challenge.isInProgress()) throw new UnauthorizedException("이미 종료된 챌린지입니다.");
     }
 
-    public void checkUserTakesChallenge(Long challengeId, Long userId) throws UnauthorizedException {
-        takeAClassRepository.findByTcApplicationstatusAndChallIdAndUserId(ApplicationStatus.ACCEPTED, challengeId, userId)
-                .orElseThrow(() -> new UnauthorizedException("열람 가능한 챌린지가 아닙니다."));
-    }
-
+    /**
+     * 열람 가능한 챌린지인지 검사한다.
+     */
     public void checkCanReadChallengeByChallengeId(Long challengeId, Long userId) {
         if (Boolean.FALSE.equals(takeAClassRepository.existsByChall_IdAndUser_IdAndTcApplicationstatus(challengeId, userId, ApplicationStatus.ACCEPTED)))
             throw new UnauthorizedException("열람 가능한 권한이 없습니다.");
     }
 
+    /**
+     * 열람 가능한 퀴즈인지 검사한다.
+     */
     public void checkCanReadChallengeByQuizId(Long quizId, Long userId) {
         Long challengeId = quizService.findById(quizId).getChallengeId();
 

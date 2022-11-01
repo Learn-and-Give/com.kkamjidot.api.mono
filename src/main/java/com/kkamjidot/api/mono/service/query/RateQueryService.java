@@ -30,7 +30,11 @@ public class RateQueryService {
         User user = userService.findById(userId);
         List<QuizSummaryResponse> responses = new ArrayList<>(quizzes.size());
         for (Quiz quiz : quizzes) {
-            responses.add(QuizSummaryResponse.of(quiz, user, solveService.findSolveOrElseEmpty(userId, quiz.getId()), rateService.countOfGood(quiz.getId()), RateValue.GOOD));
+            responses.add(QuizSummaryResponse.of(quiz, user,
+                    solveService.findSolveOrElseEmpty(userId, quiz.getId()),
+                    rateService.countOfGood(quiz.getId()),
+                    solveService.numberOfQuizzesSolved(quiz.getId()),
+                    RateValue.GOOD));
         }
         return responses;
     }
