@@ -50,7 +50,7 @@ public class NotifyScheduler {
                     .filter(takeAClass -> takeAClass.getTcApplicationstatus().equals(ApplicationStatus.ACCEPTED))
                     .map(TakeAClass::getUser).toList();
             userList.forEach(user -> {
-                if (!completeRepository.existsByWeekAndUserAndChall(thisWeek, user, challenge)) {
+                if (!completeRepository.existsByWeekAndUserIdAndChallId(thisWeek, user.getId(), challenge.getId())) {
                     sendUserSet.add(user);
                 }
             });

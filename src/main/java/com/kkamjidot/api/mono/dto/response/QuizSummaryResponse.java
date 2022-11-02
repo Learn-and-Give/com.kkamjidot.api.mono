@@ -26,16 +26,14 @@ public class QuizSummaryResponse implements Serializable {
     private final LocalDateTime quizCreatedDate;
     private final LocalDateTime quizModifiedDate;
     private final Boolean isMine;
-    @Deprecated private final String solveAnswer;
-    @Deprecated private final Integer solveScore;
     @Schema(description = "정답 제출 여부") private final Boolean isSolved;
-//    @Schema(description = "채점 여부") private final Boolean isScored;
+    @Schema(description = "문제 풀린 횟수") private final Integer cntOfSolved;
     private final String writerName;
     private final Long challengeId;
     private final Integer cntOfGood;
     private final RateValue didIRate;
 
-    public static QuizSummaryResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, RateValue didIRate) {
+    public static QuizSummaryResponse of(Quiz quiz, User user, Solve solve, Integer cntOfGood, Integer cntOfSolved, RateValue didIRate) {
         return QuizSummaryResponse.builder()
                 .quizId(quiz.getId())
                 .quizTitle(quiz.getQuizTitle())
@@ -44,13 +42,11 @@ public class QuizSummaryResponse implements Serializable {
                 .quizCreatedDate(quiz.getQuizCreatedDate())
                 .quizModifiedDate(quiz.getQuizModifiedDate())
                 .isMine(quiz.isMine(user))
-                .solveAnswer(solve.getSolveAnswer())
-                .solveScore(solve.getSolveScore())
                 .isSolved(solve.isSolved())
-//                .isScored(solve.isScored())
                 .writerName(quiz.getWriterName())
                 .challengeId(quiz.getChallengeId())
                 .cntOfGood(cntOfGood)
+                .cntOfSolved(cntOfSolved)
                 .didIRate(didIRate)
                 .build();
     }

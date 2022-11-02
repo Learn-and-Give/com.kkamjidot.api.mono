@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -26,58 +27,44 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class CommentController {
-    private final Logger LOGGER = LoggerFactory.getLogger(ChallengeController.class);
 
-    private final UserService userService;
-    private final QuizService quizService;
     private final CommentService commentService;
     private final CommentQueryService commentQueryService;
-    private final AuthService authService;
     private final TakeAClassService takeAClassService;
 
     @Operation(summary = "댓글 등록 API", description = "댓글을 등록한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "201", description = "댓글 등록 성공")
     @PostMapping("v1/quizzes/{quizId}/comments")
-    public ResponseEntity<CommentIdResponse> createComment(@RequestHeader String jwt,
+    public ResponseEntity<CommentIdResponse> createComment(HttpServletRequest request,
                                                            @PathVariable Long quizId,
-                                                           @RequestBody @Valid CreateCommentRequest request) {
-        User user = authService.authenticate(jwt);
-        Quiz quiz = quizService.findById(quizId);
-        takeAClassService.checkCanReadChallengeByQuizId(quiz.getId(), user.getId());
+                                                           @RequestBody @Valid CreateCommentRequest createCommentRequest) {
+        Long userId = (Long) request.getAttribute("userId");
+        takeAClassService.checkCanReadChallengeByQuizId(quizId, userId);
 //        Quiz quiz = quizService.findOneInReadableWeek(quizId, user);     // 열람 가능한 주차의 문제인지 확인
 
-        Comment comment = Comment.builder()
-                .commentContent(request.getContent())
-                .user(user)
-                .quiz(quiz)
-                .build();
-        commentService.createOne(comment);
+        Long commentId = commentService.createOne(createCommentRequest.getContent(), userId, quizId);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-        LOGGER.info("댓글 등록 API: Post v1/quizzes/{}/comments [User: {}, comment: {}]", quizId, user.getId(), comment.getId());
-        return ResponseEntity.created(location).body(CommentIdResponse.builder().commentId(comment.getId()).build());
+        return ResponseEntity.created(location).body(CommentIdResponse.builder().commentId(commentId).build());
     }
 
     @Operation(summary = "댓글 목록 조회 API", description = "한 퀴즈의 댓글들을 조회한다. 내가 수강한 챌린지가 아니면 403 에러를 반환한다.")
     @GetMapping("v1/quizzes/{quizId}/comments")
-    public ResponseEntity<List<CommentResponse>> readComments(@RequestHeader String jwt,
+    public ResponseEntity<List<CommentResponse>> readComments(HttpServletRequest request,
                                                              @PathVariable Long quizId) {
-        User user = authService.authenticate(jwt);
-        Quiz quiz = quizService.findById(quizId);
-        takeAClassService.checkCanReadChallengeByQuizId(quiz.getId(), user.getId());
-        List<CommentResponse> responses = commentQueryService.readComments(user, quiz);
+        Long userId = (Long) request.getAttribute("userId");
+        takeAClassService.checkCanReadChallengeByQuizId(quizId, userId);
+        List<CommentResponse> responses = commentQueryService.readComments(userId, quizId);
 
-        LOGGER.info("댓글 목록 조회 API: Get v1/quizzes/{}/comments [User: {}, responses: {}]", quizId, user.getId(), responses);
         return ResponseEntity.ok(responses);
     }
 
     @Operation(summary = "댓글 삭제 API", description = "댓글을 삭제한다. 내 댓글이 아니면 403 에러를 반환한다.")
     @ApiResponse(responseCode = "204", description = "댓글 삭제 성공")
     @DeleteMapping("v1/comments/{commentId}")
-    public ResponseEntity<Void> deleteComment(@RequestHeader String jwt,
+    public ResponseEntity<Void> deleteComment(HttpServletRequest request,
                                                              @PathVariable Long commentId) {
-        User user = authService.authenticate(jwt);
-        commentService.deleteOne(commentId, user);
-        LOGGER.info("댓글 삭제 API: Delete v1/comments/{} [User: {}]", commentId, user.getId());
+        Long userId = (Long) request.getAttribute("userId");
+        commentService.deleteOne(commentId, userId);
         return ResponseEntity.noContent().build();
     }
 }

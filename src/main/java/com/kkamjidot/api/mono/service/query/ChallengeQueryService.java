@@ -13,6 +13,7 @@ import com.kkamjidot.api.mono.repository.ChallengeRepository;
 import com.kkamjidot.api.mono.repository.TakeAClassRepository;
 import com.kkamjidot.api.mono.service.ChallengeService;
 import com.kkamjidot.api.mono.service.CompleteService;
+import com.kkamjidot.api.mono.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +30,11 @@ public class ChallengeQueryService {
     private final TakeAClassRepository takeAClassRepository;
     private final CompleteService completeService;
     private final ChallengeService challengeService;
+    private final UserService userService;
 
-    public List<ChallengeSummaryResponse> readChallenges(User user) {
+    public List<ChallengeSummaryResponse> readChallenges(Long userId) {
+        User user = userService.findById(userId);
+
         // 챌린지 목록 조회
         List<Challenge> challenges = challengeRepository.findByChallDeletedDateNull();
 
@@ -45,9 +49,11 @@ public class ChallengeQueryService {
         return challengeSummaryResponses;
     }
 
-    public ChallengeResponse readChallenge(Long challengeId, User user) {
+    public ChallengeResponse readChallenge(Long challengeId, Long userId) {
+        User user = userService.findById(userId);
+
         // 챌린지 조회
-        Challenge challenge = challengeService.findOne(challengeId);
+        Challenge challenge = challengeService.findById(challengeId);
         ChallengeResponse challengeResponse = ChallengeResponse.of(challenge, completeService.countComplete(challenge));
         findApplicationStatus(challenge, user).ifPresent(challengeResponse::setApplicationStatus);     // 신청상태
         return challengeResponse;
@@ -57,9 +63,9 @@ public class ChallengeQueryService {
         return takeAClassRepository.findByChallAndUser(challenge, user).map(TakeAClass::getTcApplicationstatus);
     }
 
-    public List<ChallengeSummaryResponse> readMyChallenges(User user) {
+    public List<ChallengeSummaryResponse> readMyChallenges(Long userId) {
         // 수강 목록 조회
-        List<TakeAClass> takes = takeAClassRepository.findByUser(user);
+        List<TakeAClass> takes = takeAClassRepository.findByUserId(userId);
 
         // 응답 객체 생성
         List<ChallengeSummaryResponse> challengeSummaryResponses = new ArrayList<>(takes.size());
@@ -72,8 +78,9 @@ public class ChallengeQueryService {
         return challengeSummaryResponses;
     }
 
-    public WeekResponse readWeeks(Long challengeId, User user) {
-        Challenge challenge = challengeService.findOne(challengeId);
+    public WeekResponse readWeeks(Long challengeId, Long userId) {
+        User user = userService.findById(userId);
+        Challenge challenge = challengeService.findById(challengeId);
         List<Integer> completeWeeks = completeService.findCompleteWeeks(user, challenge);
         int challTotalWeeks = challenge.getChallTotalWeeks();   // 총 주차 조회
 
@@ -96,7 +103,7 @@ public class ChallengeQueryService {
 
     public nowResponse readThisWeek(Long challengeId) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        Challenge challenge = challengeService.findOne(challengeId);
+        Challenge challenge = challengeService.findById(challengeId);
 
         return nowResponse.builder()
                 .week(challenge.getThisWeek())

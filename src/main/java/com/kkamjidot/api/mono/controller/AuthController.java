@@ -1,5 +1,6 @@
 package com.kkamjidot.api.mono.controller;
 
+import com.kkamjidot.api.mono.commons.interceptor.NoAuth;
 import com.kkamjidot.api.mono.dto.request.LoginRequest;
 import com.kkamjidot.api.mono.dto.response.LoginResponse;
 import com.kkamjidot.api.mono.service.AuthService;
@@ -22,6 +23,7 @@ public class AuthController {
     private final AuthService authService;
     private final NotificationService notificationService;
 
+    @NoAuth
     @Operation(summary = "로그인 API V2", description = "회원 여부를 확인한다.")
     @PostMapping("v2/user/login")
     public ResponseEntity<LoginResponse> loginV2(@RequestBody @Valid LoginRequest request) {
