@@ -26,7 +26,7 @@ public class WebAppConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         long MAX_AGE_SECS = 3600;
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "https://kkamjidot.com", "https://www.kkamjidot.com", "https://dev.kkamjidot.com", "https://test.kkamjidot.com")
+                .allowedOrigins("http://localhost:3000", "https://kkamjidot.com", "https://www.kkamjidot.com", "https://dev.kkamjidot.com", "https://test.kkamjidot.com", "https://prod.kkamji.co.kr")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)
